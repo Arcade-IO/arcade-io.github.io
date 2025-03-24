@@ -1,0 +1,79 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.button, .button-img{
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+  height: 3.5em;
+  width: 3.5em;
+}
+.button:hover{
+  background-color: #d61919c4; /* Darker background on hover */
+  color: #fff; /* Maintain text color */
+  cursor:pointer;
+}
+
+/* Navbar Styling */
+.navbar {
+  background-color: #020016; /* Consistent with the other button and hover colors */
+  padding-left: 10px;
+  padding-right: 100px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px; /* Rounded corners for consistency */
+  height: 10vh;
+  display: flex;
+  align-items: center; /* Centers logo and links vertically */
+  justify-content: space-between; /* Adds space between logo and menu */
+}
+
+/* Logo Styling */
+
+.img1{
+  height: 7vh; 
+  margin: 5vw;/* Adjust logo size */
+}
+
+/* Navigation List */
+ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+/* List Items */
+li {
+  display: inline;
+}
+
+/* Links */
+a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 30px;
+  font-size: 32px;
+
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover and Active States */
+a:hover {
+  background-color: #0000003b; /* Darker background on hover */
+  color: #fff; /* Maintain text color */
+  border-radius: 25px;
+}
+a.active {
+  background-color: #726e6e3b; /* Darker background on hover */
+  color: #fff; /* Maintain text color */
+}

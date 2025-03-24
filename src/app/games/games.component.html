@@ -1,0 +1,68 @@
+<div class="game-container">
+    <h2>Opret Nyt Spil</h2>
+    
+    <div class="input-group">
+      <label for="title">Titel</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        placeholder="Indtast spiltitel..."
+        [value]="title"
+        (input)="updateTitle($event)"
+      />
+    </div>
+    
+    <div class="input-group">
+      <label for="description">Beskrivelse</label>
+      <textarea
+        id="description"
+        name="description"
+        placeholder="Indtast en kort beskrivelse..."
+        [value]="description"
+        (input)="updateDescription($event)"
+      ></textarea>
+    </div>
+    
+    <div class="input-group">
+      <label for="imageUrl">Billede-URL</label>
+      <input
+        type="text"
+        id="imageUrl"
+        name="imageUrl"
+        placeholder="Indtast URL til spillets billede..."
+        [value]="imageUrl"
+        (input)="updateImageUrl($event)"
+      />
+    </div>
+    
+    <div class="input-group">
+      <label for="netlifyUrl">Netlify-URL</label>
+      <input
+        type="text"
+        id="netlifyUrl"
+        name="netlifyUrl"
+        placeholder="Indtast URL til spillet på Netlify..."
+        [value]="netlifyUrl"
+        (input)="updateNetlifyUrl($event)"
+      />
+    </div>
+    
+    <div class="input-group">
+      <label for="platform">Platform</label>
+      <select
+        id="platform"
+        name="platform"
+        [value]="platform"
+        (change)="updatePlatform($event)"
+      >
+        <option value="">Vælg platform...</option>
+        <option value="Web">Web</option>
+        <option value="Android">Android</option>
+        <option value="Both">Both</option>
+      </select>
+    </div>
+
+    <button (click)="createNewGame()">Opret Spil</button>
+  </div>
+  

@@ -1,0 +1,39 @@
+
+<div class="dashboard-container">
+  <!-- Search Bar -->
+  <div class="search-bar-container">
+    <div class="search-bar">
+      <input 
+        type="text" 
+        placeholder="Search by email..." 
+        (input)="onSearchInput($event)" 
+      />
+    </div>
+  </div>
+  <!-- User List -->
+  <div *ngIf="!isLoading">
+    <div *ngFor="let user of filteredUsers" class="user-card">
+      <div class="user-info">
+        <div class="user-name">{{ user.name }}</div>
+        <div class="user-email">{{ user.email }}</div>
+        <div class="user-status" [ngClass]="{'is-admin': user.isAdmin}">
+          {{ user.isAdmin ? 'Admin' : 'User' }}
+        </div>
+      </div>
+      <div class="user-actions">
+        <!-- Toggle Switch -->
+        <label class="switch">
+          <input 
+            type="checkbox" 
+            [checked]="user.isAdmin" 
+            (change)="toggleAdminRights(user)"
+          />
+          <span class="slider"></span>
+        </label>
+
+        <!-- Delete Button -->
+        <button class="delete-button" (click)="deleteUser(user.uid)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

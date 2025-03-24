@@ -1,0 +1,23 @@
+<div class="dashboard-container">
+    <h1>Spil Dashboard</h1>
+    <hr />
+    
+    <!-- Knappe-container til plus-knappen -->
+    <div class="button-container">
+      <ul>
+        <li *ngIf="isAdmin">
+          <a [routerLink]="['/games']" routerLinkActive="active" class="button">+asssssssssssssssssss</a>
+        </li>
+      </ul>
+    </div>
+    <div class="games-list">
+        <div class="game-card" *ngFor="let game of games">
+          <img [src]="game.imageUrl" alt="{{ game.title }}" class="game-image"/>
+          <div class="game-details">
+            <h3>{{ game.title }}</h3>
+            <p>ID: {{ game.id }}</p>
+          </div>
+        </div>
+      </div>
+  </div>
+  

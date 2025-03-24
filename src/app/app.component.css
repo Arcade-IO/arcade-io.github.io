@@ -1,0 +1,38 @@
+/* Navbar Styling */
+.navbar {
+    background-color: #333;
+    padding: 15px 20px;  /* Reduced padding to make the navbar thinner */
+    border-radius: 4px;
+  }
+  
+  .navbar ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    justify-content: center;  /* Center the navbar items */
+  }
+  
+  .navbar li {
+    margin: 0 35px;  /* Increased margin between items */
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;  /* Slightly smaller font size */
+  }
+  
+  .navbar a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Active link style (removed bold) */
+  .navbar a.active {
+    color: #4CAF50; /* Green for active link */
+  }
+  
+  /* Adjust dashboard container */
+  .dashboard-container {
+    margin-top: 20px;  /* Add space below the navbar */
+  }
+  

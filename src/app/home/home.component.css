@@ -1,0 +1,44 @@
+
+
+/* Fullscreen container */
+.home-container {
+    height: 100vh;
+    background-image: url('https://github.com/Arcade-IO/Arcade.IO/blob/main/src/assets/ARCADE.IO-HOME.png?raw=true');
+    background-color: #040029;
+    color: white;
+    padding: 45px;
+    position: relative; /* Important for absolute positioning of the buttons */
+    background-size: cover; /* This ensures the image scales correctly */
+    background-position: center center; /* This centers the image */
+    background-repeat: no-repeat; /* Prevents repeating the image */
+    
+}
+
+/* Button container for top-right buttons */
+.button-container {
+    position: absolute;
+    top: 63%;              /* Justér op/ned-position */
+    left: 50%;             /* Justér vandret position */
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 100px;
+}
+
+
+/* Style for all buttons (Admin, Login, Sign Up) */
+.button {
+    background: none;
+    color: white;
+    border: 2px solid white;
+    padding: 16px 32px;
+    font-size: 2.5rem;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: all 0.3s ease;  
+
+}
+
+.button:hover {
+    background: white;
+    color: #3f72b5;
+}

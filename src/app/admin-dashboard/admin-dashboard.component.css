@@ -1,0 +1,153 @@
+
+
+/* Adjust dashboard container */
+.dashboard-container {
+  margin-top: 20px;  /* Add space below the navbar */
+}
+
+/* General Dashboard Layout */
+.dashboard-container {
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f4f7fb;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between elements */
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Loading Spinner */
+.spinner {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.5rem;
+}
+
+/* User Card Layout */
+.user-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-card:hover {
+  background-color: #f9f9f9;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name,
+.user-email {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.user-status {
+  font-weight: bold;
+  color: #999;
+}
+
+.is-admin {
+  color: #4CAF50; /* Green for admins */
+}
+
+/* Button Styling */
+.user-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* Toggle Switch Styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide the default checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider - the actual toggle button */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+/* Create the round slider */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+/* When the switch is checked, change the background and slider position */
+input:checked + .slider {
+  background-color: #4CAF50;  /* Green when 'on' */
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);  /* Move the slider to the right */
+}
+
+/* Search Bar Styling */
+.search-bar-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search-bar input {
+  padding: 8px;
+  width: 200px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Delete Button Styling */
+.delete-button {
+  background-color: #f44336; /* Red background for delete */
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #e53935; /* Darker red on hover */
+}

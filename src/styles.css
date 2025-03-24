@@ -1,0 +1,34 @@
+/* Importér Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+
+/* Global Reset og font-anvendelse */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inconsolata', sans-serif;
+}
+
+/* Sørg for, at form-elementer arver den globale font */
+input, button, select, textarea {
+  font-family: inherit;
+}
+
+/* Globale body-styles */
+html, body {
+  margin: 0;
+  background-image: url('https://github.com/Arcade-IO/Arcade.IO/blob/main/src/assets/ARCADE.IO%20BACKGROUND.png?raw=true');
+  background-color: #040029; 
+  position: relative; /* Important for absolute positioning of the buttons */
+  background-size: cover; /* This ensures the image scales correctly */
+  background-position: center center; /* This centers the image */
+  background-repeat: no-repeat; /* Prevents repeating the image */
+  height: 100vh;
+}
+
+/* Du kan her tilføje andre globale regler, fx for links */
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
