@@ -32,13 +32,70 @@ setPersistence(auth, browserLocalPersistence)
 export class FirebaseService {
   currentUser: any = null;
 
+
+
+
+
   constructor() {
     this.listenToAuthStateChanges();
   }
 
+
+
+
+  
+  getDatabase() {
+    return database;
+  }
+
+
+
+
+
+  async createOrUpdateHighscore(userId: string, gameId: string, score: number): Promise<void> {
+    const highscoreId = `${userId}_${gameId}`;  // Construct the highscoreId from userId and gameId
+    const highscoreRef = ref(database, `highscores/${highscoreId}`);
+    
+    // Fetch the current high score (if any)
+    const snapshot = await get(highscoreRef);
+    
+    if (snapshot.exists()) {
+      // If high score exists, check if the new score is higher
+      const currentHighscore = snapshot.val();
+      
+      if (score > currentHighscore.score) {
+        // Update the high score with the new score if it's higher
+        await set(highscoreRef, {
+          users_Id: userId,
+          games_Id: gameId,
+          score,
+          createdAt: new Date().toISOString()
+        });
+        console.log("High score updated!");
+      } else {
+        console.log("Current score is not higher than the existing high score.");
+      }
+    } else {
+      // If no high score exists for this user and game, create a new high score entry
+      await set(highscoreRef, {
+        users_Id: userId,
+        games_Id: gameId,
+        score,
+        createdAt: new Date().toISOString()
+      });
+      console.log("New high score created!");
+    }
+  }
+  
+
+
+
+
+
   // ===============================
   // User Management Functions
   // ===============================
+
 
   // Create user
   registerUser(
@@ -55,6 +112,11 @@ export class FirebaseService {
       });
   }
 
+
+
+
+
+
   // Create user in the database
   createUser(
     uid: string,
@@ -69,6 +131,10 @@ export class FirebaseService {
       createdAt: new Date().toISOString()
     });
   }
+
+
+
+
 
   // Check if user is an admin
   checkIfAdmin(uid: string): Promise<boolean> {
@@ -85,20 +151,36 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Grant admin rights to a user
   createAdminRights(uid: string): Promise<void> {
     return update(ref(database, `users/${uid}`), { isAdmin: true });
   }
+
+
+
+
 
   // Revoke admin rights from a user
   revokeAdminRights(uid: string): Promise<void> {
     return update(ref(database, `users/${uid}`), { isAdmin: false });
   }
 
+
+
+
+
   // Delete user
   deleteUser(uid: string): Promise<void> {
     return set(ref(database, `users/${uid}`), null);
   }
+
+
+
+
 
   // Update user information
   updateUser(
@@ -108,15 +190,27 @@ export class FirebaseService {
     return update(ref(database, `users/${uid}`), updates);
   }
 
+
+
+
+
   // Log in user
   loginUser(email: string, password: string): Promise<any> {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
+
+
+
+
   // Log out user
   logout(): Promise<void> {
     return signOut(auth);
   }
+
+
+
+
 
   // Get all users
   getAllUsers(): Promise<any[]> {
@@ -129,6 +223,11 @@ export class FirebaseService {
       return [];
     });
   }
+
+
+
+
+
 
   // ================================
   // Game, Highscore, and Forum Management
@@ -155,6 +254,10 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Create a highscore
   createHighscore(
     highscoreId: string,
@@ -170,6 +273,10 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Create a forum post
   createForumPost(
     forumId: string,
@@ -184,6 +291,10 @@ export class FirebaseService {
       timestamp: new Date().toISOString()
     });
   }
+
+
+
+
 
   // Create settings
   createSettings(
@@ -201,6 +312,10 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Update settings
   updateSettings(
     settingsId: string,
@@ -209,6 +324,10 @@ export class FirebaseService {
     return update(ref(database, `settings/${settingsId}`), updates);
   }
 
+
+
+
+
   // Listen to authentication state changes
   private listenToAuthStateChanges(): void {
     onAuthStateChanged(auth, (user) => {
@@ -216,19 +335,36 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Expose a listener for auth state changes so components can subscribe
   getAuthStateListener(callback: (user: any) => void): void {
     onAuthStateChanged(auth, callback);
   }
+
+
+
+
 
   // Get the current logged-in user
   getCurrentUser(): any {
     return this.currentUser;
   }
 
+
+
+
+
   // Hardcoded admin check
   private static isHardcodedAdmin(email: string): boolean {
     const adminEmails = ['selin@selin.dk'];
     return adminEmails.includes(email);
   }
+
+
+
+
+
 }

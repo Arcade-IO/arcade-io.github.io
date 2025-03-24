@@ -1,1 +1,17 @@
-<p>game-interface works!</p>
+<div class="container" *ngIf="game">
+    <div class="game-container">
+      <div class="game-header">
+          <img [src]="game.imageUrl" alt="{{ game.title }}" />
+          <h2 class="game-title">{{ game.title }}</h2>
+      </div>
+      <iframe 
+        [src]="safeUrl" 
+        width="1024" 
+        height="576"
+        id="unityGame"
+        title="Unity WebGL Game">
+      </iframe>
+    </div>
+  </div>
+  
+  <p *ngIf="!game">Loading game...</p>

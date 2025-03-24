@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'leaderboard', component: LeaderboardComponent, canActivate: [AuthGuard]},  
   { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard]},  
 
-  { path: 'game-interface', component: GameInterfaceComponent }
+  { path: 'game/:gameId', component: GameInterfaceComponent }
 
 
 
