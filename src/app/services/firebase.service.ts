@@ -43,15 +43,16 @@ export class FirebaseService {
 
 
 
-  
+  //hazel 24-03-2025 13.55
   getDatabase() {
     return database;
   }
+  //hazel 24-03-2025 13.55
 
 
 
 
-
+  //hazel 24-03-2025 13.55
   async createOrUpdateHighscore(userId: string, gameId: string, score: number): Promise<void> {
     const highscoreId = `${userId}_${gameId}`;  // Construct the highscoreId from userId and gameId
     const highscoreRef = ref(database, `highscores/${highscoreId}`);
@@ -86,7 +87,7 @@ export class FirebaseService {
       console.log("New high score created!");
     }
   }
-  
+  //hazel 24-03-2025 13.55
 
 
 

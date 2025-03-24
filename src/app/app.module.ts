@@ -17,13 +17,13 @@ import { ChatComponent } from './chat/chat.component';
 @NgModule({
   imports: [
     BrowserModule,
-    CommonModule,  // Add CommonModule here
+    CommonModule, 
     FormsModule,  
-    RouterModule,  // Add RouterModule here
-    AppComponent,  // Import standalone component
-    SignupComponent,  // Import standalone component
-    LoginComponent,  // Import standalone component
-    AdminDashboardComponent,  // Import standalone component
+    RouterModule,  
+    AppComponent,  
+    SignupComponent,
+    LoginComponent,
+    AdminDashboardComponent, 
     NavbarComponent,
     GamesComponent,
     LeaderboardComponent,
@@ -35,3 +35,4 @@ import { ChatComponent } from './chat/chat.component';
 export class AppModule { }
 
 bootstrapApplication(AppComponent);
+//when you add an import you need to add it in ngmodule too.
