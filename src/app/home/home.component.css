@@ -4,7 +4,7 @@
 .home-container {
     height: 100vh;
     background-image: url('https://github.com/Arcade-IO/Arcade.IO/blob/main/src/assets/ARCADE.IO-HOME.png?raw=true');
-    background-color: #040029;
+    background-color: #290c00;
     color: white;
     padding: 45px;
     position: relative; /* Important for absolute positioning of the buttons */
