@@ -1,0 +1,29 @@
+<div class="settings-container">
+    <div class="settings-box">
+      <h2>Settings</h2>
+      
+      <!-- Username -->
+      <div class="input-group">
+        <input type="text" [value]="username" (input)="updateUsername($event)" placeholder="Username" />
+      </div>
+  
+      <!-- Email -->
+      <div class="input-group">
+        <input type="email" [value]="email" (input)="updateEmail($event)" placeholder="E-mail" />
+      </div>
+  
+      <!-- Password -->
+      <div class="input-group">
+        <input type="password" [value]="password" (input)="updatePassword($event)" placeholder="Password" />
+      </div>
+  
+      <!-- Theme Color -->
+      <div class="input-group">
+        <label>Theme Color:</label>
+        <input type="color" [value]="themeColor" (input)="updateThemeColor($event)" />
+      </div>
+  
+      <button class="save-btn" (click)="saveSettings()">Save Settings</button>
+    </div>
+  </div>
+  
