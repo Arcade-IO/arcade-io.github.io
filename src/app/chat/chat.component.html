@@ -1,1 +1,9 @@
-<p>chat works!</p>
+<div class="window">
+    @for (t of test; track t.id) {
+        <div class="messageBlock">
+            <p>{{ t.id }}</p>
+            <p>{{ t.text }}</p>
+        </div>
+    }
+    <input type="text"><button ng->test</button>
+</div>
