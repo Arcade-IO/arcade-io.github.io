@@ -1,21 +1,25 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
 })
 
 export class ChatComponent {
   msg : Message[] = [];
-  test : TestM[] = [
-    new TestM(1,"ss"),
-    new TestM(2,"ssss")
-  ]
+  test : TestM[] = []
+  input = "";
 
   makeMessage(newMsg:string){
     this.msg.push(new Message(newMsg))
+  }
+
+  makeTest(){
+    this.test.push(new TestM(this.input))
+    this.input = "";
   }
 }
 
@@ -23,6 +27,7 @@ export class ChatComponent {
 
 
 
+// Alexander 24-03-25 
 class Message {
   message : string;
   userName : string = "";
@@ -32,20 +37,23 @@ class Message {
     this.message = message;
   }
 }
+// Alexander 24-03-25 
 
 
 
 
 
+// Alexander 24-03-25 
 class TestM {
-  id : number;
   text : string;
+  createdAt: Date;
 
-  constructor(id : number, text : string) {
-    this.id = id;
+  constructor( text : string) {
     this.text = text;
+    this.createdAt = new Date;
   }
 }
+// Alexander 24-03-25 
 
 //Hej Aleksander,
 //jeg kan se at selin har lavet 2 komponenter, men vi blev enige om at chatten skal-

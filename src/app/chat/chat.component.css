@@ -1,8 +1,51 @@
 .window {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 80%;
+    border-radius: 1rem;
     background-color: white;
 }
 
+.message-window {
+    overflow-y: scroll;
+    overflow-anchor: auto;
+    margin: 1rem 1rem 0 1rem;
+}
+
 .messageBlock {
-    margin: 1em;
+    width: min-content;
     background-color: #4cf;
+    margin-bottom: .5rem;
+}
+
+.messageBlock .messageText {
+    word-wrap:break-word;
+}
+
+.textInput {
+    height: 2rem;
+    border: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+}
+
+.textInput * {
+    background-color: #ddd;
+    border: 0;
+    height: 2rem;
+    outline: none;
+}
+
+.textInput button {
+    border-radius: 0 1rem 1rem 0;
+    width: 2rem;
+}
+
+.textInput input {
+    width: 80%;
+    padding: 1rem;
+    border-radius: 1rem 0 0 1rem;
 }

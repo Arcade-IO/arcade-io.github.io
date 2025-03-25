@@ -1,9 +1,14 @@
 <div class="window">
-    @for (t of test; track t.id) {
-        <div class="messageBlock">
-            <p>{{ t.id }}</p>
-            <p>{{ t.text }}</p>
-        </div>
-    }
-    <input type="text"><button ng->test</button>
+    <div class="message-window">
+        @for (t of test; track t.createdAt) {
+            <div class="messageBlock">
+                <p>{{ t.createdAt.getTime() }}</p>
+                <p class="messageText">{{ t.text }}</p>
+            </div>
+        }
+    </div>
+    <div class="textInput">        
+        <input type="text" [(ngModel)]="input">
+        <button (click)="makeTest()">test</button>
+    </div>
 </div>
