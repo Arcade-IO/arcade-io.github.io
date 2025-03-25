@@ -6,7 +6,7 @@ import { get, ref } from 'firebase/database';
 
 @Component({
   selector: 'app-dashboard',
-  standalone: false, // Hvis du bruger Angular standalone, kan du ændre til true + imports: [...]
+  standalone: true, // Hvis du bruger Angular standalone, kan du ændre til true + imports: [...]
   imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
