@@ -13,13 +13,13 @@ export class LoginComponent {
 
   constructor(private router: Router, private firebaseService: FirebaseService) {}
 
-  // Update email value
-  updateEmail(event: any): void {
+  // Save email value
+  sendEmail(event: any): void {
     this.email = event.target.value;
   }
 
-  // Update password value
-  updatePassword(event: any): void {
+  // Save password value
+  sendPassword(event: any): void {
     this.password = event.target.value;
   }
 

@@ -1,29 +1,35 @@
-<div class="settings-container">
-    <div class="settings-box">
-      <h2>Settings</h2>
-      
-      <!-- Username -->
+<div class="dashboard-container">
+  <div class="sidebar">
+    <ul>
+      <li><a href="javascript:void(0)" (click)="showChangePassword()">Change Password</a></li>
+      <li><a href="javascript:void(0)" (click)="showChangeUsername()">Change Username</a></li>
+      <li><a href="#">Change E-mail</a></li>
+      <li><a href="#">Change Theme</a></li>
+    </ul>
+  </div>
+
+  <div class="content">
+    <!-- Change Password Section -->
+    <div *ngIf="isChangePassword">
+      <h2>Change Password</h2>
       <div class="input-group">
-        <input type="text" [value]="username" (input)="updateUsername($event)" placeholder="Username" />
+        <input type="password" [value]="newPassword" (input)="updatePassword($event)" placeholder="New Password" />
       </div>
-  
-      <!-- Email -->
       <div class="input-group">
-        <input type="email" [value]="email" (input)="updateEmail($event)" placeholder="E-mail" />
+        <input type="password" [value]="confirmPassword" (input)="updateConfirmPassword($event)" placeholder="Confirm Password" />
       </div>
-  
-      <!-- Password -->
+      <button (click)="submitNewPassword()">Submit</button>
+    </div>
+
+    <!-- Change Username Section -->
+    <div *ngIf="isChangeUsername">
+      <h2>Change Username</h2>
+      <p>Current Username: {{ currentUsername || 'Not set' }}</p>
       <div class="input-group">
-        <input type="password" [value]="password" (input)="updatePassword($event)" placeholder="Password" />
+        <input type="text" [value]="newUsername" (input)="updateUsername($event)" placeholder="New Username" />
       </div>
-  
-      <!-- Theme Color -->
-      <div class="input-group">
-        <label>Theme Color:</label>
-        <input type="color" [value]="themeColor" (input)="updateThemeColor($event)" />
-      </div>
-  
-      <button class="save-btn" (click)="saveSettings()">Save Settings</button>
+     
+      <button (click)="submitNewUsername()">Submit</button>
     </div>
   </div>
-  
+</div>

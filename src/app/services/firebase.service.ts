@@ -6,11 +6,14 @@ import {
   signInWithEmailAndPassword,
   signOut,
   setPersistence,
-  browserLocalPersistence
+  browserLocalPersistence,
+  updatePassword,
+  updateProfile
 } from 'firebase/auth';
 import { getDatabase, ref, set, get, update } from 'firebase/database';
 import { environment } from '../environments/environment';
 import { initializeApp } from 'firebase/app';
+
 
 // Initialize Firebase
 const app = initializeApp(environment.firebaseConfig);
@@ -184,7 +187,7 @@ export class FirebaseService {
 
 
   // Update user information
-  updateUser(
+  sendUser(
     uid: string,
     updates: { name?: string; email?: string; isAdmin?: boolean }
   ): Promise<void> {
@@ -317,6 +320,7 @@ export class FirebaseService {
 
 
 
+  
   // Update settings
   updateSettings(
     settingsId: string,
@@ -368,4 +372,43 @@ export class FirebaseService {
 
 
 
-}
+
+  // 25.03.2025 / Selin
+  updateUserPassword(uid: string, newPassword: string): Promise<void> {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
+    if (user && user.uid === uid) {
+      return updatePassword(user, newPassword);
+    } else {
+      return Promise.reject('User not authenticated');
+    }
+  }
+
+
+
+
+
+  updateUsername(uid: string, newUsername: string): Promise<void> {
+    const auth = getAuth();
+    const user = auth.currentUser;
+  
+    if (user && user.uid === uid) {
+      return updateProfile(user, { displayName: newUsername })
+        .then(() => user.reload()) // Reload user data
+        .then(() => {
+          console.log('Updated username:', user.displayName); // Debugging log
+        })
+        .catch(error => Promise.reject(error));
+    } else {
+      return Promise.reject('User not authenticated');
+    }
+  }
+}  
+    // 25.03.2025 / Selin
+
+
+
+
+
+

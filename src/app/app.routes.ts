@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { GameInterfaceComponent } from './game-interface/game-interface.component';
 import { AuthGuard } from './guards/auth.guard';
-
+import { SettingsComponent } from './settings/settings.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -25,7 +25,8 @@ export const routes: Routes = [
   { path: 'games', component: GamesComponent, canActivate: [AdminGuard]},  
   { path: 'leaderboard', component: LeaderboardComponent, canActivate: [AuthGuard]},  
   { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard]},  
-  { path: 'game/:gameId', component: GameInterfaceComponent }
+  { path: 'game/:gameId', component: GameInterfaceComponent },
+  { path: 'settings', component: SettingsComponent },
 ];
 //Add AdminGuard if you want the acces to be restricted so only Admins can acces 
 //Add AuthGuard if you want the acces to be restricted so only Users can acces
