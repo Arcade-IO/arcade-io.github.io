@@ -1,6 +1,5 @@
 /* Fullscreen container */
 .dashboard-container {
-    padding: 20px;
     position: relative;
   }
   
@@ -37,47 +36,45 @@
     font-size: 2rem;
     font-weight: bold;
   }
-  
-  /* Hero Section */
-  h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+  .welcome{
+    color: white;
+    font-size: 5rem;
+    letter-spacing: 2rem;
+    display: block;
+    text-align: center;
+    padding-top: 5.5rem;
+    padding-bottom: 5.5rem;
+
   }
-  
-  /* Separator */
-  hr {
-    border: 0;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.5);
-    width: 50%;
-    margin: 30px 0;
-    border-radius: 2px;
-  }
-  
   /* Grid layout for games */
   .games-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    gap: 50px;
+    padding: 2rem;
+
   }
   
   /* Individual game card */
   .game-card {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #3a3a3a6c; /* Darker background on hover */
+
+    border: 2px solid white;       /* Samme outline som knapperne */
+    border-radius: 25px;          /* For at matche knappernes afrunding */
+    padding: 16px;                /* Tilpas som du vil */
+    color: white;                 /* Teksten skal være hvid */
     text-align: center;
+    transition: all 0.3s ease;  
   }
   
   .game-image {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
+  }
+  .game-card:hover {
+    /* Gør den hvid i hover og teksten blå, ligesom dine knapper */
+    background: #0000006c;
   }
   
   .game-details {
