@@ -2,10 +2,10 @@
   <div class="login-box">
     <h2>Login</h2>
     <div class="input-group">
-      <input type="email" [value]="email" (input)="updateEmail($event)" placeholder="E-mail" />
+      <input type="email" [value]="email" (input)="sendEmail($event)" placeholder="E-mail" />
     </div>
     <div class="input-group">
-      <input type="password" [value]="password" (input)="updatePassword($event)" placeholder="Password" />
+      <input type="password" [value]="password" (input)="sendPassword($event)" placeholder="Password" />
     </div>
     <button class="login-btn" (click)="login()">Login</button>
     <p class="signup-text">
