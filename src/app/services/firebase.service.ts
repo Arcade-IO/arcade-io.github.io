@@ -24,6 +24,7 @@ const database = getDatabase(app);
 setPersistence(auth, browserLocalPersistence)
   .then(() => {
     console.log("Auth persistence set to LOCAL");
+    
   })
   .catch((error) => {
     console.error("Error setting auth persistence:", error);
@@ -41,16 +42,42 @@ export class FirebaseService {
 
   constructor() {
     this.listenToAuthStateChanges();
+    this.loadCurrentUser();
   }
 
 
 
 
   //hazel 24-03-2025 13.55
+  // Get the Firebase Database instance
   getDatabase() {
     return database;
   }
   //hazel 24-03-2025 13.55
+ 
+
+
+
+  //hazel 25-03-2025 14.25
+  // Get the Firebase Auth instance
+  getAuth() {
+    return auth;
+  }
+
+  private loadCurrentUser(): void {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.currentUser = user;
+        console.log("User data loaded:", user);
+      } else {
+        console.warn("No user data found!");
+        this.currentUser = null;
+      }
+    });
+  }
+  
+  //hazel 25-03-2025 14.25
+
 
 
 
