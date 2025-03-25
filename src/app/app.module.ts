@@ -10,7 +10,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { bootstrapApplication } from '@angular/platform-browser';
 import { NavbarComponent } from './navbar/navbar.component';
 import { GamesComponent } from './games/games.component';
-import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { leaderboardComponent } from './leaderboard/leaderboard.component';
 import { HomeComponent } from './home/home.component';
 import { ChatComponent } from './chat/chat.component';
 
@@ -26,7 +26,7 @@ import { ChatComponent } from './chat/chat.component';
     AdminDashboardComponent, 
     NavbarComponent,
     GamesComponent,
-    LeaderboardComponent,
+    leaderboardComponent,
     HomeComponent,
     ChatComponent,
   ],

@@ -364,7 +364,33 @@ export class FirebaseService {
     return adminEmails.includes(email);
   }
 
+  // Funktion til at hente highscores for et bestemt spil
+  async getHighscoresForGame(gameId: string): Promise<any[]> {
+    const highscoresRef = ref(database, `highscores/`);
+    const snapshot = await get(highscoresRef);
+    let highscores: any[] = [];
 
+    if (snapshot.exists()) {
+      const highscoresData = snapshot.val();
+      
+      // Filtrér highscores for det valgte spil
+      for (let highscoreId in highscoresData) {
+        if (highscoresData[highscoreId].games_Id === gameId) {
+          highscores.push({
+            username: highscoresData[highscoreId].users_Id,
+            gameTitle: highscoresData[highscoreId].score,
+            score: highscoresData[highscoreId].score,
+          });
+        }
+      }
+    } else {
+      // Hvis ingen data, opret en tom node
+      await set(ref(database, `highscores/`), { message: 'No data found yet.' });
+      console.log("Oprettede en ny node for highscores.");
+    }
+
+    return highscores;
+  }
 
 
 

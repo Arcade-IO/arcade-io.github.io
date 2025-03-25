@@ -1,1 +1,21 @@
-<p>leaderboard works!</p>
+<div>
+    <p>Vælg et spil:</p>
+
+    <select [(ngModel)]="selectedGameId" (change)="loadHighscores(); listenForHighscoreUpdates()">
+      <option *ngFor="let game of games" [value]="game.id">{{ game.name }}</option>
+    </select>
+</div>
+
+<div *ngIf="highscores.length > 0">
+  <ul>
+    <li *ngFor="let entry of highscores">
+      <strong>{{ entry.gameTitle }}</strong><br>
+      Spiller: {{ entry.username }}<br>
+      Highscore: {{ entry.score }}
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="highscores.length === 0">
+  <p>Der er endnu ikke nogen data i leaderboardet.</p>
+</div>
