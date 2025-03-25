@@ -7,12 +7,13 @@ import { AdminGuard } from './guards/admin.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChatComponent } from './chat/chat.component';
 import { GamesComponent } from './games/games.component';
-import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { GameInterfaceComponent } from './game-interface/game-interface.component';
 import { AuthGuard } from './guards/auth.guard';
 import { SettingsComponent } from './settings/settings.component';
+import { leaderboardComponent } from './leaderboard/leaderboard.component';
+
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -23,7 +24,8 @@ export const routes: Routes = [
   { path: 'chat', component: ChatComponent, //canActivate: [AuthGuard]
   },  
   { path: 'games', component: GamesComponent, canActivate: [AdminGuard]},  
-  { path: 'leaderboard', component: LeaderboardComponent, canActivate: [AuthGuard]},  
+  { path: 'leaderboard', component: leaderboardComponent, //canActivate: [AuthGuard]
+    },  
   { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard]},  
   { path: 'game/:gameId', component: GameInterfaceComponent },
   { path: 'settings', component: SettingsComponent },
