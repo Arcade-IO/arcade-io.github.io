@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
   isAdmin = false;
 
   constructor(private firebaseService: FirebaseService, private router: Router) {}
-
+//martin 25-03-2025
   ngOnInit(): void {
     // Subscribe to auth state changes so that the component updates once Firebase restores auth state.
     this.firebaseService.getAuthStateListener((user: any) => {
@@ -31,9 +31,9 @@ export class NavbarComponent implements OnInit {
       } else {
         this.isAdmin = false;
       }
-    });
+    });//martin 25-03-2025
   }
-
+//martin 25-03-2025
   // Logout function: logs out and then navigates to /home.
   async logout(): Promise<void> {
     await this.firebaseService.logout();
@@ -41,4 +41,5 @@ export class NavbarComponent implements OnInit {
     this.isAdmin = false;
     this.router.navigate(['/home']);
   }
+  //martin 25-03-2025
 }

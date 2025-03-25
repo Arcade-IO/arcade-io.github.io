@@ -9,6 +9,7 @@ import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
   styleUrls: ['./settings.component.css'],
   imports: [CommonModule]
 })
+//selin 25-03-2025
 export class SettingsComponent implements OnInit {
   isChangePassword = false;
   newPassword = '';
@@ -83,3 +84,4 @@ export class SettingsComponent implements OnInit {
     }
   }
 }
+//selin 25-03-2025

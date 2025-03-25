@@ -14,6 +14,8 @@ import { get, ref } from 'firebase/database';
   styleUrl: './game-interface.component.css'
 })
 export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
+/* hazel 25-03-2025 */
+
   gameId: string = '';
   game: any = null;
   safeUrl: SafeResourceUrl | null = null;
@@ -186,3 +188,4 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
     }
   }
 }
+/* hazel 25-03-2025 */

@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.css']
 })
+//usama 25-05-2025
 export class leaderboardComponent implements OnInit {
   selectedGameId: string | null = null;
   highscores: any[] = [];
@@ -70,3 +71,4 @@ export class leaderboardComponent implements OnInit {
     }
   }
 }
+//usama 25-05-2025

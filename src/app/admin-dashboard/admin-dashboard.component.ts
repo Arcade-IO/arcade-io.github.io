@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { CommonModule } from '@angular/common';
-
+// selin 25-03-2025
 interface User {
   uid: string;
   name: string;
@@ -17,6 +17,7 @@ interface User {
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
+// selin 25-03-2025
 export class AdminDashboardComponent {
   users: User[] = [];
   filteredUsers: User[] = [];  // Filtered user list
@@ -77,3 +78,4 @@ export class AdminDashboardComponent {
     }
   }
 }
+// selin 25-03-2025

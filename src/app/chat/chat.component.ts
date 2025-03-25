@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css'
 })
+// Alexander 24-03-25 
 
 export class ChatComponent {
   msg : Message[] = [];
@@ -27,7 +28,6 @@ export class ChatComponent {
 
 
 
-// Alexander 24-03-25 
 class Message {
   message : string;
   userName : string = "";
@@ -37,13 +37,11 @@ class Message {
     this.message = message;
   }
 }
-// Alexander 24-03-25 
 
 
 
 
 
-// Alexander 24-03-25 
 class TestM {
   text : string;
   createdAt: Date;

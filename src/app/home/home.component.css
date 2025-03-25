@@ -1,5 +1,4 @@
-
-
+/*Martin 25-03-2025*/
 /* Fullscreen container */
 .home-container {
     height: 100vh;
@@ -13,7 +12,6 @@
     background-repeat: no-repeat; /* Prevents repeating the image */
     
 }
-
 /* Button container for top-right buttons */
 .button-container {
     position: absolute;
@@ -23,8 +21,6 @@
     display: flex;
     gap: 100px;
 }
-
-
 /* Style for all buttons (Admin, Login, Sign Up) */
 .button {
     background: none;
@@ -37,8 +33,8 @@
     transition: all 0.3s ease;  
 
 }
-
 .button:hover {
     background: white;
     color: #3f72b5;
 }
+/*Martin 25-03-2025*/

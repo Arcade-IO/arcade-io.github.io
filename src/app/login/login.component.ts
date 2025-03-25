@@ -7,6 +7,7 @@ import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
+//selin 25-05-2025
 export class LoginComponent {
   email: string = '';
   password: string = '';
@@ -48,3 +49,4 @@ export class LoginComponent {
     this.router.navigate(['/signup']);
   }
 }
+//selin 25-05-2025

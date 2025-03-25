@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+//selin 25-03-2025
 export class SignupComponent {
   name: string = '';
   email: string = '';
@@ -73,3 +74,4 @@ export class SignupComponent {
     this.router.navigate(['/login']);
   }
 }
+//selin 25-03-2025

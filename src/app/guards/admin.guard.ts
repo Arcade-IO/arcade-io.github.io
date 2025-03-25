@@ -8,7 +8,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 })
 export class AdminGuard implements CanActivate {
   constructor(private firebaseService: FirebaseService, private router: Router) {}
-
+/* Martin 25-03-2025 */
   async canActivate(): Promise<boolean> {
     const auth = getAuth();
     return new Promise<boolean>((resolve) => {
@@ -37,3 +37,4 @@ export class AdminGuard implements CanActivate {
     });
   }
 }
+/* Martin 25-03-2025 */

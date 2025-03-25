@@ -1,3 +1,4 @@
+//martin 25-03-2025
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
@@ -32,3 +33,4 @@ export const routes: Routes = [
 ];
 //Add AdminGuard if you want the acces to be restricted so only Admins can acces 
 //Add AuthGuard if you want the acces to be restricted so only Users can acces
+//martin 25-03-2025

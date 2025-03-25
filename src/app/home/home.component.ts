@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
   constructor(private router: Router) {}
+/*selin 25-03-2025*/
 
   goToLogin(): void {
     this.router.navigate(['/login']);
@@ -22,3 +23,4 @@ export class HomeComponent {
   }
   
 }
+/*selin 25-03-2025*/

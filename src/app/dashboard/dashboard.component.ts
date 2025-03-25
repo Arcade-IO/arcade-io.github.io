@@ -12,6 +12,8 @@ import { get, ref } from 'firebase/database';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+//Martin 25-03-2025//
+
   isLoggedIn = false;
   isAdmin = false;
 
@@ -66,3 +68,4 @@ export class DashboardComponent implements OnInit {
     }
   }
 }
+//Martin 25-03-2025//

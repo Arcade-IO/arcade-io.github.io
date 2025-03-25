@@ -1,3 +1,4 @@
+//martin 25-03-2025
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';  // Import CommonModule
@@ -35,4 +36,4 @@ import { ChatComponent } from './chat/chat.component';
 export class AppModule { }
 
 bootstrapApplication(AppComponent);
-//when you add an import you need to add it in ngmodule too.
+//martin 25-03-2025

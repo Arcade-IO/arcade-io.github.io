@@ -1,3 +1,4 @@
+/*Martin 25-03-2025*/
 /* General Reset */
 * {
   margin: 0;
@@ -17,7 +18,6 @@
   color: #fff; /* Maintain text color */
   cursor:pointer;
 }
-
 /* Navbar Styling */
 .navbar {
   background-color: #020016; /* Consistent with the other button and hover colors */
@@ -33,14 +33,11 @@
   align-items: center; /* Centers logo and links vertically */
   justify-content: space-between; /* Adds space between logo and menu */
 }
-
 /* Logo Styling */
-
 .img1{
   height: 7vh; 
   margin: 5vw;/* Adjust logo size */
 }
-
 /* Navigation List */
 ul {
   list-style: none;
@@ -50,12 +47,10 @@ ul {
   padding: 0;
   align-items: center;
 }
-
 /* List Items */
 li {
   display: inline;
 }
-
 /* Links */
 a {
   color: white;
@@ -66,7 +61,6 @@ a {
   border-radius: 25px;
   transition: background-color 0.3s ease;
 }
-
 /* Hover and Active States */
 a:hover {
   background-color: #0000003b; /* Darker background on hover */
@@ -77,3 +71,4 @@ a.active {
   background-color: #726e6e3b; /* Darker background on hover */
   color: #fff; /* Maintain text color */
 }
+/*Martin 25-03-2025*/

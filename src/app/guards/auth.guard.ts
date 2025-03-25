@@ -7,6 +7,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 })
 export class AuthGuard implements CanActivate {
   constructor(private router: Router) {}
+/* Martin 25-03-2025 */
 
   async canActivate(): Promise<boolean> {
     const auth = getAuth();
@@ -23,3 +24,4 @@ export class AuthGuard implements CanActivate {
     });
   }
 }
+/* Martin 25-03-2025 */
