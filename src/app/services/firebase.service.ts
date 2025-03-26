@@ -132,16 +132,20 @@ export class FirebaseService {
   registerUser(
     email: string,
     password: string,
-    name: string
+    displayName: string
   ): Promise<any> {
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        const isAdmin = FirebaseService.isHardcodedAdmin(email);
-        return this.createUser(user.uid, name, email, isAdmin)
-          .then(() => ({ uid: user.uid, isAdmin }));
+        // Firebase Auth'taki displayName'i güncelle
+        return updateProfile(user, { displayName }).then(() => {
+          const isAdmin = FirebaseService.isHardcodedAdmin(email);
+          return this.createUser(user.uid, displayName, email, isAdmin)
+            .then(() => ({ uid: user.uid, isAdmin }));
+        });
       });
   }
+  
 
 
 
@@ -151,12 +155,12 @@ export class FirebaseService {
   // Create user in the database
   createUser(
     uid: string,
-    name: string,
+    displayName: string,
     email: string,
     isAdmin: boolean
   ): Promise<void> {
     return set(ref(database, `users/${uid}`), {
-      name,
+      displayName,
       email,
       isAdmin,
       createdAt: new Date().toISOString()
@@ -216,7 +220,7 @@ export class FirebaseService {
   // Update user information
   sendUser(
     uid: string,
-    updates: { name?: string; email?: string; isAdmin?: boolean }
+    updates: { displayName?: string; email?: string; isAdmin?: boolean }
   ): Promise<void> {
     return update(ref(database, `users/${uid}`), updates);
   }
@@ -395,6 +399,11 @@ export class FirebaseService {
     return adminEmails.includes(email);
   }
 
+
+
+
+
+
   // Funktion til at hente highscores for et bestemt spil
   async getHighscoresForGame(gameId: string): Promise<any[]> {
     const highscoresRef = ref(database, `highscores/`);
@@ -426,6 +435,7 @@ export class FirebaseService {
 
 
 
+
   // 25.03.2025 / Selin
   updateUserPassword(uid: string, newPassword: string): Promise<void> {
     const auth = getAuth();
@@ -437,28 +447,61 @@ export class FirebaseService {
       return Promise.reject('User not authenticated');
     }
   }
+  // 25.03.2025 / Selin
 
 
 
 
 
+    // 26.03.2025 / Selin
+    //updates username in settings
   updateUsername(uid: string, newUsername: string): Promise<void> {
     const auth = getAuth();
     const user = auth.currentUser;
   
     if (user && user.uid === uid) {
-      return updateProfile(user, { displayName: newUsername })
-        .then(() => user.reload()) // Reload user data
+      return updateProfile(user, { displayName: newUsername }) // Updates Firebase Auth
         .then(() => {
-          console.log('Updated username:', user.displayName); // Debugging log
+          // Update "name" in Realtime Database
+          return update(ref(database, `users/${uid}`), { name: newUsername });
+        })
+        .then(() => user.reload()) // Reloads user data
+        .then(() => {
+          console.log('Updated username:', newUsername); // Debugging log
         })
         .catch(error => Promise.reject(error));
     } else {
       return Promise.reject('User not authenticated');
     }
   }
-}  
-    // 25.03.2025 / Selin
+
+
+
+
+
+//updates email in settings
+  updateEmail(newEmail: string): Promise<void> {
+    const user = getAuth().currentUser;
+    if (user) {
+      return updateProfile(user, { email: newEmail })
+        .then(() => {
+          // Update the email in the database
+          return update(ref(database, `users/${user.uid}`), { email: newEmail });
+        })
+        .then(() => user.reload()) // Reload the user data
+        .then(() => {
+          console.log('Email updated:', newEmail);
+        })
+        .catch(error => Promise.reject(error));
+    } else {
+      return Promise.reject('User not authenticated');
+    }
+  }
+  
+  
+  
+}
+// 26.03.2025 / Selin
 
 
 

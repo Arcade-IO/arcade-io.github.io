@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { CommonModule } from '@angular/common';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { getDatabase, ref, get, query, orderByChild, equalTo } from 'firebase/database';
+import { updateProfile } from 'firebase/auth';
+
 
 @Component({
   selector: 'app-settings',
@@ -9,7 +12,7 @@ import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
   styleUrls: ['./settings.component.css'],
   imports: [CommonModule]
 })
-//selin 25-03-2025
+//selin 26-03-2025
 export class SettingsComponent implements OnInit {
   isChangePassword = false;
   newPassword = '';
@@ -19,20 +22,27 @@ export class SettingsComponent implements OnInit {
   newUsername = '';
   currentUsername: string | null = '';
 
+  isChangeEmail = false;
+  newEmail = '';
+  currentEmail: string | null = '';
+
   constructor(private firebaseService: FirebaseService) {}
 
   ngOnInit() {
     const auth = getAuth();
-    onAuthStateChanged(auth, (user: User | null) => {
+    onAuthStateChanged(auth, async (user: User | null) => {
       if (user) {
-        this.currentUsername = user.displayName;
+        this.currentUsername = user.displayName || 'Not set';
       }
     });
   }
-
-  showChangePassword() {
+  
+  
+  
+  optionChangePassword() {
     this.isChangePassword = true;
     this.isChangeUsername = false;
+    this.isChangeEmail = false;
   }
 
   updatePassword(event: any) {
@@ -56,32 +66,68 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  showChangeUsername() {
+  optionChangeUsername() {
     this.isChangeUsername = true;
     this.isChangePassword = false;
+    this.isChangeEmail= false;
   }
 
   updateUsername(event: any) {
     this.newUsername = event.target.value;
   }
-
   submitNewUsername() {
-    if (this.newUsername) {
+  
+    const db = this.firebaseService.getDatabase();
+    const usersRef = ref(db, 'users');
+  
+    // Query Firebase to check if the username exists
+    const usernameQuery = query(usersRef, orderByChild('name'), equalTo(this.newUsername));
+  
+    get(usernameQuery).then(snapshot => {
+      if (snapshot.exists()) {
+        alert('Username is already taken.');
+        return;
+      }
+  
+      // If username is available, update it
       const user = this.firebaseService.getCurrentUser();
       if (user) {
         this.firebaseService.updateUsername(user.uid, this.newUsername)
+          .then(() => updateProfile(user, { displayName: this.newUsername }))
           .then(() => {
-            console.log('Username updated successfully');
-            return user.reload();
-          })
-          .then(() => {
-            this.currentUsername = user.displayName;
+            alert('Username updated successfully!');
+            this.currentUsername = this.newUsername;
           })
           .catch(error => console.error('Error updating username:', error));
       }
-    } else {
-      console.log('Usernames do not match');
-    }
+    }).catch(error => console.error('Error checking username:', error));
+  }
+
+
+ optionChangeEmail() {
+    this.isChangeUsername = false;
+    this.isChangePassword = false;
+    this.isChangeEmail= true;
+  }
+
+  updateEmail(event: any) {
+    this.newEmail = event.target.value;
+  }
+
+submitNewEmail() {
+  const user = this.firebaseService.getCurrentUser();
+  if (user && this.newEmail) {
+    this.firebaseService.updateEmail(this.newEmail)
+      .then(() => {
+        this.currentEmail = user.email;  
+        console.log('Email updated successfully');
+        this.currentEmail = this.newEmail;  // Update the current email
+      })
+      .catch(error => console.error('Error updating email:', error));
+  } else {
+    console.log('Please enter a valid email');
   }
 }
-//selin 25-03-2025
+
+}
+//selin 26-03-2025

@@ -2,9 +2,9 @@
 <div class="dashboard-container">
   <div class="sidebar">
     <ul>
-      <li><a href="javascript:void(0)" (click)="showChangePassword()">Change Password</a></li>
-      <li><a href="javascript:void(0)" (click)="showChangeUsername()">Change Username</a></li>
-      <li><a href="#">Change E-mail</a></li>
+      <li><a href="javascript:void(0)" (click)="optionChangePassword()">Change Password</a></li>
+      <li><a href="javascript:void(0)" (click)="optionChangeUsername()">Change Username</a></li>
+      <li><a href="javascript:void(0)" (click)="optionChangeEmail()">Change Email</a></li>
       <li><a href="#">Change Theme</a></li>
     </ul>
   </div>
@@ -25,13 +25,26 @@
     <!-- Change Username Section -->
     <div *ngIf="isChangeUsername">
       <h2>Change Username</h2>
-      <p>Current Username: {{ currentUsername || 'Not set' }}</p>
+      <p>Current Username: {{ currentUsername || 'Not set' }}</p><br>
       <div class="input-group">
         <input type="text" [value]="newUsername" (input)="updateUsername($event)" placeholder="New Username" />
       </div>
      
       <button (click)="submitNewUsername()">Submit</button>
     </div>
+
+
+    <!-- Change Username Section -->
+    <div *ngIf="isChangeEmail">
+      <h2>Change Email</h2>
+      <p>Current Email: {{ currentEmail || 'Not set' }}</p><br>
+      <div class="input-group">
+        <input type="text" [value]="newEmail" (input)="updateEmail($event)" placeholder="New Email" />
+      </div>
+     
+      <button (click)="submitNewEmail()">Submit</button>
+    </div>
+
   </div>
 </div>
 <!-- selin 25-05-2025-->
