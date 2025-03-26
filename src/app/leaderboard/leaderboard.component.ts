@@ -12,9 +12,11 @@ import { CommonModule } from '@angular/common';
 })
 //usama 25-05-2025
 export class leaderboardComponent implements OnInit {
-  selectedGameId: string | null = null;
+  // selectedGameId: string | null = null;
   highscores: any[] = [];
   games: any[] = [];
+  selectedGameId: string = "";
+
 
   constructor(private firebaseService: FirebaseService) {}
 
