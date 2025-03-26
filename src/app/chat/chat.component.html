@@ -1,16 +1,16 @@
 <!--Aleksander 25-03-2025-->
 <div class="window">
     <div class="message-window">
-        @for (t of test; track t.createdAt) {
+        @for (ms of msg; track ms.timeStamp) {
             <div class="messageBlock">
-                <p>{{ t.createdAt.getTime() }}</p>
-                <p class="messageText">{{ t.text }}</p>
+                <p class="messageUser"><span>{{ ms.userName || 'Anonymous' }}</span></p>
+                <p class="messageText">{{ ms.message }}</p>
             </div>
         }
     </div>
     <div class="textInput">        
-        <input type="text" [(ngModel)]="input">
-        <button (click)="makeTest()">test</button>
+        <input type="text" [(ngModel)]="input" (keydown.enter)="makeMessage()">
+        <button (click)="makeMessage()">test</button>
     </div>
 </div>
 <!--Aleksander 25-03-2025-->
