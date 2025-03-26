@@ -1,12 +1,11 @@
 <!--usama 25-03-2025-->
 <div>
-    <p>Vælg et spil:</p>
-
     <select [(ngModel)]="selectedGameId" (change)="loadHighscores(); listenForHighscoreUpdates()">
-      <option *ngFor="let game of games" [value]="game.id">{{ game.name }}</option>
+        <option value="" disabled hidden>Vælg et spil</option>
+        <option *ngFor="let game of games" [value]="game.id">{{ game.name }}</option>
     </select>
 </div>
-
+<div class="liste">
 <div *ngIf="highscores.length > 0">
   <ul>
     <li *ngFor="let entry of highscores">
@@ -21,3 +20,4 @@
   <p>Der er endnu ikke nogen data i leaderboardet.</p>
 </div>
 <!--usama 25-03-2025-->
+</div>

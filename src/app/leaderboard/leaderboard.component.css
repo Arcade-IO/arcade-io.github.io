@@ -1,94 +1,88 @@
-/*usama 25-03-2025*/
-/* Wrapper for the leaderboard */
-.leaderboard-container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f4f4f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+body {
     font-family: Arial, sans-serif;
-
-  }
-  
-  /* Heading for leaderboard */
-  .leaderboard-container h2 {
-    text-align: center;
-    font-size: 2rem;
-
-    margin-bottom: 20px;
-  }
-  
-  /* List of leaderboard entries */
-  ul {
-    list-style-type: none;
+    background-color: #001f3f; /* Navy blå */
+    color: white;
+    margin: 0;
     padding: 0;
-  }
-  
-  /* Each leaderboard entry */
-  li {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-  
-  /* Hover effect on leaderboard entries */
-  li:hover {
-    transform: scale(1.02);
-    background-color: #e8f5e9;
-  }
-  
-  /* Title of the game */
-  strong {
-    font-size: 1.2rem;
-    color: #1976d2;
-  }
-  
-  /* Username */
-  li .username {
-    font-size: 1rem;
-    color: #555;
-    margin-top: 5px;
-  }
-  
-  /* Highscore */
-  li .highscore {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #388e3c;
-    margin-top: 5px;
-  }
-  
-  /* Message when no leaderboard data is available */
-  .no-data {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #888;
-    margin-top: 20px;
-  }
-  
-  /* Adjust text for dark background */
-
-  
-  /* Adjust the leaderboard container for dark mode */
-  .leaderboard-container {
-    background-color: #444; /* Darker container background for dark mode */
-    color: #fff; /* Light text color inside the container */
-  }
-  
-  /* Specific styles for empty leaderboard (if no data is available) */
-  .no-data {
-    color: #ccc;
-    font-size: 1.2rem;
-    margin-top: 20px;
-    text-align: center;
-    font-weight: bold;
-  }
-p{
-    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
-  /*usama 25-03-2025*/
+
+/* White box around content */
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    color: black; /* Ensure text inside is readable */
+}
+
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+select {
+    margin-left: 10%;
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background: white;
+    color: black;
+    margin-top: 10%;
+    
+    
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background: #004080;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00509e;
+}
+
+.highscore-list {
+    list-style: none;
+    padding: 0;
+}
+
+.highscore-list li {
+    background: white;
+    color: black;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+p{
+    color: white;
+    
+}
+.liste{
+    margin-top: 1%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 1%;
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    margin: 40px auto; /* Centered on the page */
+    border: 5px solid rgb(255, 255, 255);
+    border-radius: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}

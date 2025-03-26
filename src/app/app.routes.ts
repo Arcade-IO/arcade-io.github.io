@@ -24,7 +24,8 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},  // New route
   { path: 'chat', component: ChatComponent, //canActivate: [AuthGuard]
   },  
-  { path: 'games', component: GamesComponent, canActivate: [AdminGuard]},  
+  { path: 'games', component: GamesComponent, //canActivate: [AdminGuard]
+    },  
   { path: 'leaderboard', component: leaderboardComponent, //canActivate: [AuthGuard]
     },  
   { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard]},  
