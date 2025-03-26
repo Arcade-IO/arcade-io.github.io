@@ -8,8 +8,7 @@ import {
   setPersistence,
   browserLocalPersistence,
   updatePassword,
-  updateProfile,
-  updateEmail as firebaseUpdateEmail // Added new import alias for updateEmail
+  updateProfile
 } from 'firebase/auth';
 import { getDatabase, ref, set, get, update } from 'firebase/database';
 import { environment } from '../environments/environment';
@@ -37,10 +36,17 @@ setPersistence(auth, browserLocalPersistence)
 export class FirebaseService {
   currentUser: any = null;
 
+
+
+
+
   constructor() {
     this.listenToAuthStateChanges();
     this.loadCurrentUser();
   }
+
+
+
 
   //hazel 24-03-2025 13.55
   // Get the Firebase Database instance
@@ -48,6 +54,9 @@ export class FirebaseService {
     return database;
   }
   //hazel 24-03-2025 13.55
+ 
+
+
 
   //hazel 25-03-2025 14.25
   // Get the Firebase Auth instance
@@ -68,6 +77,10 @@ export class FirebaseService {
   }
   
   //hazel 25-03-2025 14.25
+
+
+
+
 
   //hazel 24-03-2025 13.55
   async createOrUpdateHighscore(userId: string, gameId: string, score: number): Promise<void> {
@@ -106,7 +119,7 @@ export class FirebaseService {
   }
   //hazel 24-03-2025 13.55
 
-  //hazel 26-03-2025 
+    //hazel 26-03-2025 
   // Get user by UID
   getUserbyUID(uid: string): Promise<any> {
     const userRef = ref(database, 'users/' + uid);
@@ -123,9 +136,12 @@ export class FirebaseService {
   }
   //hazel 26-03-2025 
 
+
+
   // ===============================
   // User Management Functions
   // ===============================
+
 
   // Create user
   registerUser(
@@ -144,6 +160,12 @@ export class FirebaseService {
         });
       });
   }
+  
+
+
+
+
+
 
   // Create user in the database
   createUser(
@@ -160,6 +182,10 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Check if user is an admin
   checkIfAdmin(uid: string): Promise<boolean> {
     const userRef = ref(database, `users/${uid}`);
@@ -175,20 +201,36 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Grant admin rights to a user
   createAdminRights(uid: string): Promise<void> {
     return update(ref(database, `users/${uid}`), { isAdmin: true });
   }
+
+
+
+
 
   // Revoke admin rights from a user
   revokeAdminRights(uid: string): Promise<void> {
     return update(ref(database, `users/${uid}`), { isAdmin: false });
   }
 
+
+
+
+
   // Delete user
   deleteUser(uid: string): Promise<void> {
     return set(ref(database, `users/${uid}`), null);
   }
+
+
+
+
 
   // Update user information
   sendUser(
@@ -198,15 +240,27 @@ export class FirebaseService {
     return update(ref(database, `users/${uid}`), updates);
   }
 
+
+
+
+
   // Log in user
   loginUser(email: string, password: string): Promise<any> {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
+
+
+
+
   // Log out user
   logout(): Promise<void> {
     return signOut(auth);
   }
+
+
+
+
 
   // Get all users
   getAllUsers(): Promise<any[]> {
@@ -219,6 +273,11 @@ export class FirebaseService {
       return [];
     });
   }
+
+
+
+
+
 
   // ================================
   // Game, Highscore, and Forum Management
@@ -245,6 +304,10 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Create a highscore
   createHighscore(
     highscoreId: string,
@@ -260,6 +323,10 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Create a forum post
   createForumPost(
     forumId: string,
@@ -274,6 +341,10 @@ export class FirebaseService {
       timestamp: new Date().toISOString()
     });
   }
+
+
+
+
 
   // Create settings
   createSettings(
@@ -291,6 +362,11 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
+  
   // Update settings
   updateSettings(
     settingsId: string,
@@ -299,6 +375,10 @@ export class FirebaseService {
     return update(ref(database, `settings/${settingsId}`), updates);
   }
 
+
+
+
+
   // Listen to authentication state changes
   private listenToAuthStateChanges(): void {
     onAuthStateChanged(auth, (user) => {
@@ -306,21 +386,38 @@ export class FirebaseService {
     });
   }
 
+
+
+
+
   // Expose a listener for auth state changes so components can subscribe
   getAuthStateListener(callback: (user: any) => void): void {
     onAuthStateChanged(auth, callback);
   }
+
+
+
+
 
   // Get the current logged-in user
   getCurrentUser(): any {
     return this.currentUser;
   }
 
+
+
+
+
   // Hardcoded admin check
   private static isHardcodedAdmin(email: string): boolean {
     const adminEmails = ['selin@selin.dk'];
     return adminEmails.includes(email);
   }
+
+
+
+
+
 
   // Funktion til at hente highscores for et bestemt spil
   async getHighscoresForGame(gameId: string): Promise<any[]> {
@@ -350,6 +447,10 @@ export class FirebaseService {
     return highscores;
   }
 
+
+
+
+
   // 25.03.2025 / Selin
   updateUserPassword(uid: string, newPassword: string): Promise<void> {
     const auth = getAuth();
@@ -363,8 +464,12 @@ export class FirebaseService {
   }
   // 25.03.2025 / Selin
 
-  // 26.03.2025 / Selin
-  //updates username in settings
+
+
+
+
+    // 26.03.2025 / Selin
+    //updates username in settings
   updateUsername(uid: string, newUsername: string): Promise<void> {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -385,36 +490,36 @@ export class FirebaseService {
     }
   }
 
-  //updates email in settings
-  updateEmail(newEmail: string): Promise<void> {
-    const user = getAuth().currentUser;
-    if (user) {
-      // Original code using updateProfile (not valid for email update):
-      // return updateProfile(user, { email: newEmail })
-      //   .then(() => {
-      //     // Update the email in the database
-      //     return update(ref(database, `users/${user.uid}`), { email: newEmail });
-      //   })
-      //   .then(() => user.reload()) // Reload the user data
-      //   .then(() => {
-      //     console.log('Email updated:', newEmail);
-      //   })
-      //   .catch(error => Promise.reject(error));
 
-      // Corrected code using firebaseUpdateEmail from firebase/auth:
-      return firebaseUpdateEmail(user, newEmail)
-        .then(() => {
-          // Update the email in the database
-          return update(ref(database, `users/${user.uid}`), { email: newEmail });
-        })
-        .then(() => user.reload()) // Reload the user data
-        .then(() => {
-          console.log('Email updated:', newEmail);
-        })
-        .catch(error => Promise.reject(error));
-    } else {
-      return Promise.reject('User not authenticated');
-    }
-  }
-  // 26.03.2025 / Selin
+
+
+
+//updates email in settings
+//  updateEmail(newEmail: string): Promise<void> {
+//    const user = getAuth().currentUser;
+//    if (user) {
+//      return updateProfile(user, { email: newEmail })
+//        .then(() => {
+//          // Update the email in the database
+//          return update(ref(database, `users/${user.uid}`), { email: newEmail });
+//        })
+//        .then(() => user.reload()) // Reload the user data
+//        .then(() => {
+//          console.log('Email updated:', newEmail);
+//       })
+//        .catch(error => Promise.reject(error));
+//    } else {
+//      return Promise.reject('User not authenticated');
+//    }
+//  }
+  
+  
+  
 }
+// 26.03.2025 / Selin
+
+
+
+
+
+
