@@ -119,7 +119,22 @@ export class FirebaseService {
   }
   //hazel 24-03-2025 13.55
 
-
+    //hazel 26-03-2025 
+  // Get user by UID
+  getUserbyUID(uid: string): Promise<any> {
+    const userRef = ref(database, 'users/' + uid);
+    return get(userRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        throw new Error('User not found');
+      }
+    }).catch((error) => {
+      console.error('Error fetching user data:', error);
+      throw error;
+    });
+  }
+  //hazel 26-03-2025 
 
 
 

@@ -28,7 +28,7 @@ export const routes: Routes = [
   { path: 'leaderboard', component: leaderboardComponent, //canActivate: [AuthGuard]
     },  
   { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard]},  
-  { path: 'game/:gameId', component: GameInterfaceComponent },
+  { path: 'game/:gameId', component: GameInterfaceComponent,  },
   { path: 'settings', component: SettingsComponent },
 ];
 //Add AdminGuard if you want the acces to be restricted so only Admins can acces 
