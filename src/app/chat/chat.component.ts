@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { FirebaseService } from '../services/firebase.service';
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth'
 
 @Component({
   selector: 'app-chat',
@@ -11,16 +13,27 @@ import { FormsModule } from '@angular/forms';
 
 export class ChatComponent {
   msg : Message[] = [];
-  test : TestM[] = []
-  input = "";
+  input : string = "";
+  username : string | null = "";
 
-  makeMessage(newMsg:string){
-    this.msg.push(new Message(newMsg))
+  
+  //constructor(private fireService : FirebaseService) {}
+
+  ngOnInit() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user: User | null) => {
+      if (user) {
+        this.username = user.displayName;
+      }
+    });
   }
 
-  makeTest(){
-    this.test.push(new TestM(this.input))
-    this.input = "";
+
+  makeMessage(){
+    if (this.input != "") {
+      this.msg.push(new Message(this.input, String(this.username)))
+      this.input = "";
+    }
   }
 }
 
@@ -30,34 +43,13 @@ export class ChatComponent {
 
 class Message {
   message : string;
-  userName : string = "";
-  timeStamp : undefined;
+  userName : string;
+  timeStamp : Date;
 
-  constructor(message : string) {
+  constructor(message : string, userName : string) {
     this.message = message;
+    this.userName = userName;
+    this.timeStamp = new Date;
   }
 }
-
-
-
-
-
-class TestM {
-  text : string;
-  createdAt: Date;
-
-  constructor( text : string) {
-    this.text = text;
-    this.createdAt = new Date;
-  }
-}
-// Alexander 24-03-25 
-
-//Hej Aleksander,
-//jeg kan se at selin har lavet 2 komponenter, men vi blev enige om at chatten skal-
-//vises på game-interface komponenten.
-
-//Jeg tænker at du kan lave en chatbox til din chat.component.html(som du gør nu)-
-//og så kan vi integrere din html og css med hazels game-interface når du er klar.
-//jeg har fjernet authguard fra app.rooutes.ts(se linje 23-24), så du kan tilgå siden-
-//ved at bruge - localhost:4200/chat
+// Alexander 24-03-25

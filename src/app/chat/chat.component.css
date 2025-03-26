@@ -3,14 +3,21 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 80%;
+    max-height: 100%;
     border-radius: 1rem;
     background-color: white;
+    /* for testing perpose*/
+        height: 80%;
+}
+
+/* for testing */
+span {
+    font-weight: bold;
 }
 
 .message-window {
     overflow-y: scroll;
-    overflow-anchor: auto;
+    overflow-anchor: none;
     margin: 1rem 1rem 0 1rem;
 }
 
@@ -18,10 +25,16 @@
     width: min-content;
     background-color: #4cf;
     margin-bottom: .5rem;
+    padding: 0 .5rem .5rem;
+    border-radius: .5rem;
 }
 
 .messageBlock .messageText {
     word-wrap:break-word;
+}
+
+.messageBlock .messageUser {
+    border-bottom: 1px solid black;
 }
 
 .textInput {
