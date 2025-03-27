@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FirebaseService } from '../services/firebase.service';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth'
 
 @Component({
@@ -11,13 +10,12 @@ import { getAuth, onAuthStateChanged, User } from 'firebase/auth'
 })
 // Alexander 24-03-25 
 
-export class ChatComponent {
+export class ChatComponent implements AfterViewChecked {
   msg : Message[] = [];
   input : string = "";
   username : string | null = "";
 
-  
-  //constructor(private fireService : FirebaseService) {}
+  @ViewChild('chat') chat!: ElementRef;
 
   ngOnInit() {
     const auth = getAuth();
@@ -33,8 +31,25 @@ export class ChatComponent {
     if (this.input != "") {
       this.msg.push(new Message(this.input, String(this.username)))
       this.input = "";
+      // this.scrollToBottom();
     }
   }
+
+
+  ngAfterViewChecked() {    
+    // this.scrollToBottom();
+  }
+
+
+  private scrollToBottom() {
+    setTimeout(() => {
+      const chatElement : Element = this.chat?.nativeElement;
+      if (chatElement) {
+        chatElement.scrollTop = chatElement.scrollHeight;        
+      }
+    }, 100)
+  }
+
 }
 
 
