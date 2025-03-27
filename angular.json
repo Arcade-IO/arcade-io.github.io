@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "my-game-portal": {
+    "arcade-io.github.io": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/my-game-portal",
+            "outputPath": "dist/arcade-io.github.io",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "my-game-portal:build:production"
+              "buildTarget": "arcade-io.github.io:build:production"
             },
             "development": {
-              "buildTarget": "my-game-portal:build:development",
+              "buildTarget": "arcade-io.github.io:build:development",
               "hmr": false
             }
           },
