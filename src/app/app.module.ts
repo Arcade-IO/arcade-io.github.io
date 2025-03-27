@@ -14,7 +14,7 @@ import { GamesComponent } from './games/games.component';
 import { leaderboardComponent } from './leaderboard/leaderboard.component';
 import { HomeComponent } from './home/home.component';
 import { ChatComponent } from './chat/chat.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     BrowserModule,
@@ -30,6 +30,7 @@ import { ChatComponent } from './chat/chat.component';
     leaderboardComponent,
     HomeComponent,
     ChatComponent,
+    ReactiveFormsModule,
   ],
   providers: [],
 })

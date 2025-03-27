@@ -6,14 +6,12 @@ import { get, ref } from 'firebase/database';
 
 @Component({
   selector: 'app-dashboard',
-  standalone: true, // Hvis du bruger Angular standalone, kan du ændre til true + imports: [...]
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-//Martin 25-03-2025//
-
   isLoggedIn = false;
   isAdmin = false;
 
@@ -55,10 +53,9 @@ export class DashboardComponent implements OnInit {
         const data = snapshot.val();
         // Konverterer det objekterede Firebase-output til en array
         this.games = Object.keys(data).map((key) => ({
-          id: key,         // key er gameId
-          ...data[key],    // de øvrige felter: title, description, imageUrl, osv.
+          id: key,
+          ...data[key],
         }));
-
         console.log('Hentede spil fra Firebase:', this.games);
       } else {
         console.log('Ingen spil fundet i databasen.');
@@ -67,5 +64,19 @@ export class DashboardComponent implements OnInit {
       console.error('Fejl ved indlæsning af spil:', error);
     }
   }
+
+  // Slet spil-funktion
+  deleteGame(gameId: string): void {
+    if (confirm("Er du sikker på, at du vil slette dette spil?")) {
+      this.firebaseService.deleteGame(gameId)
+        .then(() => {
+          // Fjern det slettede spil fra den lokale liste
+          this.games = this.games.filter(game => game.id !== gameId);
+          console.log("Spillet blev slettet.");
+        })
+        .catch(error => {
+          console.error("Fejl ved sletning af spil:", error);
+        });
+    }
+  }
 }
-//Martin 25-03-2025//

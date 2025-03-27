@@ -2,8 +2,8 @@
 <div class="dashboard-container">
   <div class="welcome">
     WELCOME
-</div>
-<hr/>
+  </div>
+  <hr/>
   <!-- Knappe-container til plus-knappen (kun synlig for admin) -->
   <div class="button-container">
     <ul>
@@ -33,6 +33,11 @@
           </a>
         </div>
       </div>
+      
+      <!-- Slet-knap, kun synlig for admin -->
+      <button *ngIf="isAdmin" (click)="deleteGame(game.id)" class="delete-btn">
+        &times;
+      </button>
     </div>
   </div>
 

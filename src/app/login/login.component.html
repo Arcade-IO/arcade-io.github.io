@@ -1,12 +1,15 @@
-<!--selin 25-03-2025-->
+<!--martin 25-03-2025-->
+
 <div class="login-container">
   <div class="login-box">
     <h2>Login</h2>
     <div class="input-group">
-      <input type="email" [value]="email" (input)="sendEmail($event)" placeholder="E-mail" />
+      <input type="email" [value]="email" (input)="sendEmail($event)" (keyup.enter)="login()" placeholder="E-mail" />
+      <!-- <<-- Added (keyup.enter)="login()" to support Enter key -->
     </div>
     <div class="input-group">
-      <input type="password" [value]="password" (input)="sendPassword($event)" placeholder="Password" />
+      <input type="password" [value]="password" (input)="sendPassword($event)" (keyup.enter)="login()" placeholder="Password" />
+      <!-- <<-- Added (keyup.enter)="login()" to support Enter key -->
     </div>
     <button class="login-btn" (click)="login()">Login</button>
     <p class="signup-text">
@@ -14,5 +17,14 @@
       <button class="signup-btn" (click)="goToSignup()">Signup</button>
     </p>
   </div>
+<!--martin 25-03-2025-->
+
+
+<!--martin 25-03-2025-->
+  <!-- <<-- New: Error message box if email not verified -->
+  <div *ngIf="errorMessage" class="error-box">
+    {{ errorMessage }}
+  </div>
 </div>
-<!--selin 25-03-2025-->
+<!--martin 25-03-2025-->
+

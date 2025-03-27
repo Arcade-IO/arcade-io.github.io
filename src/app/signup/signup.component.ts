@@ -62,7 +62,9 @@ export class SignupComponent {
 
     this.firebaseService.registerUser(this.email, this.password, this.name)
       .then(() => {
-        alert('Signup successful!');
+        // Original: alert('Signup successful!');
+        // <<-- Changed: Inform the user to check their email for verification.
+        alert('Signup successful! Please check your email for the verification link.');
         this.router.navigate(['/login']);
       })
       .catch((error) => {
