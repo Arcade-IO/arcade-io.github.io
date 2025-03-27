@@ -15,12 +15,13 @@ import { leaderboardComponent } from './leaderboard/leaderboard.component';
 import { HomeComponent } from './home/home.component';
 import { ChatComponent } from './chat/chat.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { routes } from './app.routes';
 @NgModule({
   imports: [
     BrowserModule,
     CommonModule, 
     FormsModule,  
-    RouterModule,  
+    RouterModule.forRoot(routes, { useHash: true }),  
     AppComponent,  
     SignupComponent,
     LoginComponent,
