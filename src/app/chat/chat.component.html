@@ -1,6 +1,6 @@
 <!--Aleksander 25-03-2025-->
 <div class="window">
-    <div class="message-window">
+    <div #chat class="message-window">
         @for (ms of msg; track ms.timeStamp) {
             <div class="messageBlock">
                 <p class="messageUser"><span>{{ ms.userName || 'Anonymous' }}</span></p>
