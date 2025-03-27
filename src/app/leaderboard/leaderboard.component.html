@@ -1,23 +1,23 @@
-<!--usama 25-03-2025-->
-<div>
-    <select [(ngModel)]="selectedGameId" (change)="loadHighscores(); listenForHighscoreUpdates()">
-        <option value="" disabled hidden>Vælg et spil</option>
-        <option *ngFor="let game of games" [value]="game.id">{{ game.name }}</option>
-    </select>
-</div>
-<div class="liste">
-<div *ngIf="highscores.length > 0">
-  <ul>
-    <li *ngFor="let entry of highscores">
-      <strong>{{ entry.gameTitle }}</strong><br>
-      Spiller: {{ entry.username }}<br>
-      Highscore: {{ entry.score }}
-    </li>
-  </ul>
-</div>
+<!-- Add a wrapper around the container -->
+<div class="wrapper">
+    <div class="container">
+        <select [(ngModel)]="selectedGameId" (change)="loadHighscores(); listenForHighscoreUpdates()">
+            <option value="" disabled hidden>Vælg et spil</option>
+            <option *ngFor="let game of games" [value]="game.id">{{ game.name }}</option>
+        </select>
 
-<div *ngIf="highscores.length === 0">
-  <p>Der er endnu ikke nogen data i leaderboardet.</p>
-</div>
-<!--usama 25-03-2025-->
+        <div *ngIf="highscores.length > 0">
+            <ul>
+                <li *ngFor="let entry of highscores">
+                    <strong>{{ entry.gameTitle }}</strong><br>
+                    Spiller: {{ entry.username }}<br>
+                    Highscore: {{ entry.score }}
+                </li>
+            </ul>
+        </div>
+
+        <div *ngIf="highscores.length === 0">
+            <p>Der er endnu ikke nogen data i leaderboardet.</p>
+        </div>
+    </div>
 </div>
