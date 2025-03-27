@@ -26,19 +26,26 @@ export class SettingsComponent implements OnInit {
   newEmail = '';
   currentEmail: string | null = '';
 
+backgroundColor = '';
+navbarColor = '';
+
   constructor(private firebaseService: FirebaseService) {}
 
   ngOnInit() {
+
     const auth = getAuth();
     onAuthStateChanged(auth, async (user: User | null) => {
       if (user) {
         this.currentUsername = user.displayName || 'Not set';
       }
     });
+
+
+    
   }
   
-  
-  
+
+
   optionChangePassword() {
     this.isChangePassword = true;
     this.isChangeUsername = false;
@@ -103,31 +110,56 @@ export class SettingsComponent implements OnInit {
     }).catch(error => console.error('Error checking username:', error));
   }
 
+  saveThemeSettings() {
+    const user = this.firebaseService.getCurrentUser();
+    if (user) {
+      const themeSettings = {
+        backgroundColor: this.backgroundColor,
+        navbarColor: this.navbarColor
+      };
+      this.firebaseService.saveThemeSettings(user.uid, themeSettings)
+        .then(() => {
+          console.log('Theme updated!');
+        })
+        .catch(error => console.error('Error updating theme:', error));
+    }
+  }
+  
 
- optionChangeEmail() {
-    this.isChangeUsername = false;
-    this.isChangePassword = false;
-    this.isChangeEmail= true;
+  updateBackgroundColor(event: any) {
+    this.backgroundColor = event.target.value;
   }
 
-  updateEmail(event: any) {
-    this.newEmail = event.target.value;
+  updateNavbarColor(event: any) {
+    this.navbarColor = event.target.value;
   }
 
-submitNewEmail() {
-  const user = this.firebaseService.getCurrentUser();
-  if (user && this.newEmail) {
-    this.firebaseService.updateEmail(this.newEmail)
-      .then(() => {
-        this.currentEmail = user.email;  
-        console.log('Email updated successfully');
-        this.currentEmail = this.newEmail;  // Update the current email
-      })
-      .catch(error => console.error('Error updating email:', error));
-  } else {
-    console.log('Please enter a valid email');
-  }
-}
+ //submitNewEmail() {
+   // const user = this.firebaseService.getCurrentUser();
+   // if (user && this.newEmail) {
+     // this.firebaseService.updateEmail(this.newEmail)
+       // .then(() => {
+         // this.currentEmail = user.email;  
+          //console.log('Email updated successfully');
+         // this.currentEmail = this.newEmail;  // Update the current email
+        //})
+       // .catch(error => console.error('Error updating email:', error));
+    //} else {
+      //console.log('Please enter a valid email');
+   // }
+  } 
 
-}
+ //optionChangeEmail() {
+   // this.isChangeUsername = false;
+    //this.isChangePassword = false;
+    //this.isChangeEmail= true;
+  //
+
+  //updateEmail(event: any) {
+    //this.newEmail = event.target.value;
+  // }
+
+
+
+// }
 //selin 26-03-2025

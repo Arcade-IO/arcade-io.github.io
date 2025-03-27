@@ -367,13 +367,14 @@ export class FirebaseService {
 
 
   
-  // Update settings
-  updateSettings(
-    settingsId: string,
-    updates: { navbarColor?: string; navbarFontColor?: string; backgroundColor?: string }
-  ): Promise<void> {
-    return update(ref(database, `settings/${settingsId}`), updates);
+  // Update theme settings
+  saveThemeSettings(uid: string, settings: { backgroundColor: string; navbarColor: string }) {
+    return set(ref(database, `users/${uid}/theme`), settings);
+    document.body.style.backgroundColor = settings.backgroundColor;
+    document.querySelector('.navbar')?.setAttribute('style', `background-color: ${settings.navbarColor}`);
+
   }
+  
 
 
 
