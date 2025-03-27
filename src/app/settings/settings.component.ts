@@ -134,6 +134,7 @@ navbarColor = '';
     this.navbarColor = event.target.value;
   }
 
+<<<<<<< HEAD
  //submitNewEmail() {
    // const user = this.firebaseService.getCurrentUser();
    // if (user && this.newEmail) {
@@ -148,6 +149,22 @@ navbarColor = '';
       //console.log('Please enter a valid email');
    // }
   } 
+=======
+// submitNewEmail() {
+//   const user = this.firebaseService.getCurrentUser();
+//   if (user && this.newEmail) {
+//     this.firebaseService.updateEmail(this.newEmail)
+//       .then(() => {
+//         this.currentEmail = user.email;  
+//         console.log('Email updated successfully');
+//         this.currentEmail = this.newEmail;  // Update the current email
+//       })
+//       .catch(error => console.error('Error updating email:', error));
+//   } else {
+//     console.log('Please enter a valid email');
+//   }
+// }
+>>>>>>> origin/martin
 
  //optionChangeEmail() {
    // this.isChangeUsername = false;

@@ -1,62 +1,48 @@
-<!--Martin 25-03-2025-->
 <div class="game-container">
-    <h2>Opret Nyt Spil</h2>
-    
+  <h2>Opret Nyt Spil</h2>
+  <form [formGroup]="gameForm!">
     <div class="input-group">
       <label for="title">Titel</label>
       <input
         type="text"
         id="title"
-        name="title"
         placeholder="Indtast spiltitel..."
-        [value]="title"
-        (input)="updateTitle($event)"
+        formControlName="title"
       />
     </div>
-    
+
     <div class="input-group">
       <label for="description">Beskrivelse</label>
       <textarea
         id="description"
-        name="description"
         placeholder="Indtast en kort beskrivelse..."
-        [value]="description"
-        (input)="updateDescription($event)"
+        formControlName="description"
       ></textarea>
     </div>
-    
+
     <div class="input-group">
       <label for="imageUrl">Billede-URL</label>
       <input
         type="text"
         id="imageUrl"
-        name="imageUrl"
         placeholder="Indtast URL til spillets billede..."
-        [value]="imageUrl"
-        (input)="updateImageUrl($event)"
+        formControlName="imageUrl"
       />
     </div>
-    
+
     <div class="input-group">
       <label for="netlifyUrl">Netlify-URL</label>
       <input
         type="text"
         id="netlifyUrl"
-        name="netlifyUrl"
         placeholder="Indtast URL til spillet på Netlify..."
-        [value]="netlifyUrl"
-        (input)="updateNetlifyUrl($event)"
+        formControlName="netlifyUrl"
       />
     </div>
-    
+
     <div class="input-group">
       <label for="platform">Platform</label>
-      <select
-        id="platform"
-        name="platform"
-        [value]="platform"
-        (change)="updatePlatform($event)"
-      >
+      <select id="platform" formControlName="platform">
         <option value="">Vælg platform...</option>
         <option value="Web">Web</option>
         <option value="Android">Android</option>
@@ -64,7 +50,9 @@
       </select>
     </div>
 
-    <button (click)="createNewGame()">Opret Spil</button>
-  </div>
-<!--Martin 25-03-2025-->
-  
+    <!-- The button only appears if the form is valid -->
+    <button type="button" (click)="createNewGame()" *ngIf="gameForm.valid">
+      Opret Spil
+    </button>
+  </form>
+</div>

@@ -91,4 +91,8 @@ button{
   cursor: pointer;
   transition: all 0.3s ease;
 }
+button:hover {
+  background: white;
+  color: #3f72b5;
+}
 /* Martin 25-03-2025 */

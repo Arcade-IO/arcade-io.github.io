@@ -1,85 +1,101 @@
 /* Martin 25-03-2025 */
 /* Fullscreen container */
 .dashboard-container {
-    position: relative;
-  }
-  
-  /* Button container for top-right buttons */
-  .button-container {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-  }
-  
-  /* Style for all buttons (with the plus sign) */
-  .button {
-    background: none;
-    color: white;
-    border: 2px solid white;
-    padding: 12px 16px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .button:hover {
-    background: white;
-    color: #3f72b5;
-  }
-  
-  .plus-sign {
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  .welcome{
-    color: white;
-    font-size: 5rem;
-    letter-spacing: 2rem;
-    display: block;
-    text-align: center;
-    padding-top: 5.5rem;
-    padding-bottom: 5.5rem;
+  position: relative;
+}
 
-  }
-  /* Grid layout for games */
-  .games-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 50px;
-    padding: 2rem;
+/* Button container for top-right buttons */
+.button-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
 
-  }
-  
-  /* Individual game card */
-  .game-card {
-    background-color: #3a3a3a6c; /* Darker background on hover */
+/* Style for all buttons (med plus-tegnet) */
+.button {
+  background: none;
+  color: white;
+  border: 2px solid white;
+  padding: 12px 16px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    border: 2px solid white;       /* Samme outline som knapperne */
-    border-radius: 25px;          /* For at matche knappernes afrunding */
-    padding: 16px;                /* Tilpas som du vil */
-    color: white;                 /* Teksten skal være hvid */
-    text-align: center;
-    transition: all 0.3s ease;  
-  }
-  
-  .game-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  .game-card:hover {
-    /* Gør den hvid i hover og teksten blå, ligesom dine knapper */
-    background: #0000006c;
-  }
-  
-  .game-details {
-    margin-top: 10px;
-  }
+.button:hover {
+  background: white;
+  color: #3f72b5;
+}
+
+.plus-sign {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.welcome {
+  color: white;
+  font-size: 5rem;
+  letter-spacing: 2rem;
+  display: block;
+  text-align: center;
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
+}
+
+/* Grid layout for games */
+.games-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 50px;
+  padding: 2rem;
+}
+
+/* Individual game card */
+.game-card {
+  background-color: #3a3a3a6c;
+  border: 2px solid white;
+  border-radius: 25px;
+  padding: 16px;
+  color: white;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative; /* Tilføjet for at placere slet-knappen */
+}
+
+.game-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.game-card:hover {
+  background: #0000006c;
+}
+
+.game-details {
+  margin-top: 10px;
+}
+
+/* CSS for slet-knappen */
+.delete-btn {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.delete-btn:hover {
+  transform: scale(1.2);
+}
 /* Martin 25-03-2025 */
-  
