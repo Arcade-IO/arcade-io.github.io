@@ -3,7 +3,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 85vh;
     padding: 20px;
   }
   
@@ -69,3 +68,61 @@
     }
   }
 /* hazel 25-03-2025 */
+/* Score input felt styling */
+/* Container til input-sektion (label, input, knap) */
+.score-input {
+  display: flex;               /* Viser label, input og knap på samme linje */
+  align-items: center;         /* Vertikal centrering */
+  justify-content: center;     /* Horisontal centrering */
+  gap: 1em;                    /* Afstand mellem elementerne */
+}
+
+/* Label-styling */
+.score-input label {
+  font-size: 1.5vw;
+  color: white;
+  /* Du kan evt. tilføje margin, hvis du ønsker mere afstand */
+}
+
+/* Selve input-feltet */
+.score-input input[type="number"] {
+  background: none;
+  border: 2px solid white;
+  border-radius: 25px;
+  padding: 0.5em 1em;
+  font-size: 1.5vw;
+  color: white;
+  transition: all 0.3s ease;
+  outline: none;
+  width: 10vw;                  /* Fast bredde i forhold til viewport */
+  text-align: center;           /* Centrer teksten i inputfeltet */
+}
+
+/* Placeholder-styling */
+.score-input input[type="number"]::placeholder {
+  color: #ccc;
+}
+
+/* Fokus-effekt på input */
+.score-input input[type="number"]:focus {
+  border-color: #3f72b5;        /* Samme hover-farve som dine andre elementer */
+}
+
+/* Knap-styling */
+.score-input button {
+  background: none;
+  color: white;
+  border: 2px solid white;
+  border-radius: 25px;
+  padding: 0.5em 1em;
+  font-size: 1.5vw;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover-effekt på knappen */
+.score-input button:hover {
+  background: white;
+  color: #3f72b5;
+}
+

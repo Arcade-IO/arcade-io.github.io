@@ -15,12 +15,12 @@
   </div>
   
   <!-- Ny sektion: Inputfelt til score -->
-  <div class="score-input">
-    <label for="scoreInput">Indtast din score:</label>
-    <input id="scoreInput" type="number" [(ngModel)]="manualScore" placeholder="Skriv score her">
-    <button (click)="submitScore()">Send Score</button>
-  </div>
-</div>
 
+</div>
+<div class="score-input">
+  <label for="scoreInput">Indtast din score:</label>
+  <input id="scoreInput" type="number" [(ngModel)]="manualScore" placeholder="Skriv score her">
+  <button (click)="submitScore()">Send Score</button>
+</div>
 <p *ngIf="!game">Loading game...</p>
 <!--hazel 2025-03-2025-->
