@@ -19,6 +19,10 @@ span {
     overflow-y: auto;
     overflow-x: hidden;
     margin: 1rem 1rem 0 1rem;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    height: 100%;
+
 }
 
 .messageBlock {
@@ -45,8 +49,7 @@ span {
 }
 
 .textInput {
-    height: 2rem;
-    border: 3px;
+    height: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;

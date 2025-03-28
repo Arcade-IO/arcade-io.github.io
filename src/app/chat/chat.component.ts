@@ -35,9 +35,21 @@ export class ChatComponent implements AfterViewChecked {
     }
   }
 
-
-  ngAfterViewChecked() {    
-    // this.scrollToBottom();
+  checkVal1 : number = 0;
+  checkVal2 : number = 0;
+  ngAfterViewChecked() {
+    const chatEliment : Element = this.chat?.nativeElement;
+    if (chatEliment &&
+      chatEliment.scrollHeight > this.checkVal1) {
+      if (chatEliment.clientHeight > this.checkVal2 - 5 &&
+        chatEliment.clientHeight < this.checkVal2 + 5) {
+        this.scrollToBottom();
+      }
+      console.log([this.checkVal1, this.checkVal2, chatEliment.scrollHeight, chatEliment.scrollTop])
+      this.checkVal1 = chatEliment.scrollHeight;
+      this.checkVal2 = chatEliment.scrollHeight - chatEliment.scrollTop;
+    }
+    console.log([this.checkVal1, this.checkVal2, chatEliment.scrollHeight, chatEliment.scrollTop])
   }
 
 
