@@ -11,7 +11,7 @@ import { get, ref } from 'firebase/database';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './game-interface.component.html',
-  styleUrl: './game-interface.component.css'
+  styleUrls: ['./game-interface.component.css']
 })
 export class GameInterfaceComponent implements AfterViewInit {
 /* hazel 25-03-2025 */
