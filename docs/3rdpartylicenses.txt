@@ -233,6 +233,22 @@ License: "Apache-2.0"
  
 
 --------------------------------------------------------------------------------
+Package: tslib
+License: "0BSD"
+
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+--------------------------------------------------------------------------------
 Package: @angular/common
 License: "MIT"
 
@@ -311,6 +327,42 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 --------------------------------------------------------------------------------
+Package: @firebase/util
+License: "Apache-2.0"
+
+
+--------------------------------------------------------------------------------
+Package: @firebase/component
+License: "Apache-2.0"
+
+
+--------------------------------------------------------------------------------
+Package: @firebase/logger
+License: "Apache-2.0"
+
+
+--------------------------------------------------------------------------------
+Package: @firebase/app
+License: "Apache-2.0"
+
+
+--------------------------------------------------------------------------------
+Package: idb
+License: "ISC"
+
+ISC License (ISC)
+Copyright (c) 2016, Jake Archibald <jaffathecake@gmail.com>
+
+Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+--------------------------------------------------------------------------------
+Package: @firebase/auth
+License: "Apache-2.0"
+
+
+--------------------------------------------------------------------------------
 Package: @firebase/database
 License: "Apache-2.0"
 
@@ -345,78 +397,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
---------------------------------------------------------------------------------
-Package: @angular/fire
-License: "MIT"
-
-
---------------------------------------------------------------------------------
-Package: @firebase/app-check
-License: "Apache-2.0"
-
-
---------------------------------------------------------------------------------
-Package: @firebase/util
-License: "Apache-2.0"
-
-
---------------------------------------------------------------------------------
-Package: @firebase/component
-License: "Apache-2.0"
-
-
---------------------------------------------------------------------------------
-Package: @firebase/app
-License: "Apache-2.0"
-
-
---------------------------------------------------------------------------------
-Package: @firebase/logger
-License: "Apache-2.0"
-
-
---------------------------------------------------------------------------------
-Package: idb
-License: "ISC"
-
-ISC License (ISC)
-Copyright (c) 2016, Jake Archibald <jaffathecake@gmail.com>
-
-Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
---------------------------------------------------------------------------------
-Package: @firebase/app-compat
-License: "Apache-2.0"
-
-
---------------------------------------------------------------------------------
-Package: tslib
-License: "0BSD"
-
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
---------------------------------------------------------------------------------
-Package: @firebase/auth
-License: "Apache-2.0"
-
-
---------------------------------------------------------------------------------
-Package: @firebase/auth-compat
-License: "Apache-2.0"
-
 
 --------------------------------------------------------------------------------
 Package: zone.js
