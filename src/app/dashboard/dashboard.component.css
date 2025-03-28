@@ -18,8 +18,8 @@
   background: none;
   color: white;
   border: 2px solid white;
-  padding: 12px 16px;
-  font-size: 1.5rem;
+  padding: 1vh 3vw;
+  font-size: clamp(8px, 1.5vw, 16px);
   cursor: pointer;
   border-radius: 25px;
   transition: all 0.3s ease;
@@ -33,19 +33,15 @@
   color: #3f72b5;
 }
 
-.plus-sign {
-  font-size: 2rem;
-  font-weight: bold;
-}
 
 .welcome {
   color: white;
-  font-size: 5rem;
-  letter-spacing: 2rem;
+  font-size: 5vw;
+  letter-spacing: 2vw;
   display: block;
   text-align: center;
-  padding-top: 5.5rem;
-  padding-bottom: 5.5rem;
+  padding-top: 5.5vh;
+  padding-bottom: 5.5vh;
 }
 
 /* Grid layout for games */
@@ -54,6 +50,7 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 50px;
   padding: 2rem;
+
 }
 
 /* Individual game card */
@@ -66,6 +63,7 @@
   text-align: center;
   transition: all 0.3s ease;
   position: relative; /* Tilføjet for at placere slet-knappen */
+
 }
 
 .game-image {

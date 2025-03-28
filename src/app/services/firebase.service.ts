@@ -338,33 +338,51 @@ export class FirebaseService {
     return adminEmails.includes(email);
   }
 
-  // Funktion til at hente highscores for et bestemt spil
-  async getHighscoresForGame(gameId: string): Promise<any[]> {
-    const highscoresRef = ref(database, `highscores/`);
-    const snapshot = await get(highscoresRef);
-    let highscores: any[] = [];
+// Funktion til at hente highscores for et bestemt spil med join på users og games
+async getHighscoresForGame(gameId: string): Promise<any[]> {
+  const highscoresRef = ref(database, `highscores/`);
+  const snapshot = await get(highscoresRef);
+  let highscores: any[] = [];
 
-    if (snapshot.exists()) {
-      const highscoresData = snapshot.val();
-      
-      // Filtrér highscores for det valgte spil
-      for (let highscoreId in highscoresData) {
-        if (highscoresData[highscoreId].games_Id === gameId) {
-          highscores.push({
-            username: highscoresData[highscoreId].users_Id,
-            gameTitle: highscoresData[highscoreId].score,
-            score: highscoresData[highscoreId].score,
+  if (snapshot.exists()) {
+    const highscoresData = snapshot.val();
+    // Lav en liste af promises, som henter brugerdata og spillets title for hver highscore-post
+    const promises = [];
+
+    for (let highscoreId in highscoresData) {
+      const record = highscoresData[highscoreId];
+      if (record.games_Id === gameId) {
+        // For hver highscore-post, hent brugerens displayName og spillets title
+        const promise = get(ref(database, `users/${record.users_Id}`))
+          .then(userSnap => {
+            let displayName = 'Unknown';
+            if (userSnap.exists()) {
+              displayName = userSnap.val().displayName;
+            }
+            return get(ref(database, `games/${record.games_Id}/title`))
+              .then(gameSnap => {
+                let gameTitle = 'Unknown';
+                if (gameSnap.exists()) {
+                  gameTitle = gameSnap.val();
+                }
+                return {
+                  username: displayName,
+                  gameTitle: gameTitle,
+                  score: record.score
+                };
+              });
           });
-        }
+        promises.push(promise);
       }
-    } else {
-      // Hvis ingen data, opret en tom node
-      await set(ref(database, `highscores/`), { message: 'No data found yet.' });
-      console.log("Oprettede en ny node for highscores.");
     }
-
-    return highscores;
+    highscores = await Promise.all(promises);
+  } else {
+    // Hvis ingen highscores findes, kan du evt. oprette en placeholder-node
+    await set(ref(database, `highscores/`), { message: 'No data found yet.' });
+    console.log("Oprettede en ny node for highscores.");
   }
+  return highscores;
+}
 
   // 25.03.2025 / Selin
   updateUserPassword(uid: string, newPassword: string): Promise<void> {

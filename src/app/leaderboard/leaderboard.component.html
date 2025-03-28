@@ -1,23 +1,52 @@
 <!-- Add a wrapper around the container -->
 <div class="wrapper">
     <div class="container">
-        <select [(ngModel)]="selectedGameId" (change)="loadHighscores(); listenForHighscoreUpdates()">
-            <option value="" disabled hidden>Vælg et spil</option>
-            <option *ngFor="let game of games" [value]="game.id">{{ game.name }}</option>
-        </select>
-
-        <div *ngIf="highscores.length > 0">
-            <ul>
-                <li *ngFor="let entry of highscores">
-                    <strong>{{ entry.gameTitle }}</strong><br>
-                    Spiller: {{ entry.username }}<br>
-                    Highscore: {{ entry.score }}
-                </li>
-            </ul>
-        </div>
-
-        <div *ngIf="highscores.length === 0">
-            <p>Der er endnu ikke nogen data i leaderboardet.</p>
-        </div>
+      <!-- Dropdown til valg af spil -->
+      <select [(ngModel)]="selectedGameId" (change)="loadHighscores(); listenForHighscoreUpdates()">
+        <option value="" disabled hidden>Vælg et spil</option>
+        <option *ngFor="let game of games" [value]="game.id">{{ game.name }}</option>
+      </select>
+  
+      <!-- Hvis der er highscores, viser vi dem i en tabel -->
+      <div *ngIf="highscores.length > 0" class="leaderboard-table-container">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>POS</th>
+              <th>SCORE</th>
+              <th>NAME</th>
+              <th>GAME</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 
+              Vi antager her, at highscores er sorteret efter score (højeste først). 
+              Hvis du vil sortere i skabelonen, kan du evt. bruge en pipe eller 
+              sortere i loadHighscores() i TypeScript.
+            -->
+            <tr *ngFor="let entry of highscores; let i = index">
+              <!-- Placering (i + 1) -->
+              <td>
+                <!-- Du kan style 1., 2., 3. plads etc. mere detaljeret, hvis du vil -->
+                <span class="position">
+                  {{ i + 1 }}
+                </span>
+              </td>
+              <!-- Score -->
+              <td>{{ entry.score }}</td>
+              <!-- Brugernavn -->
+              <td>{{ entry.username }}</td>
+              <!-- Spillets titel -->
+              <td>{{ entry.gameTitle }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <!-- Hvis der ikke er nogen highscores -->
+      <div *ngIf="highscores.length === 0">
+        <p>Der er endnu ikke nogen data i leaderboardet.</p>
+      </div>
     </div>
-</div>
+  </div>
+  

@@ -43,11 +43,11 @@ export class leaderboardComponent implements OnInit {
     if (this.selectedGameId) {
       this.firebaseService.getHighscoresForGame(this.selectedGameId)
         .then(highscores => {
-          this.highscores = highscores;
+          // Sortér fra højest til lavest
+          this.highscores = highscores.sort((a, b) => b.score - a.score);
         });
     }
   }
-
   // **NY KODE**: Realtidsopdatering af highscores for det valgte spil
   listenForHighscoreUpdates() {
     if (this.selectedGameId) {

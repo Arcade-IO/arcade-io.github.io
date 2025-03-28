@@ -1,41 +1,27 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #001f3f; /* Navy blue */
-    color: white;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    height: 100vh;
-}
+/* ========== Beholder wrapper og container fra dine andre sider ========== */
 
-/* Wrapper to control spacing */
+/* Wrapper til at centrere og skabe mellemrum omkring containeren */
 .wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: center; 
-    margin-top: 5%;
-    width: 100%;
-    height: 100%;
-    padding-top: 80px; /* Space for navbar */
-}
-
-/* Main Container */
-.container {
-    width: 100%;
-    max-width: 500px;
-    padding: 30px;
-    border: 5px solid white;
-    border-radius: 50px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    margin-top: 5rem; /* Juster margin efter behov */
+  }
+  
+  /* Container-lignende stil med hvid kant, afrundede hjørner osv. */
+  .container {
+    position: relative; /* Kan være nyttig til evt. knapper i top/hjørne */
+    background-color: #3a3a3a6c; /* Halvtransparent mørk baggrund */
+    border: 2px solid white;
+    border-radius: 25px;
+    color: white;
     text-align: center;
-    background-color: transparent;
-}
-
-/* Dropdown */
-select {
-
+    width: 40vw;
+    min-width: 70px;
+    box-sizing: border-box; /* Sikrer korrekt håndtering af padding og bredde */
+  }
+  
+  /* ========== Dropdown-stil ========== */
+  select {
     width: 80%;
     padding: 10px;
     font-size: 16px;
@@ -44,40 +30,62 @@ select {
     background: white;
     color: black;
     margin-top: 10px;
-}
-
-/* Highscore List */
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    background: white;
-    color: black;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-}
-
-/* Buttons */
-button {
+    outline: none;
+  }
+  
+  /* ========== Leaderboard-tabel ========== */
+  .leaderboard-table-container {
+    margin-top: 2rem;
+    overflow-x: auto; /* Giver scrollbar hvis tabellen er for bred */
+  }
+  
+  /* Tabel med halvtransparent baggrund, hvid kant og afrundede hjørner */
+  .leaderboard-table {
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-    background: #004080;
+    border-collapse: collapse;
+    background-color: transparent; /* Brug containerens baggrund */
     color: white;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #00509e;
-}
-
-/* Paragraph Text */
-p {
+    border-radius: 25px;
+    min-width: 400px; /* Så kolonnerne ikke bliver for smalle */
+  }
+  
+  /* Thead-stil: eventuelt en mørkere baggrund for overskrifterne */
+  .leaderboard-table thead tr {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .leaderboard-table th {
+    padding: 0.1vw;
+    border-bottom: 2px solid white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  /* Tbody-stil */
+  .leaderboard-table td {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  /* Let skiftevis baggrundsfarve på rækker (valgfrit) */
+  .leaderboard-table tbody tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  .leaderboard-table tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Placering (POS) - hvis du vil fremhæve #1, #2, #3, kan du lave ekstra klasser */
+  .position {
+    font-weight: bold;
+    color: #ffdf00; /* Gul farve til placering */
+    font-size: 1.2rem;
+  }
+  
+  /* Tekst ved "ingen highscores" */
+  p {
     color: white;
     margin-top: 10px;
-}
+  }
+  

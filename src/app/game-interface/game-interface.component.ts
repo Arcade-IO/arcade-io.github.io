@@ -14,11 +14,11 @@ import { get, ref } from 'firebase/database';
   styleUrls: ['./game-interface.component.css']
 })
 export class GameInterfaceComponent implements AfterViewInit {
-/* hazel 25-03-2025 */
-
+  /* hazel 25-03-2025 */
   gameId: string = '';
   game: any = null;
   safeUrl: SafeResourceUrl | null = null;
+  manualScore: number = 0;  // Ny variabel til den manuelt indtastede score
   private unityReady = false;
 
   constructor(
@@ -104,43 +104,7 @@ export class GameInterfaceComponent implements AfterViewInit {
     }
   }
 
-  // async fetchUserDetailsAndSendToUnity() {
-  //   try {
-  //     const currentUser = await new Promise<any>((resolve) => {
-  //       this.firebaseService.getAuthStateListener((user) => resolve(user));
-  //     });
-
-  //     if (currentUser) {
-  //       localStorage.setItem('uid', currentUser.uid);
-  //       const uid = localStorage.getItem('uid');
-
-  //       const database = this.firebaseService.getDatabase();
-  //       const userRef = ref(database, `users/${uid}`);
-  //       const snapshot = await get(userRef);
-
-  //       if (snapshot.exists()) {
-  //         const userData = snapshot.val();
-  //         localStorage.setItem('playerName', userData.name);
-  //         const name = localStorage.getItem('playerName') || "Guest";
-
-  //         console.log('✅ Sending UID & Player Name to Unity:', uid, name);
-  //         if (uid && name) {
-  //           const iframe = document.querySelector('#unityGame') as HTMLIFrameElement;
-  //           this.sendUIDAndPlayerName(iframe, uid, name);
-  //         } else {
-  //           console.error('❌ UID or Player Name is null');
-  //         }
-  //       } else {
-  //         console.error('❌ No user data found for UID:', uid);
-  //       }
-  //     } else {
-  //       console.error('❌ No authenticated user found!');
-  //     }
-  //   } catch (error) {
-  //     console.error('❌ Error fetching user data:', error);
-  //   }
-  // }
-
+  // Hvis Unity sender score, kan du stadig modtage den her
   handleHighScoreMessage(event: MessageEvent) {
     if (event.data.type === 'UPDATE_HIGHSCORE') {
       const highscoreData = event.data.data;
@@ -160,6 +124,15 @@ export class GameInterfaceComponent implements AfterViewInit {
     }
   }
 
+  // Ny funktion til at sende den manuelt indtastede score
+  submitScore() {
+    if (this.manualScore > 0) {
+      this.onGameOver(this.manualScore);
+    } else {
+      console.error("Score skal være større end 0.");
+    }
+  }
+
   async onGameOver(score: number) {
     try {
       const uid = localStorage.getItem('uid');
@@ -169,14 +142,12 @@ export class GameInterfaceComponent implements AfterViewInit {
       }
 
       const gameId = this.gameId;
-
+      // Denne metode henter nu automatisk brugerens displayName og spillets titel fra Firebase
       await this.firebaseService.createOrUpdateHighscore(uid, gameId, score);
       console.log("Highscore processed!");
     } catch (error) {
       console.error("Error processing highscore:", error);
     }
   }
-
-
+  /* hazel 25-03-2025 */
 }
-/* hazel 25-03-2025 */
