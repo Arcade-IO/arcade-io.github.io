@@ -26,8 +26,9 @@ export class SettingsComponent implements OnInit {
   newEmail = '';
   currentEmail: string | null = '';
 
-backgroundColor = '';
-navbarColor = '';
+  isChangeTheme=false;
+  backgroundColor = '';
+  navbarColor = '';
 
   constructor(private firebaseService: FirebaseService) {}
 
@@ -50,6 +51,8 @@ navbarColor = '';
     this.isChangePassword = true;
     this.isChangeUsername = false;
     this.isChangeEmail = false;
+    this.isChangeTheme=false;
+
   }
 
   updatePassword(event: any) {
@@ -77,6 +80,8 @@ navbarColor = '';
     this.isChangeUsername = true;
     this.isChangePassword = false;
     this.isChangeEmail= false;
+    this.isChangeTheme=false;
+
   }
 
   updateUsername(event: any) {
@@ -125,14 +130,24 @@ navbarColor = '';
     }
   }
   
-
+  optionChangeTheme() {
+    this.isChangePassword = false;
+    this.isChangeUsername = false;
+    this.isChangeEmail = false;
+    this.isChangeTheme=true;
+  }
   updateBackgroundColor(event: any) {
     this.backgroundColor = event.target.value;
+    document.body.style.backgroundColor = this.backgroundColor;
+
   }
 
   updateNavbarColor(event: any) {
     this.navbarColor = event.target.value;
+    document.querySelector('.navbar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
+
   }
+
 
  //submitNewEmail() {
    // const user = this.firebaseService.getCurrentUser();

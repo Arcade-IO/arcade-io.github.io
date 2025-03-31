@@ -5,7 +5,7 @@
       <li><a href="javascript:void(0)" (click)="optionChangePassword()">Change Password</a></li>
       <li><a href="javascript:void(0)" (click)="optionChangeUsername()">Change Username</a></li>
       <!-- <li><a href="javascript:void(0)" (click)="optionChangeEmail()">Change Email</a></li> -->
-      <li><a href="#">Change Theme</a></li>
+      <li><a href="javascript:void(0)" (click)="optionChangeTheme()">Change Theme</a></li>
     </ul>
   </div>
 
@@ -35,14 +35,14 @@
       <button (click)="submitNewUsername()">Submit</button>
     </div>
 
-    <div *ngIf="saveThemeSettings">
+    <div *ngIf="isChangeTheme">
       <h2>Change Theme</h2>
       <div>
         <label for="bgColor">Background Color: </label>
         <input type="color" id="bgColor" (input)="updateBackgroundColor($event)" />
       </div>
       <div>
-        <label for="navbarColor">Navbar Color: </label>
+        <label for="navbarColor">Navbar Color: </label>  
         <input type="color" id="navbarColor" (input)="updateNavbarColor($event)" />
       </div>
       <button (click)="saveThemeSettings()">Save Theme</button>

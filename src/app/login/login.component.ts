@@ -54,8 +54,15 @@ export class LoginComponent {
       })
       .catch((error) => {
         console.error('Error during login:', error.code, error.message);
-        alert('Error: ' + error.message);
+      
+        if (error.code === 'auth/invalid-credential') {
+          alert('Incorrect email or password. Please try again.');
+        } else {
+          alert('Error: ' + error.message);
+        }
       });
+
+      
   }
 
   // Navigate to signup page

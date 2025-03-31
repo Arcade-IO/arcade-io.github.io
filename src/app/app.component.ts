@@ -21,5 +21,8 @@ export class AppComponent {
       this.showNavbar = !noNavbarRoutes.includes(this.router.url);
     });
   }
+
+  
 }
+
 //selin 2025-03-2025
