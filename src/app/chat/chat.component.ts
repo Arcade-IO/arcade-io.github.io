@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth'
 
@@ -10,12 +10,19 @@ import { getAuth, onAuthStateChanged, User } from 'firebase/auth'
 })
 // Alexander 24-03-25 
 
-export class ChatComponent implements AfterViewChecked {
+export class ChatComponent implements AfterViewInit, AfterViewChecked {
   msg : Message[] = [];
   input : string = "";
-  username : string | null = "";
-
+  private username : string | null = "";
+  private shouldScroll = true;
+  
   @ViewChild('chat') chat!: ElementRef;
+  
+  ngAfterViewInit(): void {
+    const element : Element = this.chat?.nativeElement;
+    element.addEventListener('scroll', this.onScroll.bind(this));
+  }
+
 
   ngOnInit() {
     const auth = getAuth();
@@ -31,33 +38,30 @@ export class ChatComponent implements AfterViewChecked {
     if (this.input != "") {
       this.msg.push(new Message(this.input, String(this.username)))
       this.input = "";
-      // this.scrollToBottom();
+      this.chat.nativeElement.scrollTop = this.chat.nativeElement.scrollHeight;
     }
   }
 
-  checkVal1 : number = 0;
-  checkVal2 : number = 0;
+
+  onScroll() {
+    const element : Element = this.chat?.nativeElement;
+    const atBottom = element.scrollHeight - element.clientHeight - element.scrollTop < 10;
+    this.shouldScroll = atBottom;
+  }
+
+
   ngAfterViewChecked() {
-    const chatEliment : Element = this.chat?.nativeElement;
-    if (chatEliment &&
-      chatEliment.scrollHeight > this.checkVal1) {
-      if (chatEliment.clientHeight > this.checkVal2 - 5 &&
-        chatEliment.clientHeight < this.checkVal2 + 5) {
-        this.scrollToBottom();
-      }
-      console.log([this.checkVal1, this.checkVal2, chatEliment.scrollHeight, chatEliment.scrollTop])
-      this.checkVal1 = chatEliment.scrollHeight;
-      this.checkVal2 = chatEliment.scrollHeight - chatEliment.scrollTop;
-    }
-    console.log([this.checkVal1, this.checkVal2, chatEliment.scrollHeight, chatEliment.scrollTop])
+    this.scrollToBottom();    
   }
 
 
   private scrollToBottom() {
     setTimeout(() => {
-      const chatElement : Element = this.chat?.nativeElement;
-      if (chatElement) {
-        chatElement.scrollTop = chatElement.scrollHeight;        
+      if (this.shouldScroll) {
+        const chatElement : Element = this.chat?.nativeElement;
+        if (chatElement) {
+          chatElement.scrollTop = chatElement.scrollHeight;        
+        }
       }
     }, 100)
   }
