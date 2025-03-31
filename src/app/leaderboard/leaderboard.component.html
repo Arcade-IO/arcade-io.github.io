@@ -1,7 +1,7 @@
 <!-- Add a wrapper around the container -->
 <div class="wrapper">
     <div class="container">
-      <!-- Dropdown til valg af spil -->
+      Dropdown til valg af spil
       <select [(ngModel)]="selectedGameId" (change)="loadHighscores(); listenForHighscoreUpdates()">
         <option value="" disabled hidden>Vælg et spil</option>
         <option *ngFor="let game of games" [value]="game.id">{{ game.name }}</option>
@@ -35,7 +35,8 @@
               <!-- Score -->
               <td>{{ entry.score }}</td>
               <!-- Brugernavn -->
-              <td>{{ entry.username }}</td>
+              <td>{{ entry.displayName }}</td>
+
               <!-- Spillets titel -->
               <td>{{ entry.gameTitle }}</td>
             </tr>

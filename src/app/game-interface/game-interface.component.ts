@@ -13,13 +13,16 @@ import { get, ref } from 'firebase/database';
   templateUrl: './game-interface.component.html',
   styleUrls: ['./game-interface.component.css']
 })
-export class GameInterfaceComponent implements AfterViewInit {
-  /* hazel 25-03-2025 */
+export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
   gameId: string = '';
   game: any = null;
   safeUrl: SafeResourceUrl | null = null;
-  manualScore: number = 0;  // Ny variabel til den manuelt indtastede score
-  private unityReady = false;
+  manualScore: number = 0;
+
+  private resendAttempts = 0;
+  private maxAttempts = 3;
+  private resendInterval: any;
+  private unityAcknowledged = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,62 +32,73 @@ export class GameInterfaceComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.gameId = this.route.snapshot.paramMap.get('gameId') || '';
-  
+
     if (this.gameId) {
       console.log('Fetching game with ID:', this.gameId);
       this.fetchGameDetails(this.gameId);
     } else {
       console.error('Invalid game ID');
     }
-  
-    // Lyt efter Unity's highscore beskeder
-    window.addEventListener('message', this.handleHighScoreMessage.bind(this));
-  
-    // Forsink kaldet for at give tid til at gemme localStorage
+
+    // Unity READY listener
+    // window.addEventListener('message', this.handleHighScoreMessage.bind(this));
+    window.addEventListener('message', this.handleUnityAck.bind(this));
+
+    // Delay first send
     setTimeout(() => {
       this.sendStoredDataToUnity();
+      this.beginResendLoop();
     }, 3000);
   }
-  
+
+  ngOnDestroy() {
+    clearInterval(this.resendInterval);
+    // window.removeEventListener('message', this.handleHighScoreMessage.bind(this));
+    window.removeEventListener('message', this.handleUnityAck.bind(this));
+  }
+
+  private beginResendLoop() {
+    this.resendInterval = setInterval(() => {
+      if (this.unityAcknowledged || this.resendAttempts >= this.maxAttempts) {
+        clearInterval(this.resendInterval);
+        if (this.unityAcknowledged) {
+          console.log("✅ Unity acknowledged player data.");
+        } else {
+          console.warn("⚠️ Unity never acknowledged player data after 3 attempts.");
+        }
+        return;
+      }
+
+      this.resendAttempts++;
+      console.log(`🔁 Attempt #${this.resendAttempts} to resend UID & playerName to Unity...`);
+      this.sendStoredDataToUnity();
+    }, 5000);
+  }
+
   private sendStoredDataToUnity() {
-    const uid = localStorage.getItem('uid'); // Retrieve UID from localStorage
-    const playerName = localStorage.getItem('playerName'); // Retrieve Player Name from localStorage
-  
+    const uid = localStorage.getItem('uid');
+    const playerName = localStorage.getItem('playerName');
+
     if (!uid || !playerName) {
       console.warn('No UID or Player Name found in localStorage');
       return;
     }
-  
-    console.log('Stored UID:', uid);
-    console.log('Stored Player Name:', playerName);
-  
+
     const iframe = document.querySelector('iframe') as HTMLIFrameElement;
-  
-    if (iframe) {
-      // Listen for Unity's "READY" event
-      window.addEventListener('message', (event) => {
-        if (event.data === 'UNITY_READY') {
-          this.sendUIDAndPlayerName(iframe, uid, playerName);
-        }
-      });
-  
-      // Send UID and Player Name after a delay (fallback)
-      setTimeout(() => {
-        this.sendUIDAndPlayerName(iframe, uid, playerName);
-      }, 3000); // Retry sending UID and Player Name after 3 seconds
+
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage(
+        { type: 'SET_PLAYER_DATA', uid, name: playerName },
+        '*'
+      );
+      console.log('📤 Sent UID & Player Name to Unity:', uid, playerName);
     }
   }
-  
-  private sendUIDAndPlayerName(iframe: HTMLIFrameElement, uid: string, playerName: string) {
-    if (iframe.contentWindow) {
-      iframe.contentWindow.postMessage(
-        { type: 'SET_PLAYER_DATA', uid: uid, playerName: playerName },
-        '*' // Replace '*' with your Unity build's origin for security
-      );
-      console.log('Sent UID:', uid);
-      console.log('Sent Player Name:', playerName);
-    } else {
-      console.error('Failed to send UID or Player Name: iframe contentWindow is null.');
+
+  private handleUnityAck(event: MessageEvent) {
+    if (event.data === 'UNITY_ACK') {
+      console.log("✅ Received UNITY_ACK from Unity");
+      this.unityAcknowledged = true;
     }
   }
 
@@ -106,50 +120,50 @@ export class GameInterfaceComponent implements AfterViewInit {
     }
   }
 
-  // Hvis Unity sender score, kan du stadig modtage den her
-  handleHighScoreMessage(event: MessageEvent) {
-    if (event.data.type === 'UPDATE_HIGHSCORE') {
-      const highscoreData = event.data.data;
+  // handleHighScoreMessage(event: MessageEvent) {
+  //   if (event.data.type === 'UPDATE_HIGHSCORE') {
+  //     const highscoreData = event.data.data;
 
-      console.log("Received high score data from Unity:", highscoreData);
+  //     console.log("🎯 Received high score data from Unity:", highscoreData);
 
-      const userIdFromUnity = highscoreData.userId;
-      const score = highscoreData.score;
+  //     const userIdFromUnity = highscoreData.userId;
+  //     const score = highscoreData.score;
+  //     const storedUid = localStorage.getItem('uid');
 
-      const storedUid = localStorage.getItem('uid');
-      if (!storedUid || storedUid !== userIdFromUnity) {
-        console.error('❌ Invalid userId received from Unity:', userIdFromUnity);
-        return;
-      }
-
-      // this.onGameOver(score);
-    }
-  }
-
-  // Ny funktion til at sende den manuelt indtastede score
-  // submitScore() {
-  //   if (this.manualScore > 0) {
-  //     this.onGameOver(this.manualScore);
-  //   } else {
-  //     console.error("Score skal være større end 0.");
-  //   }
-  // }
-
-  // async onGameOver(score: number) {
-  //   try {
-  //     const uid = localStorage.getItem('uid');
-  //     if (!uid) {
-  //       console.error('❌ No UID found in localStorage!');
+  //     if (!storedUid || storedUid !== userIdFromUnity) {
+  //       console.error('❌ Invalid userId received from Unity:', userIdFromUnity);
   //       return;
   //     }
 
-  //     const gameId = this.gameId;
-  //     // Denne metode henter nu automatisk brugerens displayName og spillets titel fra Firebase
-  //     await this.firebaseService.createOrUpdateHighscore(uid, gameId, score);
-  //     console.log("Highscore processed!");
-  //   } catch (error) {
-  //     console.error("Error processing highscore:", error);
+  //     // TODO: Add your highscore logic here
   //   }
   // }
-  /* hazel 25-03-2025 */
+  submitScore() {
+    const playerName = localStorage.getItem('playerName');
+    const score = this.manualScore;
+    const gameTitle = this.game?.title;
+    const gameId = this.gameId;
+  
+    if (!playerName || !gameTitle || !gameId) {
+      alert("Fejl: Mangler brugerdata eller spilinfo.");
+      return;
+    }
+  
+    if (!score || score <= 0) {
+      alert("Score skal være større end 0.");
+      return;
+    }
+  
+    this.firebaseService.submitHighscore(playerName, gameTitle, score, gameId)
+      .then(() => {
+        alert("✅ Score sendt!");
+        this.manualScore = 0;
+      })
+      .catch((err) => {
+        console.error("❌ Fejl ved at sende score:", err);
+        alert("Kunne ikke sende score.");
+      });
+  }
+  
+  
 }

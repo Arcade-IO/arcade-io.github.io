@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../services/firebase.service';
 import { signInWithEmailAndPassword, getAuth, signOut } from 'firebase/auth';
@@ -20,7 +20,11 @@ export class LoginComponent {
   sendEmail(event: any): void {
     this.email = event.target.value;
   }
-
+  ngOnInit(): void {
+    // Rydder localStorage hver gang HomeComponent indlæses
+        localStorage.clear();
+        console.log('🧹 Cleared localStorage on LoginComponent load');
+  }
   sendPassword(event: any): void {
     this.password = event.target.value;
   }

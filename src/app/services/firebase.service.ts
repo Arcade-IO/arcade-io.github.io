@@ -304,13 +304,66 @@ export class FirebaseService {
   // NY Highscore Metode
   // ------------------------------
   // Denne metode opretter en ny highscore-post med displayName, gameTitle og score.
-  submitHighscore(displayName: string, gameTitle: string, score: number): Promise<void> {
-    const newHighscoreRef = ref(database, 'highscores/' + Date.now());
-    return set(newHighscoreRef, {
-      displayName: displayName,
-      gameTitle: gameTitle,
-      score: score,
-      timestamp: new Date().toISOString()
+  submitHighscore(displayName: string, gameTitle: string, score: number, games_Id: string): Promise<void> {
+    const highscoresRef = ref(database, 'highscores/');
+  
+    return get(highscoresRef).then(snapshot => {
+      const allHighscores = snapshot.val();
+  
+      let existingKey: string | null = null;
+      let existingScore: number = 0;
+  
+      // Tjek om der allerede findes en score med samme displayName og games_Id
+      if (allHighscores) {
+        for (const key in allHighscores) {
+          const entry = allHighscores[key];
+          if (entry.displayName === displayName && entry.games_Id === games_Id) {
+            existingKey = key;
+            existingScore = entry.score;
+            break;
+          }
+        }
+      }
+  
+      if (existingKey) {
+        if (score > existingScore) {
+          console.log("⬆️ Ny score er højere – opdaterer.");
+          return update(ref(database, `highscores/${existingKey}`), {
+            score: score,
+            timestamp: new Date().toISOString()
+          });
+        } else {
+          console.log("⬇️ Ny score er lavere – ignorerer.");
+          return Promise.resolve(); // gør ingenting
+        }
+      } else {
+        console.log("🆕 Ingen tidligere score – opretter ny.");
+        const newKey = Date.now();
+        return set(ref(database, `highscores/${newKey}`), {
+          displayName: displayName,
+          gameTitle: gameTitle,
+          score: score,
+          games_Id: games_Id,
+          timestamp: new Date().toISOString()
+        });
+      }
     });
   }
+  
+  
+  getHighscoresForGame(gameId: string): Promise<any[]> {
+    const highscoresRef = ref(this.getDatabase(), 'highscores/');
+    return get(highscoresRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const filtered = Object.keys(data)
+          .map(key => ({ id: key, ...data[key] }))
+          .filter(score => score.games_Id === gameId);
+  
+        return filtered;
+      }
+      return [];
+    });
+  }
+  
 }
