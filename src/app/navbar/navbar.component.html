@@ -1,13 +1,20 @@
-
 <nav class="navbar">
   <div class="logo">
-    <img src="assets\ARCADE.IO-ICON-A.png" alt="Arcade-IO-Logo_2" class="img1">
+    <img src="assets/ARCADE.IO-ICON-A.png" alt="Arcade-IO-Logo_2" class="img1">
   </div>
   <ul>
-    <li *ngIf="isAdmin"><a [routerLink]="['/admin-dashboard']" routerLinkActive="active">Administration</a></li>
-    <li><a [routerLink]="['/dashboard']" routerLinkActive="active">Dashboard</a></li>
-    <li><a [routerLink]="['/leaderboard']" routerLinkActive="active">Leaderboard</a></li>
-    <li><a [routerLink]="['/settings']" routerLinkActive="active">Profile</a></li>
+    <li *ngIf="isAdmin">
+      <a [routerLink]="['/admin-dashboard']" routerLinkActive="active">Administration</a>
+    </li>
+    <li>
+      <a [routerLink]="['/dashboard']" routerLinkActive="active">Dashboard</a>
+    </li>
+    <li>
+      <a [routerLink]="['/leaderboard']" routerLinkActive="active">Leaderboard</a>
+    </li>
+    <li>
+      <a [routerLink]="['/settings']" routerLinkActive="active">{{ displayName }}</a>
+    </li>
     <li *ngIf="isLoggedIn" class="logout">
       <button class="button" (click)="logout()">
          <img class="button-img" src="assets/signout.png" alt="Logout" />

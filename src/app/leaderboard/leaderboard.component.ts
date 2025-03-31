@@ -39,15 +39,15 @@ export class leaderboardComponent implements OnInit {
   }
 
   // Funktion til at hente highscores baseret på valgt spil
-  async loadHighscores() {
-    if (this.selectedGameId) {
-      this.firebaseService.getHighscoresForGame(this.selectedGameId)
-        .then(highscores => {
-          // Sortér fra højest til lavest
-          this.highscores = highscores.sort((a, b) => b.score - a.score);
-        });
-    }
-  }
+  // async loadHighscores() {
+  //   if (this.selectedGameId) {
+  //     this.firebaseService.getHighscoresForGame(this.selectedGameId)
+  //       .then(highscores => {
+  //         // Sortér fra højest til lavest
+  //         this.highscores = highscores.sort((a, b) => b.score - a.score);
+  //       });
+  //   }
+  // }
   // **NY KODE**: Realtidsopdatering af highscores for det valgte spil
   listenForHighscoreUpdates() {
     if (this.selectedGameId) {

@@ -122,34 +122,34 @@ export class GameInterfaceComponent implements AfterViewInit {
         return;
       }
 
-      this.onGameOver(score);
+      // this.onGameOver(score);
     }
   }
 
   // Ny funktion til at sende den manuelt indtastede score
-  submitScore() {
-    if (this.manualScore > 0) {
-      this.onGameOver(this.manualScore);
-    } else {
-      console.error("Score skal være større end 0.");
-    }
-  }
+  // submitScore() {
+  //   if (this.manualScore > 0) {
+  //     this.onGameOver(this.manualScore);
+  //   } else {
+  //     console.error("Score skal være større end 0.");
+  //   }
+  // }
 
-  async onGameOver(score: number) {
-    try {
-      const uid = localStorage.getItem('uid');
-      if (!uid) {
-        console.error('❌ No UID found in localStorage!');
-        return;
-      }
+  // async onGameOver(score: number) {
+  //   try {
+  //     const uid = localStorage.getItem('uid');
+  //     if (!uid) {
+  //       console.error('❌ No UID found in localStorage!');
+  //       return;
+  //     }
 
-      const gameId = this.gameId;
-      // Denne metode henter nu automatisk brugerens displayName og spillets titel fra Firebase
-      await this.firebaseService.createOrUpdateHighscore(uid, gameId, score);
-      console.log("Highscore processed!");
-    } catch (error) {
-      console.error("Error processing highscore:", error);
-    }
-  }
+  //     const gameId = this.gameId;
+  //     // Denne metode henter nu automatisk brugerens displayName og spillets titel fra Firebase
+  //     await this.firebaseService.createOrUpdateHighscore(uid, gameId, score);
+  //     console.log("Highscore processed!");
+  //   } catch (error) {
+  //     console.error("Error processing highscore:", error);
+  //   }
+  // }
   /* hazel 25-03-2025 */
 }
