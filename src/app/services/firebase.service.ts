@@ -9,7 +9,7 @@ import {
   browserLocalPersistence,
   updatePassword,
   updateProfile,
-  sendEmailVerification // <<-- Added for email verification
+  sendEmailVerification
 } from 'firebase/auth';
 import { getDatabase, ref, set, get, update } from 'firebase/database';
 import { environment } from '../environments/environment';
@@ -24,7 +24,6 @@ const database = getDatabase(app);
 setPersistence(auth, browserLocalPersistence)
   .then(() => {
     console.log("Auth persistence set to LOCAL");
-    
   })
   .catch((error) => {
     console.error("Error setting auth persistence:", error);
@@ -35,20 +34,18 @@ setPersistence(auth, browserLocalPersistence)
 })
 export class FirebaseService {
   currentUser: any = null;
+  public currentDisplayName: string = '';
 
   constructor() {
     this.listenToAuthStateChanges();
     this.loadCurrentUser();
   }
 
-  //hazel 24-03-2025 13.55
   // Get the Firebase Database instance
   getDatabase() {
     return database;
   }
-  //hazel 24-03-2025 13.55
 
-  //hazel 25-03-2025 14.25
   // Get the Firebase Auth instance
   getAuth() {
     return auth;
@@ -58,85 +55,21 @@ export class FirebaseService {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.currentUser = user;
-        console.log("User data loaded:", user);
       } else {
-        console.warn("No user data found!");
         this.currentUser = null;
       }
     });
   }
-  //hazel 25-03-2025 14.25
 
-  //hazel 24-03-2025 13.55
-  async createOrUpdateHighscore(userId: string, gameId: string, score: number): Promise<void> {
-    const highscoreId = `${userId}_${gameId}`;  // Construct the highscoreId from userId and gameId
-    const highscoreRef = ref(database, `highscores/${highscoreId}`);
-    
-    // Fetch the current high score (if any)
-    const snapshot = await get(highscoreRef);
-    
-    if (snapshot.exists()) {
-      // If high score exists, check if the new score is higher
-      const currentHighscore = snapshot.val();
-      
-      if (score > currentHighscore.score) {
-        // Update the high score with the new score if it's higher
-        await set(highscoreRef, {
-          users_Id: userId,
-          games_Id: gameId,
-          score,
-          createdAt: new Date().toISOString()
-        });
-        console.log("High score updated!");
-      } else {
-        console.log("Current score is not higher than the existing high score.");
-      }
-    } else {
-      // If no high score exists for this user and game, create a new high score entry
-      await set(highscoreRef, {
-        users_Id: userId,
-        games_Id: gameId,
-        score,
-        createdAt: new Date().toISOString()
-      });
-      console.log("New high score created!");
-    }
-  }
-  //hazel 24-03-2025 13.55
-
-  //hazel 26-03-2025 
-  // Get user by UID
-  getUserbyUID(uid: string): Promise<any> {
-    const userRef = ref(database, 'users/' + uid);
-    return get(userRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        return snapshot.val();
-      } else {
-        throw new Error('User not found');
-      }
-    }).catch((error) => {
-      console.error('Error fetching user data:', error);
-      throw error;
-    });
-  }
-  //hazel 26-03-2025 
-
-  // ===============================
+  // ------------------------------
   // User Management Functions
-  // ===============================
+  // ------------------------------
 
-  // Create user
-  registerUser(
-    email: string,
-    password: string,
-    displayName: string
-  ): Promise<any> {
+  registerUser(email: string, password: string, displayName: string): Promise<any> {
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        // Firebase Auth'taki displayName'i güncelle
         return updateProfile(user, { displayName }).then(() => {
-          // <<-- Added: Send email verification
           return sendEmailVerification(user).then(() => {
             console.log('Verification email sent.');
             const isAdmin = FirebaseService.isHardcodedAdmin(email);
@@ -147,13 +80,7 @@ export class FirebaseService {
       });
   }
 
-  // Create user in the database
-  createUser(
-    uid: string,
-    displayName: string,
-    email: string,
-    isAdmin: boolean
-  ): Promise<void> {
+  createUser(uid: string, displayName: string, email: string, isAdmin: boolean): Promise<void> {
     return set(ref(database, `users/${uid}`), {
       displayName,
       email,
@@ -162,7 +89,6 @@ export class FirebaseService {
     });
   }
 
-  // Check if user is an admin
   checkIfAdmin(uid: string): Promise<boolean> {
     const userRef = ref(database, `users/${uid}`);
     return get(userRef).then((snapshot) => {
@@ -177,40 +103,31 @@ export class FirebaseService {
     });
   }
 
-  // Grant admin rights to a user
   createAdminRights(uid: string): Promise<void> {
     return update(ref(database, `users/${uid}`), { isAdmin: true });
   }
 
-  // Revoke admin rights from a user
   revokeAdminRights(uid: string): Promise<void> {
     return update(ref(database, `users/${uid}`), { isAdmin: false });
   }
 
-  // Delete user
   deleteUser(uid: string): Promise<void> {
     return set(ref(database, `users/${uid}`), null);
   }
 
-  // Update user information
-  sendUser(
-    uid: string,
-    updates: { displayName?: string; email?: string; isAdmin?: boolean }
-  ): Promise<void> {
+  sendUser(uid: string, updates: { displayName?: string; email?: string; isAdmin?: boolean }): Promise<void> {
     return update(ref(database, `users/${uid}`), updates);
   }
 
-  // Log in user
   loginUser(email: string, password: string): Promise<any> {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
-  // Log out user
   logout(): Promise<void> {
+    this.clearDisplayName();
     return signOut(auth);
   }
 
-  // Get all users
   getAllUsers(): Promise<any[]> {
     const usersRef = ref(database, 'users/');
     return get(usersRef).then((snapshot) => {
@@ -222,11 +139,10 @@ export class FirebaseService {
     });
   }
 
-  // ================================
-  // Game, Highscore, and Forum Management
-  // ================================
+  // ------------------------------
+  // Game, Forum, and Settings Management
+  // ------------------------------
 
-  // Create a game
   createGame(
     gameId: string,
     title: string,
@@ -246,28 +162,14 @@ export class FirebaseService {
       createdAt: new Date().toISOString()
     });
   }
+
   deleteGame(gameId: string): Promise<void> {
     return set(ref(database, `games/${gameId}`), null);
   }
-  // Create a highscore
-  createHighscore(
-    highscoreId: string,
-    userId: string,
-    gameId: string,
-    score: number
-  ): Promise<void> {
-    return set(ref(database, `highscores/${highscoreId}`), {
-      users_Id: userId,
-      games_Id: gameId,
-      score,
-      createdAt: new Date().toISOString()
-    });
-  }
 
-  // Create a forum post
   createForumPost(
     forumId: string,
-    gameId: string,  // If the post is game-specific
+    gameId: string,
     userId: string,
     message: string
   ): Promise<void> {
@@ -279,7 +181,6 @@ export class FirebaseService {
     });
   }
 
-  // Create settings
   createSettings(
     settingsId: string,
     userId: string,
@@ -295,99 +196,83 @@ export class FirebaseService {
     });
   }
 
-
-
-
-
-  
-  // Update theme settings
   saveThemeSettings(uid: string, settings: { backgroundColor: string; navbarColor: string }) {
-    return set(ref(database, `users/${uid}/theme`), settings);
     document.body.style.backgroundColor = settings.backgroundColor;
     document.querySelector('.navbar')?.setAttribute('style', `background-color: ${settings.navbarColor}`);
+    return set(ref(database, `users/${uid}/theme`), settings);
   }
-  // Update settings
+
   updateSettings(
     settingsId: string,
     updates: { navbarColor?: string; navbarFontColor?: string; backgroundColor?: string }
   ): Promise<void> {
     return update(ref(database, `settings/${settingsId}`), updates);
   }
-  
 
-  // Listen to authentication state changes
+  // ------------------------------
+  // Auth State & Utility Functions
+  // ------------------------------
+
   private listenToAuthStateChanges(): void {
     onAuthStateChanged(auth, (user) => {
       this.currentUser = user ? user : null;
     });
   }
 
-  // Expose a listener for auth state changes so components can subscribe
   getAuthStateListener(callback: (user: any) => void): void {
     onAuthStateChanged(auth, callback);
   }
 
-  // Get the current logged-in user
   getCurrentUser(): any {
     return this.currentUser;
   }
 
-  // Hardcoded admin check
   private static isHardcodedAdmin(email: string): boolean {
     const adminEmails = ['selin@selin.dk'];
     return adminEmails.includes(email);
   }
 
-// Funktion til at hente highscores for et bestemt spil med join på users og games
-async getHighscoresForGame(gameId: string): Promise<any[]> {
-  const highscoresRef = ref(database, `highscores/`);
-  const snapshot = await get(highscoresRef);
-  let highscores: any[] = [];
+  // ------------------------------
+  // DisplayName Management
+  // ------------------------------
 
-  if (snapshot.exists()) {
-    const highscoresData = snapshot.val();
-    // Lav en liste af promises, som henter brugerdata og spillets title for hver highscore-post
-    const promises = [];
-
-    for (let highscoreId in highscoresData) {
-      const record = highscoresData[highscoreId];
-      if (record.games_Id === gameId) {
-        // For hver highscore-post, hent brugerens displayName og spillets title
-        const promise = get(ref(database, `users/${record.users_Id}`))
-          .then(userSnap => {
-            let displayName = 'Unknown';
-            if (userSnap.exists()) {
-              displayName = userSnap.val().displayName;
-            }
-            return get(ref(database, `games/${record.games_Id}/title`))
-              .then(gameSnap => {
-                let gameTitle = 'Unknown';
-                if (gameSnap.exists()) {
-                  gameTitle = gameSnap.val();
-                }
-                return {
-                  username: displayName,
-                  gameTitle: gameTitle,
-                  score: record.score
-                };
-              });
-          });
-        promises.push(promise);
-      }
-    }
-    highscores = await Promise.all(promises);
-  } else {
-    // Hvis ingen highscores findes, kan du evt. oprette en placeholder-node
-    await set(ref(database, `highscores/`), { message: 'No data found yet.' });
-    console.log("Oprettede en ny node for highscores.");
+  updateDisplayName(uid: string): Promise<void> {
+    return this.getUserbyUID(uid)
+      .then((userData) => {
+        if (userData && userData.displayName) {
+          this.currentDisplayName = userData.displayName;
+        } else {
+          this.currentDisplayName = '';
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating displayName:', error);
+        this.currentDisplayName = '';
+      });
   }
-  return highscores;
-}
 
-  // 25.03.2025 / Selin
+  clearDisplayName(): void {
+    this.currentDisplayName = '';
+  }
+
+  // Henter brugerdata baseret på uid
+  getUserbyUID(uid: string): Promise<any> {
+    const userRef = ref(database, 'users/' + uid);
+    return get(userRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        throw new Error('User not found');
+      }
+    }).catch((error) => {
+      console.error('Error fetching user data:', error);
+      throw error;
+    });
+  }
+
   updateUserPassword(uid: string, newPassword: string): Promise<void> {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const authInstance = this.getAuth();
+    const user = authInstance.currentUser;
     
     if (user && user.uid === uid) {
       return updatePassword(user, newPassword);
@@ -395,23 +280,19 @@ async getHighscoresForGame(gameId: string): Promise<any[]> {
       return Promise.reject('User not authenticated');
     }
   }
-  // 25.03.2025 / Selin
 
-  // 26.03.2025 / Selin
-  //updates username in settings
   updateUsername(uid: string, newUsername: string): Promise<void> {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const authInstance = this.getAuth();
+    const user = authInstance.currentUser;
   
     if (user && user.uid === uid) {
-      return updateProfile(user, { displayName: newUsername }) // Updates Firebase Auth
+      return updateProfile(user, { displayName: newUsername })
         .then(() => {
-          // Update "name" in Realtime Database
           return update(ref(database, `users/${uid}`), { name: newUsername });
         })
-        .then(() => user.reload()) // Reloads user data
+        .then(() => user.reload())
         .then(() => {
-          console.log('Updated username:', newUsername); // Debugging log
+          console.log('Updated username:', newUsername);
         })
         .catch(error => Promise.reject(error));
     } else {
@@ -419,24 +300,17 @@ async getHighscoresForGame(gameId: string): Promise<any[]> {
     }
   }
 
-  //updates email in settings
-  //  updateEmail(newEmail: string): Promise<void> {
-  //    const user = getAuth().currentUser;
-  //    if (user) {
-  //      return updateProfile(user, { email: newEmail })
-  //        .then(() => {
-  //          // Update the email in the database
-  //          return update(ref(database, `users/${user.uid}`), { email: newEmail });
-  //        })
-  //        .then(() => user.reload()) // Reload the user data
-  //        .then(() => {
-  //          console.log('Email updated:', newEmail);
-  //       })
-  //        .catch(error => Promise.reject(error));
-  //    } else {
-  //      return Promise.reject('User not authenticated');
-  //    }
-  //  }
-  
+  // ------------------------------
+  // NY Highscore Metode
+  // ------------------------------
+  // Denne metode opretter en ny highscore-post med displayName, gameTitle og score.
+  submitHighscore(displayName: string, gameTitle: string, score: number): Promise<void> {
+    const newHighscoreRef = ref(database, 'highscores/' + Date.now());
+    return set(newHighscoreRef, {
+      displayName: displayName,
+      gameTitle: gameTitle,
+      score: score,
+      timestamp: new Date().toISOString()
+    });
+  }
 }
-// 26.03.2025 / Selin
