@@ -14,6 +14,8 @@ import {
 import { getDatabase, ref, set, get, update } from 'firebase/database';
 import { environment } from '../environments/environment';
 import { initializeApp } from 'firebase/app';
+import { Message } from '../chat/Message';
+import { share } from 'rxjs';
 
 // Initialize Firebase
 const app = initializeApp(environment.firebaseConfig);
@@ -372,5 +374,28 @@ export class FirebaseService {
       return [];
     });
   }
-  
+
+
+
+
+
+  // Alexander 01-04-2025
+  //  ------------------------------
+  //  #region  Chat Functions 
+  //  ------------------------------
+
+ 
+  sendMessage(
+    messageId: string,
+    message: Message
+  ): Promise<void> {
+    return set(ref(database, `messages/${messageId}`), {
+      text: message.text,
+      userName: message.userName,
+      timeStamp: message.timeStamp.toISOString(),
+    });
+  }
+  //#endregion
+  // Alexander 01-04-2025
+
 }
