@@ -1,5 +1,10 @@
 <!--hazel 2025-03-2025-->
 <div class="container" *ngIf="game">
+  <div class="chat">
+     <button class="show-hideChat" (click)="toggleChat()"> {{ showChat ? 'Skjul Chat' : 'Vis Chat' }}</button>
+      <app-chat *ngIf="showChat"></app-chat>
+  </div>
+
   <div class="game-container">
     <div class="game-header">
         <img [src]="game.imageUrl" alt="{{ game.title }}" />
@@ -13,14 +18,10 @@
       title="Unity WebGL Game">
     </iframe>
   </div>
-  
+  <div class="score-input">
+    <label for="scoreInput">Indtast din score:</label>
+    <input id="scoreInput" type="number" [(ngModel)]="manualScore" placeholder="Skriv score her">
+    <button (click)="submitScore()">Send Score</button>
+  </div>
   <!-- Ny sektion: Inputfelt til score -->
-
 </div>
-<div class="score-input">
-  <label for="scoreInput">Indtast din score:</label>
-  <input id="scoreInput" type="number" [(ngModel)]="manualScore" placeholder="Skriv score her">
-  <button (click)="submitScore()">Send Score</button>
-</div>
-<p *ngIf="!game">Loading game...</p>
-<!--hazel 2025-03-2025-->

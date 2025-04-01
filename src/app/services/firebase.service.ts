@@ -304,7 +304,7 @@ export class FirebaseService {
   // NY Highscore Metode
   // ------------------------------
   // Denne metode opretter en ny highscore-post med displayName, gameTitle og score.
-  submitHighscore(displayName: string, gameTitle: string, score: number, games_Id: string): Promise<void> {
+  submitHighscore(displayName: string, email: string, gameTitle: string, score: number, games_Id: string): Promise<void> {
     const highscoresRef = ref(database, 'highscores/');
   
     return get(highscoresRef).then(snapshot => {
@@ -313,7 +313,6 @@ export class FirebaseService {
       let existingKey: string | null = null;
       let existingScore: number = 0;
   
-      // Tjek om der allerede findes en score med samme displayName og games_Id
       if (allHighscores) {
         for (const key in allHighscores) {
           const entry = allHighscores[key];
@@ -328,27 +327,35 @@ export class FirebaseService {
       if (existingKey) {
         if (score > existingScore) {
           console.log("⬆️ Ny score er højere – opdaterer.");
+        console.log("Sender highscore:", { displayName, email, gameTitle, score, games_Id });
+
           return update(ref(database, `highscores/${existingKey}`), {
             score: score,
+            email: email,
             timestamp: new Date().toISOString()
           });
         } else {
           console.log("⬇️ Ny score er lavere – ignorerer.");
-          return Promise.resolve(); // gør ingenting
+          return Promise.resolve();
         }
       } else {
         console.log("🆕 Ingen tidligere score – opretter ny.");
+        console.log("Sender highscore:", { displayName, email, gameTitle, score, games_Id });
+
         const newKey = Date.now();
         return set(ref(database, `highscores/${newKey}`), {
           displayName: displayName,
+          email: email,
           gameTitle: gameTitle,
           score: score,
           games_Id: games_Id,
           timestamp: new Date().toISOString()
+          
         });
       }
     });
   }
+  
   
   
   getHighscoresForGame(gameId: string): Promise<any[]> {

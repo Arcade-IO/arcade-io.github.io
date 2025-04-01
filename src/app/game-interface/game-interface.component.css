@@ -2,10 +2,28 @@
 .container {
     display: flex;
     justify-content: center;
-    align-items: center;
     padding: 2vw;
+    margin: 0;
   }
-  
+  .chat{
+    height: 75vh;
+    margin:0%;
+    padding: 24px;
+    width: 20vw;
+    display: flex;
+    align-content: center;
+  }
+  .show-hideChat{
+
+    background: rgba(110, 110, 110, 0.600);
+    color: white;
+    border: 2px solid white;
+    border-radius: 25px;
+    padding: 0.25em 0.5em;
+    font-size: 1.5vw;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
   .game-container {
     display: flex;
     flex-direction: column;
@@ -15,7 +33,6 @@
     transition: all 0.3s ease;
     width: 1080px;
     height: 720px;
-
   }
   .game-header{
     display: flex;
@@ -73,7 +90,8 @@
 .score-input {
   display: flex;               /* Viser label, input og knap på samme linje */
   align-items: center;         /* Vertikal centrering */
-  justify-content: center;     /* Horisontal centrering */
+  justify-content: center;
+  flex-direction: column;     /* Horisontal centrering */
   gap: 1em;                    /* Afstand mellem elementerne */
 }
 
@@ -110,7 +128,7 @@
 
 /* Knap-styling */
 .score-input button {
-  background: none;
+  background: rgba(110, 110, 110, 0.600);
   color: white;
   border: 2px solid white;
   border-radius: 25px;

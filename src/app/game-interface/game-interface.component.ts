@@ -5,11 +5,12 @@ import { ActivatedRoute } from '@angular/router';
 import { FirebaseService } from '../services/firebase.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { get, ref } from 'firebase/database';
+import { ChatComponent } from '../chat/chat.component';
 
 @Component({
   selector: 'app-game-interface',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ChatComponent],
   templateUrl: './game-interface.component.html',
   styleUrls: ['./game-interface.component.css']
 })
@@ -29,7 +30,11 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
     private firebaseService: FirebaseService,
     private sanitizer: DomSanitizer
   ) {}
+  showChat: boolean = true;
 
+  toggleChat() {
+    this.showChat = !this.showChat;
+  }
   ngAfterViewInit() {
     this.gameId = this.route.snapshot.paramMap.get('gameId') || '';
 
@@ -139,12 +144,12 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
   //   }
   // }
   submitScore() {
-    const playerName = localStorage.getItem('playerName');
     const score = this.manualScore;
     const gameTitle = this.game?.title;
     const gameId = this.gameId;
+    const uid = localStorage.getItem('uid');
   
-    if (!playerName || !gameTitle || !gameId) {
+    if (!uid || !gameTitle || !gameId) {
       alert("Fejl: Mangler brugerdata eller spilinfo.");
       return;
     }
@@ -154,16 +159,25 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
       return;
     }
   
-    this.firebaseService.submitHighscore(playerName, gameTitle, score, gameId)
-      .then(() => {
-        alert("✅ Score sendt!");
-        this.manualScore = 0;
-      })
-      .catch((err) => {
-        console.error("❌ Fejl ved at sende score:", err);
-        alert("Kunne ikke sende score.");
-      });
+    this.firebaseService.getUserbyUID(uid).then(userData => {
+      const playerName = userData.displayName || 'Ukendt Spiller';
+      const email = userData.email || 'ukendt@email.dk';
+  
+      this.firebaseService.submitHighscore(playerName, email, gameTitle, score, gameId)
+        .then(() => {
+          alert("✅ Score sendt!");
+          this.manualScore = 0;
+        })
+        .catch((err) => {
+          console.error("❌ Fejl ved at sende score:", err);
+          alert("Kunne ikke sende score.");
+        });
+    }).catch(err => {
+      console.error("❌ Kunne ikke hente brugerdata:", err);
+      alert("Fejl ved hentning af brugerinfo.");
+    });
   }
+  
   
   
 }
