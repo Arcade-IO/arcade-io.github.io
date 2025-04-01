@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { Message } from './Message'
 
 @Component({
   selector: 'app-chat',
@@ -18,11 +19,15 @@ import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 export class ChatComponent implements AfterViewInit, AfterViewChecked {
   msg: Message[] = [];
   input: string = '';
-  private username: string | null = '';
+  private userName: string | null = '';
   private shouldScroll = true;
-
-  @ViewChild('chat', { static: false }) chat!: ElementRef;
-
+  
+  @ViewChild('chat', { static: false }) chat!: ElementRef;  
+  
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+  
   ngAfterViewInit(): void {
     const element: Element = this.chat?.nativeElement;
     element.addEventListener('scroll', this.onScroll.bind(this));
@@ -32,28 +37,27 @@ export class ChatComponent implements AfterViewInit, AfterViewChecked {
     const auth = getAuth();
     onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
-        this.username = user.displayName;
+        this.userName = user.displayName;
       }
     });
   }
 
+  //#region Message controle
   makeMessage() {
     if (this.input != '') {
-      this.msg.push(new Message(this.input, String(this.username)));
+      this.msg.push(new Message(this.input, String(this.userName)));
       this.input = '';
       this.chat.nativeElement.scrollTop = this.chat.nativeElement.scrollHeight;
     }
   }
+  //#endregion
 
+  //#region Scroll Controle
   onScroll() {
     const element: Element = this.chat?.nativeElement;
     const atBottom =
       element.scrollHeight <= element.clientHeight + element.scrollTop + 10;
     this.shouldScroll = atBottom;
-  }
-
-  ngAfterViewChecked() {
-    this.scrollToBottom();
   }
 
   private scrollToBottom() {
@@ -64,23 +68,6 @@ export class ChatComponent implements AfterViewInit, AfterViewChecked {
       }
     }
   }
-}
-
-
-
-
-
-class Message {
-  message: string;
-  uid: string | undefined;
-  userName: string;
-  timeStamp: Date;
-
-  constructor(message: string, userName: string) {
-    this.message = message;
-    this.userName = userName;
-    this.timeStamp = new Date();
-    this.uid = getAuth().currentUser?.uid;
-  }
+  //#endregion
 }
 // Alexander 24-03-25
