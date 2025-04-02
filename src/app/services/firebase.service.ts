@@ -11,7 +11,7 @@ import {
   updateProfile,
   sendEmailVerification
 } from 'firebase/auth';
-import { getDatabase, ref, set, get, update, push, onChildAdded } from 'firebase/database';
+import { getDatabase, ref, set, get, update, push, onChildAdded, remove } from 'firebase/database';
 import { environment } from '../environments/environment';
 import { initializeApp } from 'firebase/app';
 import { Message } from '../chat/Message';
@@ -403,6 +403,30 @@ export class FirebaseService {
       callback(snapshot.val());
     });
   }
+
+  async cleanOldMessages() {
+    const chatref = ref(database, "messages");
+
+    try {
+      const snapshot = await get(chatref);
+      if (snapshot.exists()) {
+        const messages = snapshot.val();
+        const n = Date.now();
+
+        Object.keys(messages).forEach(async (messageId) => {
+          const message = messages[messageId];
+          const messageTime = new Date(message.timeStamp).getTime();
+
+          if (n - messageTime > 3600000) {
+            await remove(ref(database, `messages/${messageId}`));
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error cleaning messages:", error);
+    }
+  }
+
   //#endregion
   // Alexander 01-04-2025
 

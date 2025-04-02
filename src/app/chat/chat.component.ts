@@ -38,6 +38,7 @@ export class ChatComponent implements AfterViewInit, AfterViewChecked {
   }
 
   ngOnInit() {
+    this.deleteOldMessages();
     const auth = getAuth();
     onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
@@ -62,6 +63,11 @@ export class ChatComponent implements AfterViewInit, AfterViewChecked {
       this.scrollToBottom();
     });
   }
+
+  deleteOldMessages() {
+    this.fire.cleanOldMessages();
+  }
+
   //#endregion
 
   //#region Scroll Controle
