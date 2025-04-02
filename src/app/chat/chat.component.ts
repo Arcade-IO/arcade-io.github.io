@@ -7,7 +7,8 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import { Message } from './Message'
+import { Message } from './Message';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-chat',
@@ -22,13 +23,16 @@ export class ChatComponent implements AfterViewInit, AfterViewChecked {
   private userName: string | null = '';
   private shouldScroll = true;
   
-  @ViewChild('chat', { static: false }) chat!: ElementRef;  
+  @ViewChild('chat', { static: false }) chat!: ElementRef;
+
+  constructor(private fire : FirebaseService) {}
   
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
   
   ngAfterViewInit(): void {
+    this.newMessages();
     const element: Element = this.chat?.nativeElement;
     element.addEventListener('scroll', this.onScroll.bind(this));
   }
@@ -44,11 +48,19 @@ export class ChatComponent implements AfterViewInit, AfterViewChecked {
 
   //#region Message controle
   makeMessage() {
-    if (this.input != '') {
-      this.msg.push(new Message(this.input, String(this.userName)));
+    if (this.input.trim() !== '') {
+      const m = new Message(this.input, String(this.userName));
+      this.fire.sendMessage(m);
       this.input = '';
       this.chat.nativeElement.scrollTop = this.chat.nativeElement.scrollHeight;
     }
+  }
+
+  newMessages() {
+    this.fire.listenForMessages((message) => {
+      this.msg.push(message);
+      this.scrollToBottom();
+    });
   }
   //#endregion
 

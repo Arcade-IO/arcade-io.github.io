@@ -11,7 +11,7 @@ import {
   updateProfile,
   sendEmailVerification
 } from 'firebase/auth';
-import { getDatabase, ref, set, get, update } from 'firebase/database';
+import { getDatabase, ref, set, get, update, push, onChildAdded } from 'firebase/database';
 import { environment } from '../environments/environment';
 import { initializeApp } from 'firebase/app';
 import { Message } from '../chat/Message';
@@ -385,14 +385,22 @@ export class FirebaseService {
   //  ------------------------------
 
  
-  sendMessage(
-    messageId: string,
-    message: Message
-  ): Promise<void> {
-    return set(ref(database, `messages/${messageId}`), {
+  sendMessage( message: Message ): Promise<void> {
+    
+    const chatref = ref(database, `messages/`);
+    
+    return push(chatref, {
       text: message.text,
       userName: message.userName,
       timeStamp: message.timeStamp.toISOString(),
+    }).then(() => {});
+  }
+
+
+  listenForMessages(callback: (message: Message) => void): void {
+    const chatref = ref(database, 'messages/');
+    onChildAdded(chatref, (snapshot) => {
+      callback(snapshot.val());
     });
   }
   //#endregion
