@@ -22,9 +22,6 @@ export class SettingsComponent implements OnInit {
   newUsername = '';
   currentUsername: string | null = '';
 
-  isChangeEmail = false;
-  newEmail = '';
-  currentEmail: string | null = '';
 
   isChangeTheme=false;
   backgroundColor = '';
@@ -33,24 +30,32 @@ export class SettingsComponent implements OnInit {
   constructor(private firebaseService: FirebaseService) {}
 
   ngOnInit() {
-
     const auth = getAuth();
     onAuthStateChanged(auth, async (user: User | null) => {
       if (user) {
         this.currentUsername = user.displayName || 'Not set';
+  
+        // Retrieve saved theme settings from localStorage
+        const savedThemeSettings = localStorage.getItem('themeSettings');
+        if (savedThemeSettings) {
+          const themeSettings = JSON.parse(savedThemeSettings);
+          this.backgroundColor = themeSettings.backgroundColor || '';
+          this.navbarColor = themeSettings.navbarColor || '';
+  
+          // Apply saved theme settings
+          document.body.style.backgroundColor = this.backgroundColor;
+          document.querySelector('.navbar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
+        }
       }
     });
-
-
-    
   }
+  
   
 
 
   optionChangePassword() {
     this.isChangePassword = true;
     this.isChangeUsername = false;
-    this.isChangeEmail = false;
     this.isChangeTheme=false;
 
   }
@@ -68,7 +73,7 @@ export class SettingsComponent implements OnInit {
       const user = this.firebaseService.getCurrentUser();
       if (user) {
         this.firebaseService.updateUserPassword(user.uid, this.newPassword)
-          .then(() => console.log('Password updated successfully'))
+          .then(() => alert('Password updated successfully'))
           .catch(error => console.error('Error updating password:', error));
       }
     } else {
@@ -79,7 +84,6 @@ export class SettingsComponent implements OnInit {
   optionChangeUsername() {
     this.isChangeUsername = true;
     this.isChangePassword = false;
-    this.isChangeEmail= false;
     this.isChangeTheme=false;
 
   }
@@ -114,26 +118,26 @@ export class SettingsComponent implements OnInit {
       }
     }).catch(error => console.error('Error checking username:', error));
   }
-
   saveThemeSettings() {
-    const user = this.firebaseService.getCurrentUser();
-    if (user) {
-      const themeSettings = {
-        backgroundColor: this.backgroundColor,
-        navbarColor: this.navbarColor
-      };
-      this.firebaseService.saveThemeSettings(user.uid, themeSettings)
-        .then(() => {
-          console.log('Theme updated!');
-        })
-        .catch(error => console.error('Error updating theme:', error));
-    }
+    const themeSettings = {
+      backgroundColor: this.backgroundColor,
+      navbarColor: this.navbarColor
+    };
+  
+    // Save theme settings to localStorage
+    localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
+  
+    // Apply the theme settings immediately
+    document.body.style.backgroundColor = this.backgroundColor;
+    document.querySelector('.navbar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
+    
+    alert('Theme updated successfully!');
   }
+  
   
   optionChangeTheme() {
     this.isChangePassword = false;
     this.isChangeUsername = false;
-    this.isChangeEmail = false;
     this.isChangeTheme=true;
   }
   updateBackgroundColor(event: any) {
@@ -147,34 +151,4 @@ export class SettingsComponent implements OnInit {
     document.querySelector('.navbar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
 
   }
-
-
- //submitNewEmail() {
-   // const user = this.firebaseService.getCurrentUser();
-   // if (user && this.newEmail) {
-     // this.firebaseService.updateEmail(this.newEmail)
-       // .then(() => {
-         // this.currentEmail = user.email;  
-          //console.log('Email updated successfully');
-         // this.currentEmail = this.newEmail;  // Update the current email
-        //})
-       // .catch(error => console.error('Error updating email:', error));
-    //} else {
-      //console.log('Please enter a valid email');
-   // }
-  } 
-
- //optionChangeEmail() {
-   // this.isChangeUsername = false;
-    //this.isChangePassword = false;
-    //this.isChangeEmail= true;
-  //
-
-  //updateEmail(event: any) {
-    //this.newEmail = event.target.value;
-  // }
-
-
-
-// }
-//selin 26-03-2025
+}
