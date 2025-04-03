@@ -1,17 +1,28 @@
 <div class="container" *ngIf="game">
+  <button class="show-hideChat" (click)="toggleChat()">
+    {{ showChat ? 'Skjul Chat' : 'Vis Chat' }}
+  </button>
+  <div class="chat" [class.hide]="!showChat">
+    <app-chat></app-chat>
+  </div>
+
   <div class="game-container">
+
     <div class="game-header">
+
       <img [src]="game.imageUrl" alt="{{ game.title }}" />
       <h2 class="game-title">{{ game.title }}</h2>
 
       <!-- Knap til at vise/skjule chat -->
-      <button class="show-hideChat" (click)="toggleChat()">
-        {{ showChat ? 'Skjul Chat' : 'Vis Chat' }}
-      </button>
 
       <div class="score-input">
         <label for="scoreInput">Indtast din score:</label>
-        <input id="scoreInput" type="number" [(ngModel)]="manualScore" placeholder="Skriv score her" />
+        <input
+          id="scoreInput"
+          type="number"
+          [(ngModel)]="manualScore"
+          placeholder="Skriv score her"
+        />
         <button (click)="submitScore()">Send Score</button>
       </div>
     </div>
@@ -22,12 +33,15 @@
       <app-chat *ngIf="showChat" gameId="{{gameId}}"></app-chat>
     </div>
 
+    <!-- Iframe til spillet -->
     <iframe
       [src]="safeUrl"
-      width="100vw"
-      height="100vh"
+      width="100%"
       id="unityGame"
       title="Unity WebGL Game">
     </iframe>
+
+    <!-- Chat placeres bag game-container, skjult til venstre -->
+
   </div>
 </div>
