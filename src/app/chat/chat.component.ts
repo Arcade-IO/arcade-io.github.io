@@ -4,6 +4,7 @@ import {
   ElementRef,
   ViewChild,
   AfterViewInit,
+  Input
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
@@ -20,6 +21,7 @@ import { FirebaseService } from '../services/firebase.service';
 export class ChatComponent implements AfterViewInit, AfterViewChecked {
   msg: Message[] = [];
   input: string = '';
+  @Input() gameId = '';
   private userName: string | null = '';
   private shouldScroll = true;
   
@@ -50,7 +52,7 @@ export class ChatComponent implements AfterViewInit, AfterViewChecked {
   //#region Message controle
   makeMessage() {
     if (this.input.trim() !== '') {
-      const m = new Message(this.input, String(this.userName));
+      const m = new Message(this.input, String(this.userName), this.gameId);
       this.fire.sendMessage(m);
       this.input = '';
       this.chat.nativeElement.scrollTop = this.chat.nativeElement.scrollHeight;
@@ -59,7 +61,8 @@ export class ChatComponent implements AfterViewInit, AfterViewChecked {
 
   newMessages() {
     this.fire.listenForMessages((message) => {
-      this.msg.push(message);
+      if (message.gameId == this.gameId)
+        this.msg.push(message);
       this.scrollToBottom();
     });
   }

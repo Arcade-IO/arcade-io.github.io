@@ -19,7 +19,7 @@
     <!-- Selve chatten. 
          Læg mærke til [class.show]="showChat" som tilføjer klassen .show, når showChat er true -->
     <div class="chat" [class.show]="showChat">
-      <app-chat *ngIf="showChat"></app-chat>
+      <app-chat *ngIf="showChat" gameId="{{gameId}}"></app-chat>
     </div>
 
     <iframe

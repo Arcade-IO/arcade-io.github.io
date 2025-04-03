@@ -383,29 +383,30 @@ export class FirebaseService {
   //  ------------------------------
   //  #region  Chat Functions 
   //  ------------------------------
-
- 
-  sendMessage( message: Message ): Promise<void> {
-    
+  
+  
+  sendMessage( message: Message): Promise<void> {
     const chatref = ref(database, `messages/`);
-    
+
     return push(chatref, {
       text: message.text,
       userName: message.userName,
       timeStamp: message.timeStamp.toISOString(),
+      gameId: message.gameId,
     }).then(() => {});
   }
 
 
   listenForMessages(callback: (message: Message) => void): void {
-    const chatref = ref(database, 'messages/');
+    const chatref = ref(database, `messages/`);
+    
     onChildAdded(chatref, (snapshot) => {
       callback(snapshot.val());
     });
   }
 
   async cleanOldMessages() {
-    const chatref = ref(database, "messages");
+    const chatref = ref(database, `messages/`);
 
     try {
       const snapshot = await get(chatref);

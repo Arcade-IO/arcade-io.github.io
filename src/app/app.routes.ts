@@ -23,7 +23,7 @@ export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AdminGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},  // New route
-  { path: 'chat', component: ChatComponent/*, canActivate: [AuthGuard]*/},  
+  // { path: 'chat', component: ChatComponent/*, canActivate: [AuthGuard]*/},  
   { path: 'games', component: GamesComponent, canActivate: [AdminGuard]},  
   { path: 'leaderboard', component: leaderboardComponent, canActivate: [AuthGuard]},  
   { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard]},  
