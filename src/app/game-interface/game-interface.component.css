@@ -1,7 +1,5 @@
 .container {
-  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   padding: 2vw;
   margin: 0;
@@ -24,6 +22,7 @@
 
 /* Knap styling som før */
 .show-hideChat {
+  position: static;
   background: none;
   color: white;
   border: 2px solid white;
@@ -38,23 +37,12 @@
   color: #3f72b5;
 }
 
-/* Chatten skal ligge i højre side og glide ind.
-   Start med at være gemt (transform: translateX(100%)) */
 .chat {
-  position: absolute;
-  top: 0;
-  right: 0;
-  /* Fast bredde, så du har kontrol over, hvor bred chatten skal være */
-  width: 300px;
-  height: 100%;
-  /* Baggrund kan være hvad du vil. Fx: */
-  background-color: rgba(0, 0, 0, 0.7);
-
-  /* Start: gemt ude til højre */
+  padding-top: 7vh ;
+  padding-right: 1vw;
+  height: 66vh;
   transform: translateX(100%);
   transition: transform 0.4s ease-in-out;
-  /* Evt. en kant/ramme: */
-  border-left: 2px solid white;
   overflow-y: auto; /* så chat kan scrolles */
 }
 
@@ -62,6 +50,9 @@
    så den glider ind på sin plads */
 .chat.show {
   transform: translateX(0);
+}
+.chat.hide {
+  transform: translateX(0%);
 }
 
 /* Resten af din CSS er som før */
