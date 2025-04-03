@@ -3,7 +3,7 @@
     {{ showChat ? 'Skjul Chat' : 'Vis Chat' }}
   </button>
   <div class="chat" [class.hide]="!showChat">
-    <app-chat></app-chat>
+    <app-chat gameId="{{gameId}}"></app-chat>
   </div>
 
   <div class="game-container">
