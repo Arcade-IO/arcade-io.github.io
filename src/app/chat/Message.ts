@@ -3,10 +3,12 @@ export class Message {
     text: string;
     userName: string;
     timeStamp: Date;
+    gameId: string;
   
-    constructor(message: string, userName: string) {
+    constructor(message: string, userName: string, gameId: string) {
       this.text = message;
       this.userName = userName;
+      this.gameId = gameId;
       this.timeStamp = new Date();
     }
 }

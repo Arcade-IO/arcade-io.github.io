@@ -18,13 +18,13 @@ input, button, select, textarea {
 /* Globale body-styles */
 html, body {
   margin: 0;
-  background-image: url('https://github.com/Arcade-IO/Arcade.IO/blob/main/src/assets/ARCADE.IO%20BACKGROUND.png?raw=true');
-  background-color: #040029; 
+  background:url(/assets/Next-Games-retro-background.png);
   position: relative; /* Important for absolute positioning of the buttons */
   background-size: cover; /* This ensures the image scales correctly */
   background-position: center center; /* This centers the image */
   background-repeat: no-repeat; /* Prevents repeating the image */
   height: 100vh;
+  background-color: grey;
 }
 
 /* Du kan her tilføje andre globale regler, fx for links */

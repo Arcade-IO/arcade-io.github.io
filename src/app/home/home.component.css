@@ -1,16 +1,12 @@
 /*Martin 25-03-2025*/
-/* Fullscreen container */
 .home-container {
-    height: 100vh;
-    background-image: url('https://github.com/Arcade-IO/Arcade.IO/blob/main/src/assets/ARCADE.IO-HOME.png?raw=true');
-    background-color: #040029;
-    color: white;
+    height: 90vh;
+    width: auto;
+    background: url(/assets/Next-Games-retro-home.png);
     padding: 45px;
     position: relative; /* Important for absolute positioning of the buttons */
-    background-size: cover; /* This ensures the image scales correctly */
-    background-position: center center; /* This centers the image */
+    background-position: center; /* This centers the image */
     background-repeat: no-repeat; /* Prevents repeating the image */
-    
 }
 /* Button container for top-right buttons */
 .button-container {
