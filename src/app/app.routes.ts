@@ -14,6 +14,7 @@ import { GameInterfaceComponent } from './game-interface/game-interface.componen
 import { AuthGuard } from './guards/auth.guard';
 import { SettingsComponent } from './settings/settings.component';
 import { leaderboardComponent } from './leaderboard/leaderboard.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -29,6 +30,8 @@ export const routes: Routes = [
   { path: 'navbar', component: NavbarComponent, canActivate: [AuthGuard]},  
   { path: 'game/:gameId', component: GameInterfaceComponent },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+
 ];
 //Add AdminGuard if you want the acces to be restricted so only Admins can acces 
 //Add AuthGuard if you want the acces to be restricted so only Users can acces

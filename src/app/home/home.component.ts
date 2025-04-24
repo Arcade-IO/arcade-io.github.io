@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
     // Rydder localStorage hver gang HomeComponent indlæses
         localStorage.clear();
         console.log('🧹 Cleared localStorage on HomeComponent load');
-  }
+  }  
 
   goToLogin(): void {
     this.router.navigate(['/login']);

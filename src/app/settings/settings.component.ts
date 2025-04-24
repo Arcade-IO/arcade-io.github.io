@@ -47,6 +47,8 @@ export class SettingsComponent implements OnInit {
           document.querySelector('.navbar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
         }
       }
+      this.optionChangeTheme();
+
     });
   }
   

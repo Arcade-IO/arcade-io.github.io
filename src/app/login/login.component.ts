@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { FirebaseService } from '../services/firebase.service';
 import { signInWithEmailAndPassword, getAuth, signOut } from 'firebase/auth';
 import { NgIf } from '@angular/common';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-login',
@@ -74,4 +76,10 @@ export class LoginComponent {
   goToSignup(): void {
     this.router.navigate(['/signup']);
   }
+  forgotPassword() {
+    this.router.navigate(['/forgot-password']);
+  }
+  
+
+  
 }

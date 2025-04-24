@@ -37,6 +37,10 @@ body {
   width: 100%;
   max-width: 350px;
 }
+input::placeholder {
+  color: white;
+  opacity: 1; 
+}
 
 /* Header */
 h2 {
