@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule }               from '@angular/common';
 import { Component, AfterViewInit, OnDestroy } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { FirebaseService } from '../services/firebase.service';
+import { FormsModule }                from '@angular/forms';
+import { ActivatedRoute }             from '@angular/router';
+import { FirebaseService }            from '../services/firebase.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { get, ref } from 'firebase/database';
-import { ChatComponent } from '../chat/chat.component';
+import { get, ref }                   from 'firebase/database';
+import { ChatComponent }              from '../chat/chat.component';
 
 @Component({
   selector: 'app-game-interface',
@@ -15,13 +15,12 @@ import { ChatComponent } from '../chat/chat.component';
   styleUrls: ['./game-interface.component.css']
 })
 export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
-  gameId: string = '';
-  game: any = null;
-  safeUrl: SafeResourceUrl | null = null;
-  manualScore: number = 0;
+  gameId:  string = '';
+  game:    any    = null;
+  safeUrl: SafeResourceUrl | null = null;   // ← brugt til iframe-src
 
-  private resendAttempts = 0;
-  private maxAttempts = 3;
+  private resendAttempts   = 0;
+  private maxAttempts      = 3;
   private resendInterval: any;
   private unityAcknowledged = false;
 
@@ -30,11 +29,12 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
     private firebaseService: FirebaseService,
     private sanitizer: DomSanitizer
   ) {}
-  showChat: boolean = true;
 
-  toggleChat() {
-    this.showChat = !this.showChat;
-  }
+  /* ---------- Chat-toggle ---------- */
+  showChat: boolean = true;
+  toggleChat() { this.showChat = !this.showChat; }
+
+  /* ---------- Lifecycle ---------- */
   ngAfterViewInit() {
     this.gameId = this.route.snapshot.paramMap.get('gameId') || '';
 
@@ -45,11 +45,10 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
       console.error('Invalid game ID');
     }
 
-    // Unity READY listener
-    // window.addEventListener('message', this.handleHighScoreMessage.bind(this));
-    window.addEventListener('message', this.handleUnityAck.bind(this));
+    /*  Lyt efter UNITY_ACK + highscore-events  */
+    window.addEventListener('message', this.handleUnityMessages.bind(this));
 
-    // Delay first send
+    /*  Send UID + navn til Unity, og (gen)send op til 3 gange  */
     setTimeout(() => {
       this.sendStoredDataToUnity();
       this.beginResendLoop();
@@ -58,30 +57,27 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     clearInterval(this.resendInterval);
-    // window.removeEventListener('message', this.handleHighScoreMessage.bind(this));
-    window.removeEventListener('message', this.handleUnityAck.bind(this));
+    window.removeEventListener('message', this.handleUnityMessages.bind(this));
   }
 
+  /* ---------- Resend-loop ---------- */
   private beginResendLoop() {
     this.resendInterval = setInterval(() => {
       if (this.unityAcknowledged || this.resendAttempts >= this.maxAttempts) {
         clearInterval(this.resendInterval);
-        if (this.unityAcknowledged) {
-          console.log("✅ Unity acknowledged player data.");
-        } else {
-          console.warn("⚠️ Unity never acknowledged player data after 3 attempts.");
-        }
+        if (!this.unityAcknowledged)
+          console.warn('⚠️ Unity never acknowledged player data after 3 attempts.');
         return;
       }
-
       this.resendAttempts++;
       console.log(`🔁 Attempt #${this.resendAttempts} to resend UID & playerName to Unity...`);
       this.sendStoredDataToUnity();
     }, 5000);
   }
 
+  /* ---------- Send UID + navn til Unity ---------- */
   private sendStoredDataToUnity() {
-    const uid = localStorage.getItem('uid');
+    const uid        = localStorage.getItem('uid');
     const playerName = localStorage.getItem('playerName');
 
     if (!uid || !playerName) {
@@ -90,31 +86,67 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
     }
 
     const iframe = document.querySelector('iframe') as HTMLIFrameElement;
-
-    if (iframe && iframe.contentWindow) {
-      iframe.contentWindow.postMessage(
-        { type: 'SET_PLAYER_DATA', uid, name: playerName },
-        '*'
-      );
-      console.log('📤 Sent UID & Player Name to Unity:', uid, playerName);
-    }
+    iframe?.contentWindow?.postMessage({ type: 'SET_PLAYER_DATA', uid, name: playerName }, '*');
+    console.log('📤 Sent UID & Player Name to Unity:', uid, playerName);
   }
 
-  private handleUnityAck(event: MessageEvent) {
+  /* ---------- Unity-hændelser ---------- */
+  private handleUnityMessages(event: MessageEvent) {
     if (event.data === 'UNITY_ACK') {
-      console.log("✅ Received UNITY_ACK from Unity");
+      console.log('✅ Received UNITY_ACK from Unity');
       this.unityAcknowledged = true;
+      return;
+    }
+
+    if (event.data?.type === 'UPDATE_HIGHSCORE') {
+      console.log('🎯 Received high score data from Unity:', event.data.data);
+      this.pushHighscoreToFirebase(event.data.data);
     }
   }
 
+  /* ---------- Gem highscore i Firebase ---------- */
+  private async pushHighscoreToFirebase(highscoreData: { userId: string; score: number }) {
+    const { userId, score } = highscoreData;
+    const storedUid = localStorage.getItem('uid');
+    if (!storedUid || storedUid !== userId) {
+      console.error('❌ Invalid userId received from Unity:', userId);
+      return;
+    }
+
+    const gameTitle = this.game?.title;
+    const gameId    = this.gameId;
+    if (!gameTitle || !gameId) {
+      console.error('❌ Missing game information – cannot save highscore.');
+      return;
+    }
+
+    try {
+      const userData   = await this.firebaseService.getUserbyUID(userId);
+      const playerName = userData.displayName || 'Ukendt Spiller';
+      const email      = userData.email       || 'ukendt@email.dk';
+
+      await this.firebaseService.submitHighscore(
+        playerName,
+        email,
+        gameTitle,
+        score,
+        gameId
+      );
+      console.log('✅ Highscore saved to Firebase (automatic)');
+    } catch (err) {
+      console.error('❌ Error while saving highscore:', err);
+    }
+  }
+
+  /* ---------- Hent spil-detaljer ---------- */
   async fetchGameDetails(gameId: string) {
     try {
       const database = this.firebaseService.getDatabase();
-      const gameRef = ref(database, `games/${gameId}`);
+      const gameRef  = ref(database, `games/${gameId}`);
       const snapshot = await get(gameRef);
 
       if (snapshot.exists()) {
-        this.game = snapshot.val();
+        this.game    = snapshot.val();
         this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.game.netlifyUrl);
         console.log('Game fetched:', this.game);
       } else {
@@ -124,60 +156,4 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
       console.error('Error fetching game:', error);
     }
   }
-
-  // handleHighScoreMessage(event: MessageEvent) {
-  //   if (event.data.type === 'UPDATE_HIGHSCORE') {
-  //     const highscoreData = event.data.data;
-
-  //     console.log("🎯 Received high score data from Unity:", highscoreData);
-
-  //     const userIdFromUnity = highscoreData.userId;
-  //     const score = highscoreData.score;
-  //     const storedUid = localStorage.getItem('uid');
-
-  //     if (!storedUid || storedUid !== userIdFromUnity) {
-  //       console.error('❌ Invalid userId received from Unity:', userIdFromUnity);
-  //       return;
-  //     }
-
-  //     // TODO: Add your highscore logic here
-  //   }
-  // }
-  submitScore() {
-    const score = this.manualScore;
-    const gameTitle = this.game?.title;
-    const gameId = this.gameId;
-    const uid = localStorage.getItem('uid');
-  
-    if (!uid || !gameTitle || !gameId) {
-      alert("Fejl: Mangler brugerdata eller spilinfo.");
-      return;
-    }
-  
-    if (!score || score <= 0) {
-      alert("Score skal være større end 0.");
-      return;
-    }
-  
-    this.firebaseService.getUserbyUID(uid).then(userData => {
-      const playerName = userData.displayName || 'Ukendt Spiller';
-      const email = userData.email || 'ukendt@email.dk';
-  
-      this.firebaseService.submitHighscore(playerName, email, gameTitle, score, gameId)
-        .then(() => {
-          alert("✅ Score sendt!");
-          this.manualScore = 0;
-        })
-        .catch((err) => {
-          console.error("❌ Fejl ved at sende score:", err);
-          alert("Kunne ikke sende score.");
-        });
-    }).catch(err => {
-      console.error("❌ Kunne ikke hente brugerdata:", err);
-      alert("Fejl ved hentning af brugerinfo.");
-    });
-  }
-  
-  
-  
 }

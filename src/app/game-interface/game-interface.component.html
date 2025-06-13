@@ -2,31 +2,17 @@
   <button class="show-hideChat" (click)="toggleChat()">
     {{ showChat ? 'Skjul Chat' : 'Vis Chat' }}
   </button>
+
   <div class="chat" [class.hide]="!showChat">
-    <app-chat gameId="{{gameId}}"></app-chat>
+    <app-chat [gameId]="gameId"></app-chat>
   </div>
 
   <div class="game-container">
-
     <div class="game-header">
-
       <img [src]="game.imageUrl" alt="{{ game.title }}" />
       <h2 class="game-title">{{ game.title }}</h2>
-
-      <!-- Knap til at vise/skjule chat -->
-
-      <div class="score-input">
-        <label for="scoreInput">Indtast din score:</label>
-        <input
-          id="scoreInput"
-          type="number"
-          [(ngModel)]="manualScore"
-          placeholder="Skriv score her"
-        />
-        <button (click)="submitScore()">Send Score</button>
-      </div>
+      <!-- score-input SEKSIONEN ER FJERNET -->
     </div>
-
 
     <iframe
       [src]="safeUrl"
@@ -34,8 +20,5 @@
       id="unityGame"
       title="Unity WebGL Game">
     </iframe>
-
-    <!-- Chat placeres bag game-container, skjult til venstre -->
-
   </div>
 </div>
