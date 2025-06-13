@@ -139,21 +139,40 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
   }
 
   /* ---------- Hent spil-detaljer ---------- */
-  async fetchGameDetails(gameId: string) {
-    try {
-      const database = this.firebaseService.getDatabase();
-      const gameRef  = ref(database, `games/${gameId}`);
-      const snapshot = await get(gameRef);
+async fetchGameDetails(gameId: string) {
+  try {
+    const database = this.firebaseService.getDatabase();
+    const gameRef  = ref(database, `games/${gameId}`);
+    const snapshot = await get(gameRef);
 
-      if (snapshot.exists()) {
-        this.game    = snapshot.val();
-        this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.game.netlifyUrl);
-        console.log('Game fetched:', this.game);
-      } else {
-        console.error('No game found with ID:', gameId);
-      }
-    } catch (error) {
-      console.error('Error fetching game:', error);
+    if (!snapshot.exists()) {
+      console.error('⚠️ No game found with ID:', gameId);
+      return;
     }
+
+    // 1) Gem det hentede spil
+    const data: any = snapshot.val();
+    this.game = data;
+
+    // 2) Træk uid og playerName fra localStorage
+    const uid        = localStorage.getItem('uid')       || '';
+    const playerName = localStorage.getItem('playerName') || '';
+
+    // 3) Byg URL med parametre
+    const baseUrl = data.netlifyUrl;
+    const urlWithParams = `${baseUrl}` +
+      `?uid=${encodeURIComponent(uid)}` +
+      `&name=${encodeURIComponent(playerName)}`;
+
+    // 4) Lav safeUrl af det
+    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(urlWithParams);
+
+    console.log('✅ Game fetched:', data);
+    console.log('🔗 iframe URL:', urlWithParams);
+
+  } catch (error) {
+    console.error('❌ Error fetching game:', error);
   }
+}
+
 }
