@@ -5,6 +5,7 @@
   margin: 0;
   overflow: hidden;
   min-height: 100vh;
+  min-width: 25vw;
 }
 
 /* Sørg for, at .game-container er position: relative,

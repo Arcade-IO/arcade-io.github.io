@@ -140,20 +140,12 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
 
   /* ---------- Hent spil-detaljer ---------- */
   async fetchGameDetails(gameId: string) {
-    try {
-      const database = this.firebaseService.getDatabase();
-      const gameRef  = ref(database, `games/${gameId}`);
-      const snapshot = await get(gameRef);
+const uid        = localStorage.getItem('uid')       || '';
+const playerName = localStorage.getItem('playerName') || '';
+const urlWithParams = `${this.game.netlifyUrl}` +
+  `?uid=${encodeURIComponent(uid)}` +
+  `&name=${encodeURIComponent(playerName)}`;
+this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(urlWithParams);
 
-      if (snapshot.exists()) {
-        this.game    = snapshot.val();
-        this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.game.netlifyUrl);
-        console.log('Game fetched:', this.game);
-      } else {
-        console.error('No game found with ID:', gameId);
-      }
-    } catch (error) {
-      console.error('Error fetching game:', error);
-    }
   }
 }
