@@ -1,34 +1,37 @@
 .container {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 2vw;
   margin: 0;
   overflow: hidden;
-  min-height: 100vh;
   min-width: 25vw;
+  z-index: 1;
 }
 
 /* Sørg for, at .game-container er position: relative,
    så .chat kan placeres absolut inden i .game-container */
 .game-container {
-  position: relative; /* Tilføj denne linje */
+  position: relative;    /* gøres til reference for absolut placering */
   border: 2px solid white;
   border-radius: 25px;
-  width: auto;
   overflow: hidden;
+  width: 60vw;
   display: flex;
   flex-direction: column;
-  margin-bottom: 2em;
+  margin-bottom: 7.5em;
+  z-index: 1;
+  margin-top: 2em;
 }
 
 /* Knap styling som før */
 .show-hideChat {
-  position: static;
   background: none;
   color: white;
   border: 2px solid white;
   border-radius: 25px;
   padding: 0.5em 1em;
+  height: 6vh;
   font-size: clamp(12px, 1.5vw, 16px);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -39,12 +42,13 @@
 }
 
 .chat {
-  padding-top: 5vh ;
   padding-right: 1vw;
-  height: 50vh;
-  transform: translateX(120%);
+  height: 59vh;
+  width: auto;
+  transform: translateX(-100%);
   transition: transform 0.4s ease-in-out;
   overflow-y: auto; /* så chat kan scrolles */
+  z-index: -0;
 }
 
 /* Når .show tilføjes, sætter vi transform til 0, 
@@ -53,13 +57,16 @@
   transform: translateX(0);
 }
 .chat.hide {
-  transform: translateX(0%);
+  transform: translateX(10%);
 }
 
 /* Resten af din CSS er som før */
 .game-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  /* evt. mellemrum imellem ikon og knap */
+  gap: 0.5em;
   border-bottom: 2px solid white;
   padding: 0.5em 1em;
 }

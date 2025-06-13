@@ -1,23 +1,28 @@
-<div class="container" *ngIf="game">
-  <button class="show-hideChat" (click)="toggleChat()">
-    {{ showChat ? 'Skjul Chat' : 'Vis Chat' }}
-  </button>
 
-  <div class="chat" [class.hide]="!showChat">
-    <app-chat [gameId]="gameId"></app-chat>
-  </div>
+
+<div class="container" *ngIf="game">
 
   <div class="game-container">
     <div class="game-header">
       <img [src]="game.imageUrl" alt="{{ game.title }}" />
+
+      <!-- Flyt knappen ind her -->
+
+
       <h2 class="game-title">{{ game.title }}FISH</h2>
+              <button class="show-hideChat" (click)="toggleChat()">
+        {{ showChat ? '>' : '<' }}
+      </button>
     </div>
 
     <iframe
       [src]="safeUrl"
-      width="100%"
       id="unityGame"
       title="Unity WebGL Game">
     </iframe>
+  </div>
+    <div class="chat" [class.hide]="!showChat"> 
+
+    <app-chat [gameId]="gameId"></app-chat>
   </div>
 </div>
