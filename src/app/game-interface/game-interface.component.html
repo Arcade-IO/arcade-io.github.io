@@ -1,5 +1,3 @@
-
-
 <div class="container" *ngIf="game">
 
   <div class="game-container">
@@ -7,10 +5,8 @@
       <img [src]="game.imageUrl" alt="{{ game.title }}" />
 
       <!-- Flyt knappen ind her -->
-
-
-      <h2 class="game-title">{{ game.title }}FISH</h2>
-              <button class="show-hideChat" (click)="toggleChat()">
+      <h2 class="game-title">{{ game.title }}</h2>
+      <button class="show-hideChat" (click)="toggleChat()">
         {{ showChat ? '>' : '<' }}
       </button>
     </div>
@@ -21,8 +17,10 @@
       title="Unity WebGL Game">
     </iframe>
   </div>
-    <div class="chat" [class.hide]="!showChat"> 
 
+  <!-- Her bruger vi *ngIf i stedet for transform -->
+  <div class="chat" *ngIf="showChat">
     <app-chat [gameId]="gameId"></app-chat>
   </div>
+
 </div>
