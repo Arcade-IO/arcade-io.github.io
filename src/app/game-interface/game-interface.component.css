@@ -58,7 +58,7 @@
   
   /* CHAT: fjern transform og leg med *ngIf i stedet */
   .chat {
-    margin-top: 7.5em;
+    margin-top: 5.5em;
     padding-left: 1vw;
     height: 59vh;
     width: auto;

@@ -11,11 +11,11 @@
 /* Button container for top-right buttons */
 .button-container {
     position: absolute;
-    top: 63%;              /* Justér op/ned-position */
+    top: 70%;              /* Justér op/ned-position */
     left: 50%;             /* Justér vandret position */
     transform: translate(-50%, -50%);
     display: flex;
-    gap: 100px;
+    gap: 2.5em;
 }
 /* Style for all buttons (Admin, Login, Sign Up) */
 .button {
