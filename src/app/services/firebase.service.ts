@@ -430,5 +430,10 @@ export class FirebaseService {
 
   //#endregion
   // Alexander 01-04-2025
-
+  updateGame(gameId: string, updates: { title?: string; description?: string; netlifyUrl?: string }): Promise<void> {
+    return update(ref(this.getDatabase(), `games/${gameId}`), {
+      ...updates,
+      updatedAt: new Date().toISOString()
+    });
+  }
 }
