@@ -55,6 +55,7 @@
 
 
 <!-- Admin-overlay / modal -->
+<!-- Admin-overlay / modal -->
 <div *ngIf="showEditor" class="edit-backdrop">
   <div class="edit-panel">
     <h3>Edit Game information</h3>
@@ -74,9 +75,15 @@
       <input [(ngModel)]="editedGame.netlifyUrl" />
     </label>
 
+    <label>
+      Image URL
+      <input [(ngModel)]="editedGame.imageUrl" />
+    </label>
+
     <div class="btn-row">
       <button (click)="saveEdits()">SAVE</button>
       <button (click)="cancelEdits()">CANCEL</button>
     </div>
   </div>
 </div>
+

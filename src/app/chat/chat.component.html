@@ -1,16 +1,22 @@
-<!--Aleksander 25-03-2025-->
-<div class="window">
-    <div #chat class="message-window">
-        @for (ms of msg; track ms.timeStamp) {
-            <div class="messageBlock">
-                <p class="messageUser"><span>{{ ms.userName || 'Anonymous' }}</span></p>
-                <p class="messageText">{{ ms.text }}</p>
-            </div>
-        }
-    </div>
-    <div class="textInput">        
-        <input type="text" [(ngModel)]="input" (keydown.enter)="makeMessage()">
-        <button (click)="makeMessage()">test</button>
-    </div>
+<!-- Aleksander 25-03-2025 -->
+<div class="chat-window">
+  <div #chat class="message-list">
+    @for (ms of msg; track ms.timeStamp) {
+      <div class="message">
+        <p class="message-user"><strong>{{ ms.userName || 'Anonymous' }}</strong></p>
+        <p class="message-text">{{ ms.text }}</p>
+      </div>
+    }
+  </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="input"
+      placeholder="Write a message..."
+      (keydown.enter)="makeMessage()"
+    />
+    <button (click)="makeMessage()">➤</button>
+  </div>
 </div>
-<!--Aleksander 25-03-2025-->
+<!-- Aleksander 25-03-2025 -->

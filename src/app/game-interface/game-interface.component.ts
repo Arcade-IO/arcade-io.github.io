@@ -220,19 +220,20 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
     this.showEditor = true;
   }
 
-  saveEdits() {
-    const { title, description, netlifyUrl } = this.editedGame;
+saveEdits() {
+  const { title, description, netlifyUrl, imageUrl } = this.editedGame;
 
-    this.firebaseService
-      .updateGame(this.gameId, { title, description, netlifyUrl })
-      .then(() => {
-        Object.assign(this.game, { title, description, netlifyUrl });
-        this.updateSafeUrl();         // opdatér iframe hvis URL blev ændret
-        this.showEditor = false;
-        console.log('✅ Game changes saved');
-      })
-      .catch(err => console.error('❌ Kunne ikke gemme spil-redigering:', err));
-  }
+  this.firebaseService
+    .updateGame(this.gameId, { title, description, netlifyUrl, imageUrl })
+    .then(() => {
+      Object.assign(this.game, { title, description, netlifyUrl, imageUrl });
+      this.updateSafeUrl();         // opdatér iframe hvis URL blev ændret
+      this.showEditor = false;
+      console.log('✅ Game changes saved');
+    })
+    .catch(err => console.error('❌ Kunne ikke gemme spil-redigering:', err));
+}
+
 
   cancelEdits() {
     this.showEditor = false;
