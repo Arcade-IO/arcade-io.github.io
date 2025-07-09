@@ -1,128 +1,186 @@
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2vw;
-  margin: 0;
-  overflow: hidden;
-  min-width: 25vw;
-  z-index: 1;
-}
+/* -------------------------------------------------
+   Eksisterende styling
+   ------------------------------------------------- */
+   .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    overflow: hidden;
+    min-width: 25vw;
+    z-index: 1;
+  }
+  
+  /* Sørg for, at .game-container er position: relative */
+  .game-container {
+    position: relative;
+    border: 2px solid white;
+    border-radius: 25px;
+    overflow: hidden;
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+  }
+  
+  .fullscreen-btn {
+    background: none;
+    color: white;
+    border: 2px solid white;
+    border-radius: 25px;
+    padding: 0.5em 1em;
+    height: 6vh;
+    font-size: clamp(12px, 1.5vw, 16px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .fullscreen-btn:hover {
+    background: white;
+    color: #3f72b5;
+  }
+  
+  /* Knapstyling – uændret */
+  .show-hideChat {
+    background: none;
+    color: white;
+    border: 2px solid white;
+    border-radius: 25px;
+    padding: 0.5em 1em;
+    height: 6vh;
+    font-size: clamp(12px, 1.5vw, 16px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .show-hideChat:hover {
+    background: white;
+    color: #3f72b5;
+  }
+  
+  /* CHAT: fjern transform og leg med *ngIf i stedet */
+  .chat {
+    margin-top: 5.5em;
+    padding-left: 1vw;
+    height: 59vh;
+    width: auto;
+    overflow-y: auto;
+    /* hvis du vil have en fin baggrund: */
+    /* background: rgba(0,0,0,0.5); */
+    z-index: 0;
+  }
+  
+  .game-description {
+    margin: 1em auto;
+    padding: 1em;
+    border: 2px solid white;
+    border-radius: 25px;
+    background: rgba(0,0,0,0.4);
+    color: white;
+    font-size: clamp(14px, 1.4vw, 18px);
+    line-height: 1.4;
+    max-width: 75%;
+    text-align: center;
+  }
+  .game-description h3 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+  }
+  
+  .game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5em;
+    border-bottom: 2px solid white;
+    padding: 0.5em 1em;
+  }
+  .game-header img {
+    height: 60px;
+    margin-right: 20px;
+    border-radius: 25px;
+  }
+  .game-title {
+    color: white;
+    font-weight: 600;
+    font-size: clamp(16px, 2vw, 24px);
+    margin: 0;
+  }
+  
+  iframe {
+    display: block;
+    border: none;
+    width: 100%;
+    height: 60vh;
+    aspect-ratio: unset;
+  }
+  iframe::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* -------------------------------------------------
+     Admin-editor overlay
+     ------------------------------------------------- */
+  .edit-backdrop {
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .edit-panel {
+    background: #222;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    padding: 1.5em 2em;
+    width: min(90vw, 450px);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+  
+  .edit-panel label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+  }
+  
+  .edit-panel input,
+  .edit-panel textarea {
+    margin-top: 0.25em;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0.4em 0.6em;
+    background: #000;
+    color: #fff;
+  }
+  
+  .btn-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5em;
+  }
+  .error-message{
+    padding-top: 0.5em;
+    color: red;
+    display: flex;
+    justify-content: center;
 
-/* Sørg for, at .game-container er position: relative */
-.game-container {
-  position: relative;
-  border: 2px solid white;
-  border-radius: 25px;
-  overflow: hidden;
-  width: 60vw;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 7.5em;
-  margin-top: 2em;
-  z-index: 1;
-}
-
-/* Knapstyling – uændret */
-.show-hideChat {
-  background: none;
-  color: white;
-  border: 2px solid white;
-  border-radius: 25px;
-  padding: 0.5em 1em;
-  height: 6vh;
-  font-size: clamp(12px, 1.5vw, 16px);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.show-hideChat:hover {
-  background: white;
-  color: #3f72b5;
-}
-
-/* CHAT: fjern transform og leg med *ngIf istedet */
-.chat {
-  padding-left: 1vw;
-  height: 59vh;
-  width: auto;
-  overflow-y: auto;
-  /* hvis du vil have en fin baggrund: */
-  /* background: rgba(0,0,0,0.5); */
-  z-index: 0;
-}
-
-/* Resten af din CSS uændret */
-.game-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5em;
-  border-bottom: 2px solid white;
-  padding: 0.5em 1em;
-}
-.game-header img {
-  height: 60px;
-  margin-right: 20px;
-  border-radius: 25px;
-}
-.game-title {
-  color: white;
-  font-weight: 600;
-  font-size: clamp(16px, 2vw, 24px);
-  margin: 0;
-}
-iframe {
-  display: block;
-  border: none;
-  width: 100%;
-  height: 60vh;
-  aspect-ratio: unset;
-}
-iframe::-webkit-scrollbar {
-  display: none;
-}
-.score-input {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 1em;
-  padding: 1em;
-  padding-left: 20vw;
-}
-.score-input label {
-  font-size: clamp(12px, 1.5vw, 16px);
-  color: white;
-}
-.score-input input[type="number"] {
-  background: none;
-  border: 2px solid white;
-  border-radius: 25px;
-  padding: 0.5em 1em;
-  font-size: clamp(12px, 1.5vw, 16px);
-  color: white;
-  transition: all 0.3s ease;
-  outline: none;
-  text-align: center;
-  width: 10vw;
-}
-.score-input input[type="number"]::placeholder {
-  color: #ccc;
-}
-.score-input input[type="number"]:focus {
-  border-color: #3f72b5;
-}
-.score-input button {
-  background: none;
-  color: white;
-  border: 2px solid white;
-  border-radius: 25px;
-  padding: 0.5em 1em;
-  font-size: clamp(12px, 1.5vw, 16px);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.score-input button:hover {
-  background: white;
-  color: #3f72b5;
-}
+  }
+  .btn-row button {
+    padding: 0.4em 1em;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #fff;
+    background: #3f72b5;
+    color: #fff;
+  }
+  
+  .btn-row button:last-child {
+    background: transparent;
+  }
+  
