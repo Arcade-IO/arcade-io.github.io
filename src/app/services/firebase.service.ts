@@ -430,5 +430,59 @@ export class FirebaseService {
 
   //#endregion
   // Alexander 01-04-2025
+  updateGame(gameId: string, updates: { title?: string; description?: string; netlifyUrl?: string }): Promise<void> {
+    return update(ref(this.getDatabase(), `games/${gameId}`), {
+      ...updates,
+      updatedAt: new Date().toISOString()
+    });
+  }
+
+
+
+
+
+
+
+
+  //image-Uploader
+
+saveImageMetadata(name: string, url: string): Promise<void> {
+  const db = this.getDatabase();
+  const id = Date.now().toString();
+  return set(ref(db, `uploadedImages/${id}`), {
+    name,
+    url,
+    createdAt: new Date().toISOString()
+  });
+}
+
+getImagesByName(searchTerm: string): Promise<{ id: string; name: string; url: string }[]> {
+  const db = this.getDatabase();
+  const imagesRef = ref(db, 'uploadedImages');
+
+  return get(imagesRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return Object.entries(data)
+        .map(([id, item]: [string, any]) => ({
+          id,
+          name: item.name,
+          url: item.url
+        }))
+        .filter((img) =>
+          img.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+    return [];
+  });
+}
+
+
+
+deleteImageMetadata(id: string): Promise<void> {
+  const db = this.getDatabase();
+  return set(ref(db, `uploadedImages/${id}`), null);
+}
+
 
 }
