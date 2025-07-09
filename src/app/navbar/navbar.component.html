@@ -6,6 +6,9 @@
     <li *ngIf="isAdmin">
       <a [routerLink]="['/admin-dashboard']" routerLinkActive="active">Administration</a>
     </li>
+    <li *ngIf="isAdmin">
+      <a [routerLink]="['/image-uploader']" routerLinkActive="active">Image uploader</a>
+    </li>
     <li>
       <a [routerLink]="['/dashboard']" routerLinkActive="active">Dashboard</a>
     </li>
