@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  color: inherit; /* Arv global farve */
 }
 
 /* Body Styling */
@@ -12,6 +13,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 0;
+  color: inherit; /* Vigtigt */
 }
 
 /* Main Container */
@@ -28,7 +30,7 @@ body {
 .login-box {
   background-color: rgba(255, 255, 255, 0);
   padding: 30px;
-  border: 5px solid rgb(255, 255, 255);
+  border: 5px solid currentColor;
   border-radius: 50px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -36,14 +38,14 @@ body {
 }
 
 input::placeholder {
-  color: white;
-  opacity: 1; /* Makes sure it's not faded */
+  opacity: 1;
+  color: inherit;
 }
 
 /* Header */
 h2 {
-  color: rgb(255, 255, 255);
   margin-bottom: 20px;
+  color: inherit;
 }
 
 /* Input Group */
@@ -53,19 +55,19 @@ h2 {
 
 /* Input Fields */
 input {
-  background-color: #3f72b500;
+  background-color: transparent;
   width: 100%;
   padding: 12px;
   border: 2px solid #ccc;
   border-radius: 25px;
   font-size: 16px;
   margin-bottom: 10px;
-  color: rgb(255, 255, 255);
+  color: inherit;
   transition: border-color 0.3s ease;
 }
 
 input:focus {
-  border-color: #ffffff;
+  border-color: currentColor;
   outline: none;
 }
 
@@ -73,9 +75,9 @@ input:focus {
 .login-btn {
   width: 100%;
   padding: 12px;
-  background-color: #3f72b500;
-  color: #fff;
-  border: 2px solid #ffffff;
+  background-color: transparent;
+  color: inherit;
+  border: 2px solid currentColor;
   border-radius: 25px;
   font-size: 16px;
   cursor: pointer;
@@ -83,20 +85,20 @@ input:focus {
 }
 
 .login-btn:hover {
-  background: linear-gradient(145deg, #0000003b, #00000049); /* Hover effect */
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* Signup Text */
 .signup-text {
   text-align: center;
   margin-top: 15px;
-  color: white;
+  color: inherit;
 }
 
 /* Signup Button */
 .signup-btn {
   background: none;
-  color: #a8c0ff;  /* Blue matching the gradient */
+  color: inherit;
   border: none;
   font-size: 16px;
   cursor: pointer;
@@ -104,9 +106,30 @@ input:focus {
 }
 
 .signup-btn:hover {
-  color: #3f72b5; /* Darker blue on hover */
   text-decoration: underline;
 }
+
+/* Forgot Password Text */
+.forgot-password-text {
+  text-align: center;
+  margin-top: 15px;
+  color: inherit;
+}
+
+.forgot-password-btn {
+  background: none;
+  color: inherit;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.forgot-password-btn:hover {
+  text-decoration: underline;
+}
+
+/* Error Message */
 .error-box {
   margin-top: 20px;
   background-color: rgba(255, 0, 0, 0.5);
@@ -118,28 +141,4 @@ input:focus {
   text-align: center;
   font-size: 16px;
   border: 2px solid red;
-}
-
-
-
-/* Signup Text */
-.forgot-password-text {
-  text-align: center;
-  margin-top: 15px;
-  color: white;
-}
-
-/* Signup Button */
-.forgot-password-btn {
-  background: none;
-  color: #a8c0ff;  /* Blue matching the gradient */
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.forgot-password-btn:hover {
-  color: #3f72b5; /* Darker blue on hover */
-  text-decoration: underline;
 }

@@ -8,17 +8,25 @@
     </ul>
   </div>
 
-  
-
   <div class="content">
     <!-- Change Password Section -->
     <div *ngIf="isChangePassword">
       <h2>Change Password</h2>
       <div class="input-group">
-        <input type="password" [value]="newPassword" (input)="updatePassword($event)" placeholder="New Password" />
+        <input
+          type="password"
+          [value]="newPassword"
+          (input)="updatePassword($event)"
+          placeholder="New Password"
+        />
       </div>
       <div class="input-group">
-        <input type="password" [value]="confirmPassword" (input)="updateConfirmPassword($event)" placeholder="Confirm Password" />
+        <input
+          type="password"
+          [value]="confirmPassword"
+          (input)="updateConfirmPassword($event)"
+          placeholder="Confirm Password"
+        />
       </div>
       <button (click)="submitNewPassword()">Submit</button>
     </div>
@@ -26,27 +34,41 @@
     <!-- Change Username Section -->
     <div *ngIf="isChangeUsername">
       <h2>Change Username</h2>
-      <p>Current Username: {{ currentUsername || 'Not set' }}</p><br>
+      <p>Current Username: {{ currentUsername || 'Not set' }}</p><br />
       <div class="input-group">
-        <input type="text" [value]="newUsername" (input)="updateUsername($event)" placeholder="New Username" />
+        <input
+          type="text"
+          [value]="newUsername"
+          (input)="updateUsername($event)"
+          placeholder="New Username"
+        />
       </div>
-     
       <button (click)="submitNewUsername()">Submit</button>
     </div>
 
+    <!-- Change Theme Section -->
     <div *ngIf="isChangeTheme">
       <h2>Change Theme</h2>
       <div>
         <label for="bgColor">Background Color: </label>
-        <input type="color" id="bgColor" (input)="updateBackgroundColor($event)" />
+        <input
+          type="color"
+          id="bgColor"
+          [value]="backgroundColor"
+          (input)="updateBackgroundColor($event)"
+        />
       </div>
       <div>
-        <label for="navbarColor">Navbar Color: </label>  
-        <input type="color" id="navbarColor" (input)="updateNavbarColor($event)" />
+        <label for="navbarColor">Navbar Color: </label>
+        <input
+          type="color"
+          id="navbarColor"
+          [value]="navbarColor"
+          (input)="updateNavbarColor($event)"
+        />
       </div>
-      <br>
+      <br />
       <button (click)="saveThemeSettings()">Save Theme</button>
     </div>
   </div>
-
-  </div>
+</div>

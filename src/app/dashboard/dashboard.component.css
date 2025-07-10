@@ -1,100 +1,183 @@
-/* Martin 25-03-2025 */
-/* Fullscreen container */
-.dashboard-container {
-  position: relative;
-}
-
-/* Button container for top-right buttons */
-.button-container {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+/* HEL layout wrapper */
+.dashboard-wrapper {
   display: flex;
-  gap: 10px;
-}
-
-/* Style for all buttons (med plus-tegnet) */
-.button {
-  background: none;
-  color: white;
-  border: 2px solid white;
-  padding: 1vh 3vw;
-  font-size: clamp(8px, 1.5vw, 16px);
-  cursor: pointer;
-  border-radius: 25px;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.button:hover {
-  background: white;
-  color: #3f72b5;
-}
-
-
-.welcome {
-  color: white;
-  font-size: 5vw;
-  letter-spacing: 2vw;
-  display: block;
-  text-align: center;
-  padding-top: 5.5vh;
-  padding-bottom: 5.5vh;
-}
-
-/* Grid layout for games */
-.games-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 50px;
+  flex-direction: column;
+  height: 100vh;
   padding: 2rem;
-
+  gap: 2rem;
+  box-sizing: border-box;
 }
 
-/* Individual game card */
-.game-card {
-  background-color: #3a3a3a6c;
-  border: 2px solid white;
-  border-radius: 25px;
-  padding: 16px;
-  color: white;
-  text-align: center;
-  transition: all 0.3s ease;
-  position: relative; /* Tilføjet for at placere slet-knappen */
-
+/* Øverste række */
+.top-row {
+  flex: 1;
+  display: flex;
+  gap: 2rem;
+  min-height: 0;
 }
 
-.game-image {
-  max-width: 100%;
+/* Bokse fælles */
+.box {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Latest box */
+.latest-box {
+  flex: 2;
+}
+
+.latest-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.image-link {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.image-link img {
+  width: 100%;
   height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   border-radius: 8px;
 }
 
-.game-card:hover {
-  background: #0000006c;
+.image-link h3 {
+  margin-top: 0.5rem;
+  font-size: 1rem;
 }
 
-.game-details {
-  margin-top: 10px;
+/* Most Played */
+.most-played-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-/* CSS for slet-knappen */
-.delete-btn {
+.most-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+}
+
+/* Divider mellem linjer */
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.25rem 0;
+}
+
+.most-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Link-række */
+.most-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  text-decoration: none;
+  width: 100%;
+}
+
+/* Nummerering */
+.rank {
+  font-weight: bold;
+  font-size: 1rem;
+  width: 1.5rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Billede */
+.most-card img {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+/* Tekst */
+.game-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.plays {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin: 0;
+}
+
+/* Scrollbar-sektion */
+.scroll-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: auto;
+}
+
+/* Scroll-knapper */
+.scroll-btn {
   background: none;
   border: none;
-  color: red;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
-  transition: transform 0.2s ease;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  margin: 10%;
+  user-select: none;
 }
 
-.delete-btn:hover {
-  transform: scale(1.2);
+/* Scroll-container */
+.scroll-container {
+  flex: 1;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding: 1rem 0;
 }
-/* Martin 25-03-2025 */
+
+/* Game cards */
+.game-card {
+  flex: 0 0 auto;
+  width: 160px;
+  text-align: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.game-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  object-fit: cover;
+}

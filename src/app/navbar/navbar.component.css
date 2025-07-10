@@ -1,75 +1,122 @@
-/*Martin 25-03-2025*/
-/* General Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-.button, .button-img{
-  color: white;
-  text-decoration: none;
-  border-radius: 25px;
-  transition: background-color 0.3s ease;
-  height: auto;
-  width: 2vw;
-  min-width: 20px;
-  max-width: 35px;
-}
-.button:hover{
-  background-color: #d61919c4; /* Darker background on hover */
-  color: #fff; /* Maintain text color */
-  cursor:pointer;
-}
-/* Navbar Styling */
-.navbar {
-  padding-left: 1vw;
-  padding-right: 7.5vw;
-  padding-bottom: 1vw;
-  padding-top: 1vw;
+/* Sidebar Wrapper */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 200px;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  transition: width 0.3s ease;
   z-index: 1000;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px; /* Rounded corners for consistency */
-  height: 10vh;
-  width: auto;
-  display: flex;
-  align-items: center; /* Centers logo and links vertically */
-  justify-content: space-between; /* Adds space between logo and menu */
 }
-/* Logo Styling */
-.img1{
-  height: auto;
-  width: 5vw; 
-  max-width: 75px;
-  margin: 5vw;/* Adjust logo size */
-}
-/* Navigation List */
-ul {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
-}
-/* List Items */
 
-/* Links */
-a {
+/* Når den er minimeret */
+.sidebar.minimized {
+  width: 60px;
+}
+
+/* Logo */
+.sidebar .logo img {
+  width: 100%;
+  max-width: 120px;
+  margin-bottom: 2rem;
+}
+
+/* Toggle button */
+.toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  align-self: flex-end;
+}
+
+/* Navigation list */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar ul li {
+  width: 100%;
+}
+
+/* Link styling */
+.sidebar a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 8px 12px;
   color: white;
   text-decoration: none;
-  padding: 10px 30px;
-  font-size: clamp(16px, 2vw, 24px);
-  
-  border-radius: 25px;
+  border-radius: 8px;
   transition: background-color 0.3s ease;
 }
-/* Hover and Active States */
-a:hover {
-  background-color: #0000003b; /* Darker background on hover */
-  color: #fff; /* Maintain text color */
-  border-radius: 25px;
+
+/* Hover & Active State */
+.sidebar a.active,
+.sidebar a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
-a.active {
-  background-color: #726e6e3b; /* Darker background on hover */
-  color: #fff; /* Maintain text color */
+
+/* Ikon */
+.sidebar .icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
-/*Martin 25-03-2025*/
+
+/* Tekst */
+.sidebar .text {
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+/* Minimeret tilstand: Skjul tekst, centrér ikon */
+.sidebar.minimized a {
+  justify-content: center;
+}
+
+.sidebar.minimized .text {
+  display: none;
+}
+
+/* Logout knap - matcher links */
+.sidebar .logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 8px 12px;
+  color: white;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  text-align: left;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.sidebar .logout-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Minimeret tilstand for logout */
+.sidebar.minimized .logout-btn {
+  justify-content: center;
+}
+
+.sidebar.minimized .logout-btn .text {
+  display: none;
+}

@@ -1,8 +1,19 @@
-<div class="error-message">If you experience any bugs or issues, press the "Clear Unity-cache"</div>
-<!-- Hoved-container -->
+<div class="error-message">
+  If you experience any bugs or issues, press the "Clear Unity-cache"
+</div>
+
+<!-- Hoved-container med alle tre sektioner -->
 <div class="container" *ngIf="game">
 
-  <!-- Spil-visning -->
+  <!-- BESKRIVELSE – flyttet op og til venstre -->
+  <div class="game-description" *ngIf="game?.description">
+    <h3>Description</h3>
+    <p [innerHTML]="formattedDescription"></p>
+
+
+  </div>
+
+  <!-- SPIL + HEADER -->
   <div class="game-container">
 
     <div class="game-header">
@@ -39,22 +50,13 @@
     </iframe>
   </div>
 
-  <!-- Chat-komponent -->
-  <div class="chat" *ngIf="showChat">
+  <!-- CHAT – til højre -->
+  <div class="chat" #chatContainer *ngIf="showChat">
     <app-chat [gameId]="gameId"></app-chat>
   </div>
-
-</div>
-<!-- Spil-beskrivelse -->
-<div class="game-description" *ngIf="game?.description">
-  <h3>Description</h3>
-  <p>{{ game.description }}</p>
+  
 </div>
 
-<!-- Admin-knap -->
-
-
-<!-- Admin-overlay / modal -->
 <!-- Admin-overlay / modal -->
 <div *ngIf="showEditor" class="edit-backdrop">
   <div class="edit-panel">
@@ -67,7 +69,7 @@
 
     <label>
       Description
-      <textarea rows="4" [(ngModel)]="editedGame.description"></textarea>
+      <textarea rows="8" [(ngModel)]="editedGame.description"></textarea>
     </label>
 
     <label>
@@ -86,4 +88,3 @@
     </div>
   </div>
 </div>
-

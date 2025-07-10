@@ -42,40 +42,60 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
   /* ---------- Livscyklus ---------- */
   ngAfterViewInit() {
     this.gameId = this.route.snapshot.paramMap.get('gameId') || '';
-
-    if (this.gameId) {
-      console.log('Fetching game with ID:', this.gameId);
-      this.fetchGameDetails(this.gameId);
-    } else {
-      console.error('Invalid game ID');
-    }
-
-    /* Tjek om den indloggede bruger er admin */
+    if (this.gameId) this.fetchGameDetails(this.gameId);
+  
     const uid = localStorage.getItem('uid') || '';
     if (uid) {
       this.firebaseService.checkIfAdmin(uid).then(isAdm => (this.isAdmin = isAdm));
     }
-
+  
     window.addEventListener('message', this.handleUnityMessages.bind(this));
     document.addEventListener('fullscreenchange', this.onFullscreenChange);
-
-    /* Send spillerdata til Unity og start autosend-loopet */
+  
     setTimeout(() => {
       this.sendStoredDataToUnity();
       this.beginResendLoop();
+      this.syncColumnHeights(); // 💡 her
     }, 3000);
   }
-
+  
+  get formattedDescription(): string {
+    return this.game?.description?.replace(/\n/g, '<br>') || '';
+  }
+  
   ngOnDestroy() {
     clearInterval(this.resendInterval);
     window.removeEventListener('message', this.handleUnityMessages.bind(this));
     document.removeEventListener('fullscreenchange', this.onFullscreenChange);
   }
-
+  private syncColumnHeights() {
+    setTimeout(() => {
+      const gameContainer = document.querySelector('.game-container') as HTMLElement;
+      const description = document.querySelector('.game-description') as HTMLElement;
+      const chat = document.querySelector('.chat') as HTMLElement;
+  
+      if (gameContainer && description) {
+        const height = gameContainer.offsetHeight;
+        description.style.height = height + 'px';
+      }
+  
+      // Kun sæt chat-højde, hvis den eksisterer (dvs. showChat === true)
+      if (gameContainer && chat) {
+        const height = gameContainer.offsetHeight;
+        chat.style.height = height + 'px';
+      }
+    }, 100); // brug et lille delay for at sikre rendering er færdig
+  }
+  
   /* ---------- Vis/skjul chat ---------- */
   toggleChat() {
     this.showChat = !this.showChat;
+    if (this.showChat) {
+      // Vent kort, så Angular kan render chat-komponenten først
+      setTimeout(() => this.syncColumnHeights(), 100);
+    }
   }
+  
 
   /* ---------- Fuldskærm ---------- */
   isFullscreen: boolean = false;
@@ -179,25 +199,31 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  
   /* ---------- Hent spil-detaljer ---------- */
   async fetchGameDetails(gameId: string) {
     try {
       const database = this.firebaseService.getDatabase();
       const gameRef = ref(database, `games/${gameId}`);
       const snapshot = await get(gameRef);
-
+  
       if (!snapshot.exists()) {
         console.error('⚠️ No game found with ID:', gameId);
         return;
       }
-
+  
       this.game = snapshot.val();
       this.updateSafeUrl();
+  
+      // 🔥 Registrer ét view/spil
+      await this.firebaseService.incrementPlays(gameId);
+  
       console.log('✅ Game fetched:', this.game);
     } catch (error) {
       console.error('❌ Error fetching game:', error);
     }
   }
+  
 
   /* ---------- Opdatér iframe-URL ---------- */
   private updateSafeUrl() {

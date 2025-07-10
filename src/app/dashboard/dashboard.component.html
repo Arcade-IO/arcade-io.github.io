@@ -1,49 +1,58 @@
-<!--Martin 25-03-2025-->
-<div class="dashboard-container">
-  <div class="welcome">
-    WELCOME
-  </div>
-  <hr/>
-  <!-- Knappe-container til plus-knappen (kun synlig for admin) -->
-  <div class="button-container">
-    <ul>
-      <li *ngIf="isAdmin">
-        <!-- Her peger du evt. på en side, hvor du opretter nye spil -->
-        <a [routerLink]="['/games']" routerLinkActive="active" class="button">
-          + Create Game
-        </a>
-      </li>
-    </ul>
-  </div>
+<div class="dashboard-wrapper">
 
-  <!-- Hvis der findes spil i 'games', vis dem. Ellers vis 'ingen spil' -->
-  <div class="games-list" *ngIf="games && games.length > 0; else noGames">
-    <div class="game-card" *ngFor="let game of games">
-      
-      <!-- Klikbart billede, der fører til ruten: /game/:gameId -->
-      <a [routerLink]="['/game', game.id]">
-        <img [src]="game.imageUrl" alt="{{ game.title }}" class="game-image"/>
-      </a>
-      
-      <div class="game-details">
-        <!-- Klikbar titel, samme link som billedet -->
-        <div>
-          <a [routerLink]="['/game', game.id]">
-            {{ game.title }}
+  <!-- Øverste række -->
+  <div class="top-row">
+
+    <!-- Latest box -->
+    <div class="box latest-box">
+      <h2>Latest</h2>
+      <div *ngIf="latestGames.length > 0" class="latest-content">
+        <a [routerLink]="['/game', latestGames[0].id]" class="image-link">
+          <img [src]="latestGames[0].imageUrl" alt="{{ latestGames[0].title }}" />
+          <h3>{{ latestGames[0].title }}</h3>
+        </a>
+      </div>
+    </div>
+
+    <!-- Most Played box -->
+    <div class="box most-played-box">
+      <h2>Most Played</h2>
+
+      <div *ngIf="popularGames.length === 0">
+        <p>Ingen data endnu</p>
+      </div>
+
+      <div class="most-list" *ngIf="popularGames.length > 0">
+        <div *ngFor="let game of popularGames; let i = index" class="most-item">
+          <div class="divider" *ngIf="i !== 0"></div>
+
+          <a [routerLink]="['/game', game.id]" class="most-card">
+            <span class="rank">{{ i + 1 }}.</span>
+            <img [src]="game.imageUrl" alt="{{ game.title }}" />
+            <div class="game-info">
+              <p class="title">{{ game.title }}</p>
+              <p class="plays">{{ game.plays }} plays</p>
+            </div>
           </a>
         </div>
       </div>
-      
-      <!-- Slet-knap, kun synlig for admin -->
-      <button *ngIf="isAdmin" (click)="deleteGame(game.id)" class="delete-btn">
-        &times;
-      </button>
     </div>
   </div>
 
-  <!-- Fallback hvis der ikke er nogen spil -->
-  <ng-template #noGames>
-    <p>Der er ingen spil endnu.</p>
-  </ng-template>
+  <!-- Scrollbar med spil -->
+  <div class="scroll-section">
+    <button class="scroll-btn left" (click)="scrollLeft()">&#x25C0;</button>
+
+    <div class="scroll-container" #scrollContainer>
+      <div class="box game-card" *ngFor="let game of games">
+        <a [routerLink]="['/game', game.id]">
+          <img [src]="game.imageUrl" alt="{{ game.title }}" />
+          <p>{{ game.title }}</p>
+        </a>
+      </div>
+    </div>
+
+    <button class="scroll-btn right" (click)="scrollRight()">&#x25B6;</button>
+  </div>
+
 </div>
-<!--Martin 25-03-2025-->
