@@ -94,4 +94,9 @@
   .chat-input button {
     font-size: 1rem;
   }
+    .chat-window {
+    min-height: 50vh;
+    max-height: 90vh;
+
+}
 }
