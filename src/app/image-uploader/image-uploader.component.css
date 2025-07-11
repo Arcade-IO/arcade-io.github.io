@@ -11,7 +11,7 @@
   border-radius: 25px;
   width: 90%;
   max-width: 600px;
-  background-color: #3a3a3a6c; /* Samme som dine kort */
+  background-color: #3a3a3a6c;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
@@ -103,3 +103,60 @@ button:hover {
   color: #ccc;
   word-wrap: break-word;
 }
+
+/* ========== Media Queries ========== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .uploader-container {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* Mobiler */
+@media (max-width: 600px) {
+  .uploader-container {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  input[type="file"],
+  input[type="text"] {
+    font-size: 0.9rem;
+    padding: 0.75em;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 0.75em 1.5em;
+  }
+
+  .image-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Små mobiler */
+@media (max-width: 400px) {
+  input[type="file"]::file-selector-button {
+    padding: 0.4em 0.8em;
+    font-size: 0.85rem;
+  }
+
+  .image-card p {
+    font-size: 0.9rem;
+  }
+
+  .image-card small {
+    font-size: 0.75rem;
+  }
+}
+
+/* Martin 09-07-2025 */

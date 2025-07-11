@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: inherit; /* Arv global farve */
+  color: inherit;
 }
 
 /* Body Styling */
@@ -13,7 +13,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 0;
-  color: inherit; /* Vigtigt */
+  color: inherit;
 }
 
 /* Main Container */
@@ -24,6 +24,7 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
+  padding: 1rem;
 }
 
 /* Login Box */
@@ -141,4 +142,53 @@ input:focus {
   text-align: center;
   font-size: 16px;
   border: 2px solid red;
+}
+
+/* ========== Media Queries ========== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .login-box {
+    max-width: 90%;
+    padding: 25px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Mobiler */
+@media (max-width: 600px) {
+  .login-box {
+    border-width: 3px;
+    padding: 20px;
+  }
+
+  input, .login-btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .signup-btn,
+  .forgot-password-btn {
+    font-size: 14px;
+  }
+
+  .error-box {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* Ekstra små mobiler */
+@media (max-width: 400px) {
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  input,
+  .login-btn {
+    font-size: 13px;
+  }
 }

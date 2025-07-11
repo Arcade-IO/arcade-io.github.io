@@ -1,36 +1,55 @@
-<!--martin 25-03-2025-->
+<!-- martin 25-03-2025 -->
 
 <div class="login-container">
   <div class="login-box">
     <h2>Login</h2>
-    <div class="input-group">
-      <input type="email" [value]="email" (input)="sendEmail($event)" (keyup.enter)="login()" placeholder="E-mail" />
-      <!-- <<-- Added (keyup.enter)="login()" to support Enter key -->
-    </div>
-    <div class="input-group">
-      <input type="password" [value]="password" (input)="sendPassword($event)" (keyup.enter)="login()" placeholder="Password" />
-      <!-- <<-- Added (keyup.enter)="login()" to support Enter key -->
-    </div>
-    <button class="login-btn" (click)="login()">Login</button>
+
+    <!-- ✅ Brug native form men med (submit) og event.preventDefault -->
+    <form (submit)="login($event)">
+      <!-- Email -->
+      <div class="input-group">
+        <input
+          type="email"
+          name="email"
+          placeholder="E-mail"
+          [value]="email"
+          (input)="sendEmail($event)"
+          autocomplete="email"
+          required
+        />
+      </div>
+
+      <!-- Password -->
+      <div class="input-group">
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          [value]="password"
+          (input)="sendPassword($event)"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <button class="login-btn" type="submit">Login</button>
+    </form>
+
+    <!-- Signup -->
     <p class="signup-text">
-      Don't have an account? 
-      <button class="signup-btn" (click)="goToSignup()">Signup</button>
+      Don't have an account?
+      <button class="signup-btn" type="button" (click)="goToSignup()">Signup</button>
     </p>
-<br>
-    <div>
-      <p class="forgot-password-text">
-        <button class="forgot-password-btn" (click)="forgotPassword()">Forgot Password?</button>
-      </p>
-    </div>
+
+    <!-- Forgot Password -->
+    <p class="forgot-password-text">
+      <button class="forgot-password-btn" type="button" (click)="forgotPassword()">Forgot Password?</button>
+    </p>
   </div>
 
-  
-<!--martin 25-03-2025-->
-
-
+  <!-- Error Message -->
   <div *ngIf="errorMessage" class="error-box">
     {{ errorMessage }}
   </div>
 </div>
-
-

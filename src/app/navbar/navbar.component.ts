@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';
@@ -39,7 +39,6 @@ export class NavbarComponent implements OnInit {
           .then(adminStatus => this.isAdmin = adminStatus)
           .catch(() => this.isAdmin = false);
 
-        // 🎯 Kun navbarColor fra Firebase
         this.firebaseService.getUserbyUID(user.uid)
           .then(userData => {
             const navbarColor = userData?.theme?.navbarColor;
@@ -56,6 +55,13 @@ export class NavbarComponent implements OnInit {
       this.updateBodyPadding();
     });
 
+    // Lyt til route-skift og opdater padding dynamisk
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateBodyPadding();
+      }
+    });
+
     this.updateBodyPadding();
   }
 
@@ -65,6 +71,14 @@ export class NavbarComponent implements OnInit {
   }
 
   updateBodyPadding(): void {
+    const hiddenRoutes = ['/login', '/home'];
+    const currentRoute = this.router.url;
+
+    if (hiddenRoutes.includes(currentRoute)) {
+      this.renderer.removeStyle(document.body, 'padding-left');
+      return;
+    }
+
     const width = this.isMinimized ? '60px' : '200px';
     this.renderer.setStyle(document.body, 'padding-left', width);
   }
@@ -83,20 +97,16 @@ export class NavbarComponent implements OnInit {
     const sidebar = document.querySelector('.sidebar') as HTMLElement;
     if (!sidebar) return;
 
-    // Sæt baggrundsfarven
     sidebar.style.backgroundColor = navbarColor;
 
-    // Udregn tekstfarve baseret på kontrast
     const isDark = this.isDarkColor(navbarColor);
     const textColor = isDark ? 'white' : 'black';
 
-    // Anvend på sidebar og børn
     sidebar.style.color = textColor;
     sidebar.querySelectorAll('a, span, button, li').forEach(el => {
       (el as HTMLElement).style.color = textColor;
     });
 
-    // Invertér ikoner hvis nødvendigt
     sidebar.querySelectorAll('img.icon').forEach(img => {
       (img as HTMLElement).style.filter = isDark ? 'invert(1)' : 'invert(0)';
     });
@@ -108,6 +118,6 @@ export class NavbarComponent implements OnInit {
     const g = parseInt(hex.substring(3, 5), 16);
     const b = parseInt(hex.substring(5, 7), 16);
     const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-    return luminance < 140; // justeret for bedre kontrast
+    return luminance < 140;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -21,30 +21,36 @@ export class DashboardComponent implements OnInit {
 
   @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef;
 
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(private firebaseService: FirebaseService, private ngZone: NgZone) {}
 
   ngOnInit(): void {
-    this.firebaseService.getAuthStateListener((user: any) => {
-      this.isLoggedIn = !!user;
-
-      if (user) {
-        this.firebaseService.checkIfAdmin(user.uid)
-          .then((adminStatus) => {
-            this.isAdmin = adminStatus;
-          })
-          .catch((error) => {
-            console.error('Error checking admin status in Dashboard:', error);
-            this.isAdmin = false;
-          });
-      } else {
-        this.isAdmin = false;
-      }
-    });
-
+    this.setupAuthStateListener();
     this.loadGamesFromFirebase();
-
-    // 🔧 Tilføj 'plays' til spil der mangler det
     this.addMissingPlaysField();
+  }
+
+  // ✅ ZONE-FIX IMPLEMENTERET HER
+  private setupAuthStateListener(): void {
+    this.ngZone.runOutsideAngular(() => {
+      this.firebaseService.getAuthStateListener((user: any) => {
+        this.ngZone.run(() => {
+          this.isLoggedIn = !!user;
+
+          if (user) {
+            this.firebaseService.checkIfAdmin(user.uid)
+              .then((adminStatus) => {
+                this.isAdmin = adminStatus;
+              })
+              .catch((error) => {
+                console.error('Error checking admin status in Dashboard:', error);
+                this.isAdmin = false;
+              });
+          } else {
+            this.isAdmin = false;
+          }
+        });
+      });
+    });
   }
 
   async loadGamesFromFirebase() {
@@ -62,18 +68,15 @@ export class DashboardComponent implements OnInit {
 
         this.games = allGames;
 
-        // Seneste baseret på createdAt
         this.latestGames = allGames
           .slice()
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
           .slice(0, 1);
 
-        // Mest spillede baseret på plays
         this.popularGames = allGames
-        .filter(game => typeof game.plays === 'number')
-        .sort((a, b) => b.plays - a.plays)
-        .slice(0, 10); // ⬅️ viser top 10
-      
+          .filter(game => typeof game.plays === 'number')
+          .sort((a, b) => b.plays - a.plays)
+          .slice(0, 10);
 
         console.log('Hentede spil fra Firebase:', this.games);
       } else {
@@ -117,7 +120,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  // 🔧 Funktion til at tilføje 'plays' til spil der mangler det
   async addMissingPlaysField(): Promise<void> {
     try {
       const db = this.firebaseService.getDatabase();

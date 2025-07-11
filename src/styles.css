@@ -17,6 +17,7 @@ html, body {
 
 /* Baggrundsbillede + farve */
 body {
+  position: fixed;
   background-color: #ffffff; /* fallback farve */
   background-image: url('/assets/Next-Games-retro-background.png');
   background-size: cover;
