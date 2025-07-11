@@ -111,6 +111,8 @@ button:hover {
   .uploader-container {
     max-width: 90%;
     padding: 1.5rem;
+    margin-top: 8vh;
+
   }
 
   .image-grid {
@@ -124,6 +126,7 @@ button:hover {
   .uploader-container {
     width: 95%;
     padding: 1rem;
+    margin-top: 8vh;
   }
 
   input[type="file"],
@@ -139,7 +142,8 @@ button:hover {
 
   .image-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.5rem;
+    padding: 3vw;
   }
 }
 

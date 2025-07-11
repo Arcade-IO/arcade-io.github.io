@@ -71,20 +71,11 @@ export class GameInterfaceComponent implements AfterViewInit, OnDestroy {
   private syncColumnHeights() {
     setTimeout(() => {
       const gameContainer = document.querySelector('.game-container') as HTMLElement;
-      const description = document.querySelector('.game-description') as HTMLElement;
       const chat = document.querySelector('.chat') as HTMLElement;
   
-      if (gameContainer && description) {
-        const height = gameContainer.offsetHeight;
-        description.style.height = height + 'px';
-      }
-  
       // Kun sæt chat-højde, hvis den eksisterer (dvs. showChat === true)
-      if (gameContainer && chat) {
-        const height = gameContainer.offsetHeight;
-        chat.style.height = height + 'px';
-      }
-    }, 100); // brug et lille delay for at sikre rendering er færdig
+
+    }); // brug et lille delay for at sikre rendering er færdig
   }
   
   /* ---------- Vis/skjul chat ---------- */

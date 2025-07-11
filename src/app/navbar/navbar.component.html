@@ -1,9 +1,18 @@
-<div class="sidebar" [class.minimized]="isMinimized">
+<!-- ✅ Hamburger-knap – kun mobil -->
+<button class="toggle-btn" *ngIf="isMobile" (click)="toggleSidebarMobile()">☰</button>
+
+<!-- ✅ Sidebar – altid aktiv, styles styres via klasser -->
+<div
+  class="sidebar"
+  [class.minimized]="!isMobile && isMinimized"
+  [class.open]="isMobileOpen">
+
   <div class="logo">
     <img src="assets/Next-Games-retro-logo.png" alt="Logo" />
   </div>
 
-  <button class="toggle-btn" (click)="toggleSidebar()">⮜</button>
+  <!-- ✅ Minimeringsknap – kun desktop -->
+  <button class="toggle-btn" *ngIf="!isMobile" (click)="toggleSidebarDesktop()">⮜</button>
 
   <ul>
     <li *ngIf="isAdmin">
@@ -12,24 +21,28 @@
         <span class="text" *ngIf="!isMinimized">Administration</span>
       </a>
     </li>
+
     <li *ngIf="isAdmin">
       <a [routerLink]="['/image-uploader']" routerLinkActive="active">
         <img src="assets/image.png" class="icon" />
         <span class="text" *ngIf="!isMinimized">Image uploader</span>
       </a>
     </li>
+
     <li>
       <a [routerLink]="['/dashboard']" routerLinkActive="active">
         <img src="assets/game.png" class="icon" />
         <span class="text" *ngIf="!isMinimized">Dashboard</span>
       </a>
     </li>
+
     <li>
       <a [routerLink]="['/leaderboard']" routerLinkActive="active">
         <img src="assets/podium.png" class="icon" />
         <span class="text" *ngIf="!isMinimized">Leaderboard</span>
       </a>
     </li>
+
     <li>
       <a [routerLink]="['/settings']" routerLinkActive="active">
         <img src="assets/signup.png" class="icon" />
@@ -38,12 +51,12 @@
     </li>
 
     <li *ngIf="isLoggedIn">
-      <button class="logout-btn" (click)="logout()" title="Logout">
+      <button class="logout-btn" (click)="logout()">
         <img src="assets/signout.png" class="icon" />
         <span class="text" *ngIf="!isMinimized">Log out</span>
       </button>
     </li>
-    
+
     <li *ngIf="isAdmin">
       <a [routerLink]="['/games']" routerLinkActive="active">
         <img src="assets/edit.png" class="icon" />

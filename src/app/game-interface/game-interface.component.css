@@ -1,248 +1,216 @@
 /* -------------------------------------------------
-   Hovedlayout – 3 kolonner
+   HOVED LAYOUT – game + dc-box
    ------------------------------------------------- */
-   .container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 1.5em;
-    flex-wrap: wrap;
-    box-sizing: border-box;
-  }
-  
-  /* -------------------------------------------------
-     Venstre kolonne – beskrivelse
-     ------------------------------------------------- */
-  .game-description {
-    flex: 1;
-    min-width: 250px;
-    max-width: 350px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px dashed white;
-    border-radius: 6px;
-    color: white;
-    padding: 1em;
-    text-align: left;
-    box-sizing: border-box;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    height: auto;
-  }
-  .game-description h3 {
-    margin-top: 0;
-    margin-bottom: 0.5em;
-  }
-  
-  /* -------------------------------------------------
-     Midterste kolonne – spil
-     ------------------------------------------------- */
-  .game-container {
-    flex: 2;
-    min-width: 300px;
-    max-width: 1000px;
-    background: #000;
-    border: 4px double white;
-    border-radius: 8px;
-    padding: 1em;
-    box-shadow:
-      inset 0 0 0 2px #3f72b5,
-      0 0 15px rgba(255, 255, 255, 0.2);
-    box-sizing: border-box;
-    display: flex;
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100vh;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* -------------------------------------------------
+   GAME – holder 16:9 ratio og styrer højden
+   ------------------------------------------------- */
+.game-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Header */
+.game-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  gap: 1em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.game-header img {
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid white;
+}
+.game-title {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  font-size: clamp(18px, 2vw, 24px);
+  margin: 0;
+}
+
+/* -------------------------------------------------
+   IFRAME – 16:9 aspect ratio
+   ------------------------------------------------- */
+.iframe-wrapper {
+  position: relative;
+  width: 100%;
+  flex-grow: 1;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #111;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  outline: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  display: block;
+}
+
+/* -------------------------------------------------
+   dc-box – HØJRE SIDE: DESCRIPTION + CHAT
+   ------------------------------------------------- */
+.dc-box {
+  flex: 0 0 275px;
+  max-width: 275px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+  max-height: calc(100vh - 3rem); /* match full height minus padding */
+  overflow: hidden;
+}
+
+/* DESCRIPTION */
+.game-description {
+  flex: 1 1 50%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.game-description h3 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.game-description p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* CHAT */
+.chat {
+  flex: 1 1 50%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.chat app-chat {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* -------------------------------------------------
+   KNAPPER
+   ------------------------------------------------- */
+.fullscreen-btn,
+.show-hideChat {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 6px;
+  padding: 0.5em 1em;
+  font-size: 0.9rem;
+  font-family: monospace;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.fullscreen-btn:hover,
+.show-hideChat:hover {
+  background: white;
+  color: black;
+}
+
+/* -------------------------------------------------
+   BOKS-STIL
+   ------------------------------------------------- */
+.box-style {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+}
+
+/* -------------------------------------------------
+   ERROR MESSAGE
+   ------------------------------------------------- */
+.error-message {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* -------------------------------------------------
+   RESPONSIVT DESIGN
+   ------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .container {
+    display:block;
     flex-direction: column;
     align-items: stretch;
+    justify-content: flex-start;
+    height: auto;
+    padding: 1rem;
   }
-  
-  /* Header */
-  .game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    padding-bottom: 0.5em;
-    border-bottom: 2px solid white;
-    margin-bottom: 1em;
-    gap: 1em;
-  }
-  .game-header img {
-    height: 60px;
-    width: 60px;
-    object-fit: cover;
-    border-radius: 6px;
-    border: 2px solid white;
-  }
-  .game-title {
-    flex: 1;
-    text-align: center;
-    font-weight: bold;
-    font-size: clamp(18px, 2vw, 24px);
-    color: white;
-    margin: 0;
-  }
-  
-  /* Knapper */
-  .fullscreen-btn,
-  .show-hideChat {
-    background: black;
-    color: white;
-    border: 2px solid white;
-    border-radius: 6px;
-    padding: 0.5em 1em;
-    font-size: 0.9rem;
-    font-family: monospace;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-    margin-left: 0.3em;
-  }
-  .fullscreen-btn:hover,
-  .show-hideChat:hover {
-    background: white;
-    color: black;
-  }
-  
-  /* Spil iframe */
-  iframe {
+  .game-container,
+  .dc-box {
     width: 100%;
-    height: 60vh;
-    background: #111;
-    border: 4px solid #3f72b5;
-    border-radius: 6px;
-    box-shadow:
-      0 0 0 2px white,
-      0 0 15px rgba(63, 114, 181, 0.5);
-    box-sizing: border-box;
-    display: block;
+    height: auto;
+    max-height: none;
   }
-  
-  /* -------------------------------------------------
-     Højre kolonne – chat
-     ------------------------------------------------- */
+  .game-container{
+    margin-top: 5vh;
+  }
+  .iframe-wrapper {
+    aspect-ratio: 9 / 16;
+    height: auto;
+  }
+
+  .game-description,
   .chat {
-    flex: 1;
-    min-width: 250px;
-    max-width: 350px;
-    max-height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    border: 2px solid white;
-    border-radius: 6px;
-    color: white;
-    padding: 1em;
-    box-sizing: border-box;
-    display: flex;
+    height: auto;
+    max-height: none;
+  }
+
+  .dc-box {
     flex-direction: column;
-    overflow-y: auto;
+    max-width: 100%;
   }
-  
-  /* Sørg for at <app-chat> strækkes korrekt */
-  .chat app-chat {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-  }
-  
-  /* -------------------------------------------------
-     Auto-scroll (tilføjes med JS i komponent)
-     ------------------------------------------------- */
-  
-  /* -------------------------------------------------
-     Fejlbesked
-     ------------------------------------------------- */
-  .error-message {
-    text-align: center;
-    color: red;
-    font-weight: bold;
-    margin-bottom: 1em;
-    font-size: 1rem;
-  }
-  
-  /* -------------------------------------------------
-     Admin-editor
-     ------------------------------------------------- */
-  .edit-backdrop {
-    position: fixed;
-    inset: 0;
-    backdrop-filter: blur(2px);
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  .edit-panel {
-    background: #222;
-    border: 2px solid white;
-    border-radius: 8px;
-    padding: 2em;
-    width: 95%;
-    max-width: 600px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-  }
-  .edit-panel label {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.9rem;
-  }
-  .edit-panel input,
-  .edit-panel textarea {
-    margin-top: 0.3em;
-    background: #000;
-    border: 1px solid #555;
-    border-radius: 4px;
-    padding: 0.4em;
-    color: white;
-    font-family: monospace;
-  }
-  .edit-panel textarea {
-    resize: vertical;
-    min-height: 120px;
-    white-space: pre-wrap;
-  }
-  .btn-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5em;
-  }
-  .btn-row button {
-    background: #3f72b5;
-    border: none;
-    padding: 0.5em 1em;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .btn-row button:last-child {
-    background: transparent;
-    border: 1px solid white;
-  }
-  
-  /* -------------------------------------------------
-     Mobiltilpasning
-     ------------------------------------------------- */
-  @media (max-width: 1024px) {
-    .container {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .game-description,
-    .chat {
-      max-width: none;
-      width: 100%;
-      height: auto;
-      margin-top: 1em;
-    }
-  
-    .game-container {
-      max-width: 100%;
-    }
-  
-    iframe {
-      height: 50vh;
-    }
-  }
-  
+  .chat {
+    min-height: 50vh;
+    max-height: 90vh;
+
+}
+
+}
