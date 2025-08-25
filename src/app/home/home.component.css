@@ -1,36 +1,92 @@
 /*Martin 25-03-2025*/
-.home-container {
-    height: 90vh;
-    width: auto;
-    background: url(/assets/Next-Games-retro-home.png);
-    padding: 45px;
-    position: relative; /* Important for absolute positioning of the buttons */
-    background-position: center; /* This centers the image */
-    background-repeat: no-repeat; /* Prevents repeating the image */
-}
-/* Button container for top-right buttons */
-.button-container {
-    position: absolute;
-    top: 63%;              /* Justér op/ned-position */
-    left: 50%;             /* Justér vandret position */
-    transform: translate(-50%, -50%);
-    display: flex;
-    gap: 100px;
-}
-/* Style for all buttons (Admin, Login, Sign Up) */
-.button {
-    background: none;
-    color: white;
-    border: 2px solid white;
-    padding: 16px 32px;
-    font-size: 2.5rem;
-    cursor: pointer;
-    border-radius: 25px;
-    transition: all 0.3s ease;  
 
+/* Button container */
+.home-image{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-55%, -50%);
+  display: flex;
+  width: auto;
+  height: 50vh;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  
 }
+.button-container {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 2.5em;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Buttons */
+.button {
+  background: none;
+  color: inherit;
+  border: 2px solid currentColor;
+  padding: 16px 32px;
+  font-size: 2.5rem;
+  cursor: pointer;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+}
+
 .button:hover {
-    background: white;
-    color: #3f72b5;
+  background: currentColor;
+  color: #000; /* eller hvid afhængigt af dit tema */
 }
+
+/* ========== Media Queries ========== */
+
+/* Tablets og mindre skærme */
+@media (max-width: 1024px) {
+  .button-container {
+    flex-direction: column;
+    gap: 2em;
+  }
+
+  .button {
+    font-size: 2rem;
+    padding: 14px 28px;
+    max-width: 260px;
+  }
+}
+
+/* Mobiler */
+@media (max-width: 600px) {
+  .button-container {
+    gap: 1.5em;
+  }
+
+  .button {
+    font-size: 1.5rem;
+    padding: 12px 24px;
+    max-width: 220px;
+  }
+}
+
+/* Ekstra små mobiler */
+@media (max-width: 400px) {
+  .button {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    max-width: 180px;
+  }
+}
+
 /*Martin 25-03-2025*/

@@ -1,0 +1,166 @@
+/* Martin 09-07-2025 – uploader design tilpasset resten af systemet */
+
+.uploader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+  margin: 4vh auto;
+  padding: 2vw;
+  border: 2px solid white;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 600px;
+  background-color: #3a3a3a6c;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input[type="file"],
+input[type="text"] {
+  background: none;
+  color: white;
+  border: 2px solid white;
+  padding: 1em;
+  font-size: 1rem;
+  border-radius: 25px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+input[type="file"]::file-selector-button {
+  background: white;
+  color: #3f72b5;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: #3f72b5;
+  color: white;
+}
+
+input[type="text"]::placeholder {
+  color: #ccc;
+}
+
+button {
+  background: none;
+  color: white;
+  border: 2px solid white;
+  padding: 1em 2em;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+button:hover {
+  background: white;
+  color: #3f72b5;
+}
+
+/* Grid med uploaded billeder */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.image-card {
+  background-color: #3a3a3a6c;
+  border: 2px solid white;
+  border-radius: 25px;
+  padding: 1rem;
+  color: white;
+  text-align: center;
+  word-break: break-word;
+  transition: all 0.3s ease;
+}
+
+.image-card:hover {
+  background-color: #0000006c;
+}
+
+.image-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.image-card p {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.image-card small {
+  font-size: 0.8rem;
+  color: #ccc;
+  word-wrap: break-word;
+}
+
+/* ========== Media Queries ========== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .uploader-container {
+    max-width: 90%;
+    padding: 1.5rem;
+    margin-top: 8vh;
+
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* Mobiler */
+@media (max-width: 600px) {
+  .uploader-container {
+    width: 95%;
+    padding: 1rem;
+    margin-top: 8vh;
+  }
+
+  input[type="file"],
+  input[type="text"] {
+    font-size: 0.9rem;
+    padding: 0.75em;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 0.75em 1.5em;
+  }
+
+  .image-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 3vw;
+  }
+}
+
+/* Små mobiler */
+@media (max-width: 400px) {
+  input[type="file"]::file-selector-button {
+    padding: 0.4em 0.8em;
+    font-size: 0.85rem;
+  }
+
+  .image-card p {
+    font-size: 0.9rem;
+  }
+
+  .image-card small {
+    font-size: 0.75rem;
+  }
+}
+
+/* Martin 09-07-2025 */

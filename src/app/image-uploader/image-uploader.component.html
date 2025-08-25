@@ -1,0 +1,24 @@
+<div class="uploader-container">
+  <input type="file" accept="image/*" (change)="onFileSelected($event)">
+  <button (click)="uploadImage()" [disabled]="!selectedFile || uploading">
+    {{ uploading ? 'Uploader...' : 'Upload billede' }}
+  </button>
+
+  <input type="text"
+         [(ngModel)]="searchTerm"
+         (input)="searchImages()"
+         placeholder="Søg efter billede-navn...">
+</div>
+
+<div class="image-grid" *ngIf="uploadedImages.length > 0">
+  <div class="image-card" *ngFor="let image of uploadedImages">
+    <img [src]="image.url" alt="Uploaded image">
+    <p>{{ image.name }}</p>
+    <small>{{ image.url }}</small>
+<button (click)="deleteImage(image)" class="delete-btn">🗑 Fjern fra system</button>
+
+  </div>
+</div>
+
+<p *ngIf="uploadedImages.length === 0">Ingen billeder fundet.</p>
+

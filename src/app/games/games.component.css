@@ -21,7 +21,7 @@ body {
   width: 100%;
   max-width: 500px;
   padding: 30px;
-  margin: 40px auto; /* Centered on the page */
+  margin: 60px auto; /* Centered on the page */
   border: 5px solid rgb(255, 255, 255);
   border-radius: 50px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

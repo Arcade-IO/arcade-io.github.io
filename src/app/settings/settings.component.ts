@@ -5,14 +5,13 @@ import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 import { getDatabase, ref, get, query, orderByChild, equalTo } from 'firebase/database';
 import { updateProfile } from 'firebase/auth';
 
-
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css'],
   imports: [CommonModule]
 })
-//selin 26-03-2025
+// selin 26-03-2025
 export class SettingsComponent implements OnInit {
   isChangePassword = false;
   newPassword = '';
@@ -22,8 +21,7 @@ export class SettingsComponent implements OnInit {
   newUsername = '';
   currentUsername: string | null = '';
 
-
-  isChangeTheme=false;
+  isChangeTheme = false;
   backgroundColor = '';
   navbarColor = '';
 
@@ -34,32 +32,33 @@ export class SettingsComponent implements OnInit {
     onAuthStateChanged(auth, async (user: User | null) => {
       if (user) {
         this.currentUsername = user.displayName || 'Not set';
-  
-        // Retrieve saved theme settings from localStorage
-        const savedThemeSettings = localStorage.getItem('themeSettings');
-        if (savedThemeSettings) {
-          const themeSettings = JSON.parse(savedThemeSettings);
-          this.backgroundColor = themeSettings.backgroundColor || '';
-          this.navbarColor = themeSettings.navbarColor || '';
-  
-          // Apply saved theme settings
-          document.body.style.backgroundColor = this.backgroundColor;
-          document.querySelector('.navbar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
-        }
-      }
-      this.optionChangeTheme();
 
+        // ✅ Hent theme direkte fra Firebase
+        try {
+          const userData = await this.firebaseService.getUserbyUID(user.uid);
+          const theme = userData?.theme;
+          if (theme?.backgroundColor) {
+            this.backgroundColor = theme.backgroundColor;
+            document.body.style.backgroundColor = this.backgroundColor;
+          }
+          if (theme?.navbarColor) {
+            this.navbarColor = theme.navbarColor;
+            document.querySelector('.sidebar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
+          }
+        } catch (err) {
+          console.error('Fejl ved hentning af theme:', err);
+        }
+
+        // Vis tema-sektionen som standard
+        this.optionChangeTheme();
+      }
     });
   }
-  
-  
-
 
   optionChangePassword() {
     this.isChangePassword = true;
     this.isChangeUsername = false;
-    this.isChangeTheme=false;
-
+    this.isChangeTheme = false;
   }
 
   updatePassword(event: any) {
@@ -86,28 +85,24 @@ export class SettingsComponent implements OnInit {
   optionChangeUsername() {
     this.isChangeUsername = true;
     this.isChangePassword = false;
-    this.isChangeTheme=false;
-
+    this.isChangeTheme = false;
   }
 
   updateUsername(event: any) {
     this.newUsername = event.target.value;
   }
+
   submitNewUsername() {
-  
     const db = this.firebaseService.getDatabase();
     const usersRef = ref(db, 'users');
-  
-    // Query Firebase to check if the username exists
     const usernameQuery = query(usersRef, orderByChild('name'), equalTo(this.newUsername));
-  
+
     get(usernameQuery).then(snapshot => {
       if (snapshot.exists()) {
         alert('Username is already taken.');
         return;
       }
-  
-      // If username is available, update it
+
       const user = this.firebaseService.getCurrentUser();
       if (user) {
         this.firebaseService.updateUsername(user.uid, this.newUsername)
@@ -120,37 +115,43 @@ export class SettingsComponent implements OnInit {
       }
     }).catch(error => console.error('Error checking username:', error));
   }
+
+  optionChangeTheme() {
+    this.isChangePassword = false;
+    this.isChangeUsername = false;
+    this.isChangeTheme = true;
+  }
+
+  updateBackgroundColor(event: any) {
+    this.backgroundColor = event.target.value;
+    document.body.style.backgroundColor = this.backgroundColor;
+  }
+
+  updateNavbarColor(event: any) {
+    this.navbarColor = event.target.value;
+    document.querySelector('.sidebar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
+  }
+
   saveThemeSettings() {
+    const user = this.firebaseService.getCurrentUser();
+    if (!user) return;
+  
     const themeSettings = {
       backgroundColor: this.backgroundColor,
       navbarColor: this.navbarColor
     };
   
-    // Save theme settings to localStorage
-    localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
+    this.firebaseService.saveThemeSettings(user.uid, themeSettings)
+      .then(() => {
+        localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
   
-    // Apply the theme settings immediately
-    document.body.style.backgroundColor = this.backgroundColor;
-    document.querySelector('.navbar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
-    
-    alert('Theme updated successfully!');
+        document.body.style.backgroundColor = this.backgroundColor;
+        document.querySelector('.sidebar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
+  
+        alert('Theme updated successfully!');
+        location.reload(); // 👈 dette refresher hele appen
+      })
+      .catch(err => console.error('❌ Error saving theme to Firebase:', err));
   }
   
-  
-  optionChangeTheme() {
-    this.isChangePassword = false;
-    this.isChangeUsername = false;
-    this.isChangeTheme=true;
-  }
-  updateBackgroundColor(event: any) {
-    this.backgroundColor = event.target.value;
-    document.body.style.backgroundColor = this.backgroundColor;
-
-  }
-
-  updateNavbarColor(event: any) {
-    this.navbarColor = event.target.value;
-    document.querySelector('.navbar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
-
-  }
 }

@@ -1,36 +1,26 @@
-/*martin 25-03-2025*/
-/* Importér Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
-
-/* Global Reset og font-anvendelse */
-*, *::before, *::after {
+/* Global Reset */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Inconsolata', sans-serif;
 }
 
-/* Sørg for, at form-elementer arver den globale font */
-input, button, select, textarea {
-  font-family: inherit;
-}
-
-/* Globale body-styles */
+/* Sørg for 100% højde i hele dokumentet */
 html, body {
-  margin: 0;
-  background:url(/assets/Next-Games-retro-background.png);
-  position: relative; /* Important for absolute positioning of the buttons */
-  background-size: cover; /* This ensures the image scales correctly */
-  background-position: center center; /* This centers the image */
-  background-repeat: no-repeat; /* Prevents repeating the image */
   height: 100vh;
-  background-color: grey;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
-/* Du kan her tilføje andre globale regler, fx for links */
-a {
-  text-decoration: none;
-  color: inherit;
-  transition: color 0.3s ease;
+/* Baggrundsbillede + farve */
+body {
+  position: fixed;
+  background-color: #ffffff; /* fallback farve */
+  background-image: url('/assets/Next-Games-retro-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-/*martin 25-03-2025*/

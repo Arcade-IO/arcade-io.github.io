@@ -175,10 +175,62 @@ export class FirebaseService {
       netlifyUrl,
       platform,
       users_Id: userId,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      plays: 0 
     });
   }
-
+  incrementPlays(gameId: string): Promise<void> {
+    const db = this.getDatabase();
+    const gameRef = ref(db, `games/${gameId}`);
+  
+    return get(gameRef).then(snapshot => {
+      if (!snapshot.exists()) throw new Error('Game not found');
+  
+      const gameData = snapshot.val();
+      const currentPlays = typeof gameData.plays === 'number' ? gameData.plays : 0;
+  
+      return update(gameRef, {
+        plays: currentPlays + 1,
+        lastPlayedAt: new Date().toISOString()
+      });
+    });
+  }
+  async addMissingPlaysField(): Promise<void> {
+    try {
+      const db = this.getDatabase();
+      const gamesRef = ref(db, 'games');
+      const snapshot = await get(gamesRef);
+  
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const updates: Promise<void>[] = [];
+  
+        for (const gameId in data) {
+          const game = data[gameId];
+          if (typeof game.plays !== 'number') {
+            const gameRef = ref(db, `games/${gameId}`);
+            updates.push(update(gameRef, { plays: 0 }));
+            console.log(`✅ Tilføjede 'plays: 0' til spillet ${game.title}`);
+          }
+        }
+  
+        await Promise.all(updates);
+  
+        if (updates.length === 0) {
+          console.log('Alle spil har allerede feltet "plays".');
+        } else {
+          console.log(`🎉 Tilføjede 'plays' til ${updates.length} spil.`);
+        }
+  
+      } else {
+        console.log('⚠️ Der findes ingen spil i databasen.');
+      }
+  
+    } catch (error) {
+      console.error('❌ Fejl ved tilføjelse af "plays"-felter:', error);
+    }
+  }
+  
   deleteGame(gameId: string): Promise<void> {
     return set(ref(database, `games/${gameId}`), null);
   }
@@ -444,5 +496,60 @@ export class FirebaseService {
 
   //#endregion
   // Alexander 01-04-2025
+updateGame(gameId: string, updates: { title?: string; description?: string; netlifyUrl?: string; imageUrl?: string }): Promise<void>
+ {
+    return update(ref(this.getDatabase(), `games/${gameId}`), {
+      ...updates,
+      updatedAt: new Date().toISOString()
+    });
+  }
+
+
+
+
+
+
+
+
+  //image-Uploader
+
+saveImageMetadata(name: string, url: string): Promise<void> {
+  const db = this.getDatabase();
+  const id = Date.now().toString();
+  return set(ref(db, `uploadedImages/${id}`), {
+    name,
+    url,
+    createdAt: new Date().toISOString()
+  });
+}
+
+getImagesByName(searchTerm: string): Promise<{ id: string; name: string; url: string }[]> {
+  const db = this.getDatabase();
+  const imagesRef = ref(db, 'uploadedImages');
+
+  return get(imagesRef).then((snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return Object.entries(data)
+        .map(([id, item]: [string, any]) => ({
+          id,
+          name: item.name,
+          url: item.url
+        }))
+        .filter((img) =>
+          img.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+    return [];
+  });
+}
+
+
+
+deleteImageMetadata(id: string): Promise<void> {
+  const db = this.getDatabase();
+  return set(ref(db, `uploadedImages/${id}`), null);
+}
+
 
 }
