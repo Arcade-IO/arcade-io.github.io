@@ -16,6 +16,8 @@ import { environment } from '../environments/environment';
 import { initializeApp } from 'firebase/app';
 import { Message } from '../chat/Message';
 import { share } from 'rxjs';
+import { sendPasswordResetEmail } from 'firebase/auth';
+
 
 // Initialize Firebase
 const app = initializeApp(environment.firebaseConfig);
@@ -91,6 +93,18 @@ export class FirebaseService {
     });
   }
 
+  //Reset Password 
+  resetPassword(email: string): Promise<void> {
+    return sendPasswordResetEmail(auth, email)
+      .then(() => {
+        console.log('Password reset email sent.');
+      })
+      .catch((error) => {
+        console.error('Error sending password reset email:', error);
+        throw error;
+      });
+  }
+  
   checkIfAdmin(uid: string): Promise<boolean> {
     const userRef = ref(database, `users/${uid}`);
     return get(userRef).then((snapshot) => {

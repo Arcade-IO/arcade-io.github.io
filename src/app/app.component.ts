@@ -17,7 +17,7 @@ export class AppComponent {
 
   constructor(private router: Router) {
     router.events.subscribe(() => {
-      const noNavbarRoutes = ['/', '/login', '/admin-login', '/home', '/signup' ];
+      const noNavbarRoutes = ['/', '/login', '/admin-login', '/home', '/signup', '/forgot-password' ];
       this.showNavbar = !noNavbarRoutes.includes(this.router.url);
     });
   }
