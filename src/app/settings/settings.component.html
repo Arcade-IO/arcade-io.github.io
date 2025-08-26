@@ -1,32 +1,23 @@
-<!-- selin 25-05-2025-->
 <div class="dashboard-container">
   <div class="sidebar">
     <ul>
       <li><a href="javascript:void(0)" (click)="optionChangePassword()">Change Password</a></li>
       <li><a href="javascript:void(0)" (click)="optionChangeUsername()">Change Username</a></li>
       <li><a href="javascript:void(0)" (click)="optionChangeTheme()">Change Theme</a></li>
+      <li><a href="javascript:void(0)" (click)="optionChangeProfilePic()">Change Profile Picture</a></li>
     </ul>
   </div>
 
   <div class="content">
+
     <!-- Change Password Section -->
     <div *ngIf="isChangePassword">
       <h2>Change Password</h2>
       <div class="input-group">
-        <input
-          type="password"
-          [value]="newPassword"
-          (input)="updatePassword($event)"
-          placeholder="New Password"
-        />
+        <input type="password" [value]="newPassword" (input)="updatePassword($event)" placeholder="New Password"/>
       </div>
       <div class="input-group">
-        <input
-          type="password"
-          [value]="confirmPassword"
-          (input)="updateConfirmPassword($event)"
-          placeholder="Confirm Password"
-        />
+        <input type="password" [value]="confirmPassword" (input)="updateConfirmPassword($event)" placeholder="Confirm Password"/>
       </div>
       <button (click)="submitNewPassword()">Submit</button>
     </div>
@@ -34,14 +25,9 @@
     <!-- Change Username Section -->
     <div *ngIf="isChangeUsername">
       <h2>Change Username</h2>
-      <p>Current Username: {{ currentUsername || 'Not set' }}</p><br />
+      <p>Current Username: {{ currentUsername || 'Not set' }}</p><br/>
       <div class="input-group">
-        <input
-          type="text"
-          [value]="newUsername"
-          (input)="updateUsername($event)"
-          placeholder="New Username"
-        />
+        <input type="text" [value]="newUsername" (input)="updateUsername($event)" placeholder="New Username"/>
       </div>
       <button (click)="submitNewUsername()">Submit</button>
     </div>
@@ -51,24 +37,29 @@
       <h2>Change Theme</h2>
       <div>
         <label for="bgColor">Background Color: </label>
-        <input
-          type="color"
-          id="bgColor"
-          [value]="backgroundColor"
-          (input)="updateBackgroundColor($event)"
-        />
+        <input type="color" id="bgColor" [value]="backgroundColor" (input)="updateBackgroundColor($event)"/>
       </div>
       <div>
         <label for="navbarColor">Navbar Color: </label>
-        <input
-          type="color"
-          id="navbarColor"
-          [value]="navbarColor"
-          (input)="updateNavbarColor($event)"
-        />
+        <input type="color" id="navbarColor" [value]="navbarColor" (input)="updateNavbarColor($event)"/>
       </div>
-      <br />
+      <br/>
       <button (click)="saveThemeSettings()">Save Theme</button>
     </div>
+
+    <!-- Change Profile Picture Section -->
+    <div *ngIf="isChangeProfilePic">
+      <h2>Change Profile Picture</h2>
+
+      <div class="profile-picture-upload">
+        <img [src]="user.photoURL || 'assets/default-avatar.png'" alt="Profile Picture" class="avatar-preview"/>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*"/>
+      </div>
+
+      <button (click)="uploadProfilePicture()" [disabled]="!selectedFile || uploading">
+        {{ uploading ? 'Uploading...' : 'Upload' }}
+      </button>
+    </div>
+
   </div>
 </div>

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { CommonModule } from '@angular/common';
 
-// selin 25-03-2025
+// selin 26-08-2025
 interface User {
   uid: string;
   name: string;
@@ -72,4 +72,4 @@ export class AdminDashboardComponent {
     }
   }
 }
-// selin 25-03-2025
+// selin 26-08-2025
