@@ -1,12 +1,8 @@
-<!-- martin 25-03-2025 -->
-
 <div class="login-container">
   <div class="login-box">
     <h2>Login</h2>
 
-    <!-- ✅ Brug native form men med (submit) og event.preventDefault -->
     <form (submit)="login($event)">
-      <!-- Email -->
       <div class="input-group">
         <input
           type="email"
@@ -19,7 +15,6 @@
         />
       </div>
 
-      <!-- Password -->
       <div class="input-group">
         <input
           type="password"
@@ -32,23 +27,21 @@
         />
       </div>
 
-      <!-- Submit Button -->
       <button class="login-btn" type="submit">Login</button>
     </form>
 
-    <!-- Signup -->
     <p class="signup-text">
       Don't have an account?
       <button class="signup-btn" type="button" (click)="goToSignup()">Signup</button>
     </p>
 
-    <!-- Forgot Password -->
     <p class="forgot-password-text">
-      <button class="forgot-password-btn" type="button" (click)="forgotPassword()">Forgot Password?</button>
+      <button class="forgot-password-btn" type="button" (click)="forgotPassword()">
+        Forgot Password?
+      </button>
     </p>
   </div>
 
-  <!-- Error Message -->
   <div *ngIf="errorMessage" class="error-box">
     {{ errorMessage }}
   </div>

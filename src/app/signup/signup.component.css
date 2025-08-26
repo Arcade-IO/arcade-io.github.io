@@ -31,20 +31,20 @@ body {
 .signup-box {
   background-color: rgba(255, 255, 255, 0);
   padding: 30px;
-  border: 5px solid rgb(255, 255, 255);
+  border: 5px solid rgb(0, 0, 0);
   border-radius: 50px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 350px;
 }
 input::placeholder {
-  color: white;
+  color: rgb(0, 0, 0);
   opacity: 1; 
 }
 
 /* Header */
 h2 {
-  color: rgb(255, 255, 255);
+  color: rgb(10, 10, 10);
   margin-bottom: 20px;
 }
 
@@ -58,16 +58,16 @@ input {
   background-color: #3f72b500;
   width: 100%;
   padding: 12px;
-  border: 2px solid #ccc;
+  border: 2px solid #7c7c7c;
   border-radius: 25px;
   font-size: 16px;
   margin-bottom: 10px;
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   transition: border-color 0.3s ease;
 }
 
 input:focus {
-  border-color: #ffffff;
+  border-color: #616161;
   outline: none;
 }
 
@@ -76,8 +76,8 @@ input:focus {
   width: 100%;
   padding: 12px;
   background-color: #3f72b500;
-  color: #fff;
-  border: 2px solid #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
   border-radius: 25px;
   font-size: 16px;
   cursor: pointer;
@@ -98,7 +98,7 @@ input:focus {
 /* Login Button */
 .login-btn {
   background: none;
-  color: #a8c0ff;  /* Blue matching the gradient */
+  color: #070707;  /* Blue matching the gradient */
   border: none;
   font-size: 16px;
   cursor: pointer;

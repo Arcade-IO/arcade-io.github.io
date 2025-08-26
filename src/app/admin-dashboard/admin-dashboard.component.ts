@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FirebaseService } from '../services/firebase.service';
 import { CommonModule } from '@angular/common';
+
 // selin 25-03-2025
 interface User {
   uid: string;
@@ -17,11 +18,11 @@ interface User {
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.css']
 })
-// selin 25-03-2025
 export class AdminDashboardComponent {
   users: User[] = [];
-  filteredUsers: User[] = [];  // Filtered user list
-  searchQuery: string = '';  // Store search query manually
+  admins: User[] = [];
+  regularUsers: User[] = [];
+  searchQuery: string = '';
   isLoading = true;
 
   constructor(private firebaseService: FirebaseService) {}
@@ -30,34 +31,28 @@ export class AdminDashboardComponent {
     this.fetchUsers();
   }
 
-  // Fetch users from Firebase and assign to users and filteredUsers
+  // Fetch users and split into admins / non-admins
   async fetchUsers() {
     this.users = await this.firebaseService.getAllUsers();
-    this.filteredUsers = [...this.users];  // Initially show all users
+
+    let list = [...this.users];
+    if (this.searchQuery) {
+      const queryLower = this.searchQuery.toLowerCase();
+      list = list.filter(user =>
+        user.email.toLowerCase().includes(queryLower)
+      );
+    }
+
+    this.admins = list.filter(u => u.isAdmin);
+    this.regularUsers = list.filter(u => !u.isAdmin);
+
     this.isLoading = false;
   }
 
-  // Handle the search input event
+  // Search input handler
   onSearchInput(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.searchQuery = input.value;  // Update the search query
-    this.filterUsers();  // Filter users based on the query
-  }
-
-  // Filter users based on the search query
-  filterUsers() {
-    if (!this.searchQuery) {
-      this.filteredUsers = [...this.users];  // Show all if no search query
-    } else {
-      const queryLower = this.searchQuery.toLowerCase();
-      this.filteredUsers = this.users.filter(user =>
-        user.email.toLowerCase().includes(queryLower)  // Match the search query in email
-      );
-    }
-  }
-
-  async createAdminRights(userId: string) {
-    await this.firebaseService.createAdminRights(userId);
+    this.searchQuery = input.value;
     this.fetchUsers();
   }
 
@@ -67,10 +62,9 @@ export class AdminDashboardComponent {
     } else {
       await this.firebaseService.createAdminRights(user.uid);
     }
-    this.fetchUsers();  // Refresh the user list
+    this.fetchUsers();
   }
-  
-  
+
   async deleteUser(userId: string) {
     if (confirm('Are you sure you want to delete this user?')) {
       await this.firebaseService.deleteUser(userId);

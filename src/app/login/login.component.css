@@ -16,7 +16,7 @@ body {
   color: inherit;
 }
 
-/* Main Container */
+/* Container for centering */
 .login-container {
   height: 100vh;
   display: flex;
@@ -27,34 +27,28 @@ body {
   padding: 1rem;
 }
 
-/* Login Box */
+/* Main box */
 .login-box {
   background-color: rgba(255, 255, 255, 0);
-  padding: 30px;
+  padding: 30px; /* ✅ Consistent padding */
   border: 5px solid currentColor;
   border-radius: 50px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 350px;
+  min-height: 420px; /* ✅ Prevents jumping */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
-input::placeholder {
-  opacity: 1;
-  color: inherit;
-}
-
-/* Header */
 h2 {
   margin-bottom: 20px;
   color: inherit;
 }
 
-/* Input Group */
-.input-group {
-  margin-bottom: 15px;
-}
-
-/* Input Fields */
+/* Inputs */
 input {
   background-color: transparent;
   width: 100%;
@@ -63,7 +57,6 @@ input {
   border-radius: 25px;
   font-size: 16px;
   margin-bottom: 10px;
-  color: inherit;
   transition: border-color 0.3s ease;
 }
 
@@ -72,7 +65,12 @@ input:focus {
   outline: none;
 }
 
-/* Login Button */
+input::placeholder {
+  color: inherit;
+  opacity: 1;
+}
+
+/* Buttons */
 .login-btn {
   width: 100%;
   padding: 12px;
@@ -89,34 +87,14 @@ input:focus {
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* Signup Text */
-.signup-text {
-  text-align: center;
-  margin-top: 15px;
-  color: inherit;
-}
-
-/* Signup Button */
-.signup-btn {
-  background: none;
-  color: inherit;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.signup-btn:hover {
-  text-decoration: underline;
-}
-
-/* Forgot Password Text */
+/* Signup & Forgot Links */
+.signup-text,
 .forgot-password-text {
   text-align: center;
   margin-top: 15px;
-  color: inherit;
 }
 
+.signup-btn,
 .forgot-password-btn {
   background: none;
   color: inherit;
@@ -126,46 +104,45 @@ input:focus {
   transition: color 0.3s ease;
 }
 
+.signup-btn:hover,
 .forgot-password-btn:hover {
   text-decoration: underline;
 }
 
-/* Error Message */
-.error-box {
+/* Error & Success messages */
+.error-box,
+.success-box {
   margin-top: 20px;
-  background-color: rgba(255, 0, 0, 0.5);
-  color: #fff;
   padding: 12px;
   border-radius: 25px;
   width: 100%;
   max-width: 350px;
   text-align: center;
   font-size: 16px;
-  border: 2px solid red;
+  border: 2px solid;
 }
 
-/* ========== Media Queries ========== */
-
-/* Tablets */
-@media (max-width: 1024px) {
-  .login-box {
-    max-width: 90%;
-    padding: 25px;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
+.error-box {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: red;
+  border-color: red;
 }
 
-/* Mobiler */
+.success-box {
+  background-color: rgba(0, 128, 0, 0.2);
+  color: green;
+  border-color: green;
+}
+
+/* Responsive */
 @media (max-width: 600px) {
   .login-box {
-    border-width: 3px;
     padding: 20px;
+    border-width: 3px;
   }
 
-  input, .login-btn {
+  input,
+  .login-btn {
     font-size: 14px;
     padding: 10px;
   }
@@ -175,20 +152,9 @@ input:focus {
     font-size: 14px;
   }
 
-  .error-box {
+  .error-box,
+  .success-box {
     font-size: 14px;
     padding: 10px;
-  }
-}
-
-/* Ekstra små mobiler */
-@media (max-width: 400px) {
-  h2 {
-    font-size: 1.3rem;
-  }
-
-  input,
-  .login-btn {
-    font-size: 13px;
   }
 }

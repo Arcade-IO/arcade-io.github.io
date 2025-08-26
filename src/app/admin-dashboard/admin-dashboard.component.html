@@ -1,4 +1,4 @@
-<!--Selin 25-03-2025-->
+<!-- Selin 25-03-2025 -->
 <div class="dashboard-container">
   <!-- Search Bar -->
   <div class="search-bar-container">
@@ -10,31 +10,73 @@
       />
     </div>
   </div>
-  <!-- User List -->
-  <div *ngIf="!isLoading">
-    <div *ngFor="let user of filteredUsers" class="user-card">
-      <div class="user-info">
-        <div class="user-name">{{ user.name }}</div>
-        <div class="user-email">{{ user.email }}</div>
-        <div class="user-status" [ngClass]="{'is-admin': user.isAdmin}">
-          {{ user.isAdmin ? 'Admin' : 'User' }}
-        </div>
-      </div>
-      <div class="user-actions">
-        <!-- Toggle Switch -->
-        <label class="switch">
-          <input 
-            type="checkbox" 
-            [checked]="user.isAdmin" 
-            (change)="toggleAdminRights(user)"
-          />
-          <span class="slider"></span>
-        </label>
 
-        <!-- Delete Button -->
-        <button class="delete-button" (click)="deleteUser(user.uid)">Delete</button>
-      </div>
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="spinner">Loading...</div>
+
+  <!-- Two tables -->
+  <div class="tables-container" *ngIf="!isLoading">
+    <!-- Admins -->
+    <div class="user-table">
+      <h2>Admins</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of admins">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <label class="switch">
+                <input 
+                  type="checkbox" 
+                  [checked]="user.isAdmin" 
+                  (change)="toggleAdminRights(user)"
+                />
+                <span class="slider"></span>
+              </label>
+              <button class="delete-button" (click)="deleteUser(user.uid)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Users -->
+    <div class="user-table">
+      <h2>Users</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of regularUsers">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <label class="switch">
+                <input 
+                  type="checkbox" 
+                  [checked]="user.isAdmin" 
+                  (change)="toggleAdminRights(user)"
+                />
+                <span class="slider"></span>
+              </label>
+              <button class="delete-button" (click)="deleteUser(user.uid)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
-<!--Selin 25-03-2025-->
+<!-- Selin 25-03-2025 -->
