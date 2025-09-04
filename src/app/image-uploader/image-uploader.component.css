@@ -18,7 +18,6 @@
 input[type="file"],
 input[type="text"] {
   background: none;
-  color: white;
   border: 2px solid white;
   padding: 1em;
   font-size: 1rem;
@@ -30,7 +29,6 @@ input[type="text"] {
 
 input[type="file"]::file-selector-button {
   background: white;
-  color: #3f72b5;
   border: none;
   padding: 0.5em 1em;
   border-radius: 25px;
@@ -39,16 +37,13 @@ input[type="file"]::file-selector-button {
 
 input[type="file"]::file-selector-button:hover {
   background: #3f72b5;
-  color: white;
 }
 
 input[type="text"]::placeholder {
-  color: #ccc;
 }
 
 button {
   background: none;
-  color: white;
   border: 2px solid white;
   padding: 1em 2em;
   border-radius: 25px;
@@ -60,7 +55,6 @@ button {
 
 button:hover {
   background: white;
-  color: #3f72b5;
 }
 
 /* Grid med uploaded billeder */
@@ -76,7 +70,6 @@ button:hover {
   border: 2px solid white;
   border-radius: 25px;
   padding: 1rem;
-  color: white;
   text-align: center;
   word-break: break-word;
   transition: all 0.3s ease;
@@ -100,7 +93,6 @@ button:hover {
 
 .image-card small {
   font-size: 0.8rem;
-  color: #ccc;
   word-wrap: break-word;
 }
 

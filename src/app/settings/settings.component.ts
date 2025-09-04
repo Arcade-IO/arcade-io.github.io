@@ -180,7 +180,7 @@ export class SettingsComponent implements OnInit {
       .then(() => {
         localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
         document.body.style.backgroundColor = this.backgroundColor;
-        document.querySelector('.sidebar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
+        document.querySelector('.Navbar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
         alert('Theme updated successfully!');
         location.reload();
       })

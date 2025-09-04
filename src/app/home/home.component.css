@@ -34,7 +34,6 @@
 /* Buttons */
 .button {
   background: none;
-  color: inherit;
   border: 2px solid currentColor;
   padding: 16px 32px;
   font-size: 2.5rem;
@@ -48,7 +47,6 @@
 
 .button:hover {
   background: currentColor;
-  color: #000; /* eller hvid afhængigt af dit tema */
 }
 
 /* ========== Media Queries ========== */

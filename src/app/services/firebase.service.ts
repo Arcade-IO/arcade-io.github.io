@@ -55,15 +55,40 @@ export class FirebaseService {
     return auth;
   }
 
-  private loadCurrentUser(): void {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        this.currentUser = user;
-      } else {
-        this.currentUser = null;
+private loadCurrentUser(): void {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      this.currentUser = user;
+
+      try {
+        const userData = await this.getUserbyUID(user.uid);
+
+        if (userData && userData.theme) {
+          const bg = userData.theme.backgroundColor;
+          const nav = userData.theme.navbarColor;
+
+          setTimeout(() => {
+            if (bg) {
+              document.body.style.backgroundColor = bg;
+            }
+            if (nav) {
+              const navEl = document.querySelector('.navbar') as HTMLElement | null;
+              if (navEl) {
+                navEl.style.backgroundColor = nav;
+              }
+            }
+          }, 0);
+        }
+      } catch (err) {
+        console.error('Error applying theme:', err);
       }
-    });
-  }
+
+    } else {
+      this.currentUser = null;
+    }
+  });
+}
+
 
   // ------------------------------
   // User Management Functions
