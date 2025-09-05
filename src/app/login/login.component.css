@@ -23,26 +23,28 @@ body {
   align-items: center;
   text-align: center;
   padding: 1rem;
+  color: var(--app-fg); /* 👈 al tekst følger theme */
 }
 
 /* Main box */
 .login-box {
-  background-color: rgba(255, 255, 255, 0);
-  padding: 30px; /* ✅ Consistent padding */
-  border: 5px solid currentColor;
+  background-color: transparent;
+  padding: 30px;
   border-radius: 50px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); /* 👈 kun skygge */
   width: 100%;
   max-width: 350px;
-  min-height: 420px; /* ✅ Prevents jumping */
+  min-height: 420px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  color: var(--app-fg);
 }
 
 h2 {
   margin-bottom: 20px;
+  color: var(--app-fg);
 }
 
 /* Inputs */
@@ -50,20 +52,26 @@ input {
   background-color: transparent;
   width: 100%;
   padding: 12px;
-  border: 2px solid #ccc;
+  border: none;                                    /* ❌ ingen border */
   border-radius: 25px;
   font-size: 16px;
   margin-bottom: 10px;
-  transition: border-color 0.3s ease;
+  transition: box-shadow 0.2s ease;
+  color: var(--app-fg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);       /* 👈 kun skygge */
 }
 
 input:focus {
-  border-color: currentColor;
   outline: none;
+  /* 👇 mere tydelig dybde ved fokus */
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.18),
+    0 0 0 2px var(--app-fg);
 }
 
 input::placeholder {
-  opacity: 1;
+  color: var(--app-fg);
+  opacity: 0.65;
 }
 
 /* Buttons */
@@ -71,15 +79,25 @@ input::placeholder {
   width: 100%;
   padding: 12px;
   background-color: transparent;
-  border: 2px solid currentColor;
+  border: none;                                    /* ❌ ingen border */
   border-radius: 25px;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease,
+              box-shadow 0.2s ease,
+              transform 0.06s ease,
+              color 0.2s ease;
+  color: var(--app-fg);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.14);      /* 👈 kun skygge */
 }
 
 .login-btn:hover {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.login-btn:active {
+  transform: translateY(1px);
 }
 
 /* Signup & Forgot Links */
@@ -87,6 +105,7 @@ input::placeholder {
 .forgot-password-text {
   text-align: center;
   margin-top: 15px;
+  color: var(--app-fg);
 }
 
 .signup-btn,
@@ -95,7 +114,8 @@ input::placeholder {
   border: none;
   font-size: 16px;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: text-decoration 0.2s ease, color 0.2s ease;
+  color: var(--app-fg);
 }
 
 .signup-btn:hover,
@@ -113,32 +133,33 @@ input::placeholder {
   max-width: 350px;
   text-align: center;
   font-size: 16px;
-  border: 2px solid;
+  /* ❌ fjernet border */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);      /* 👈 kun skygge */
 }
 
 .error-box {
-  background-color: rgba(255, 0, 0, 0.2);
-  color: red;
-  border-color: red;
+  background-color: rgba(255, 0, 0, 0.15);
+  color: #c40000;
 }
 
 .success-box {
-  background-color: rgba(0, 128, 0, 0.2);
-  color: green;
-  border-color: green;
+  background-color: rgba(0, 128, 0, 0.15);
+  color: #0f7a0f;
 }
 
 /* Responsive */
 @media (max-width: 600px) {
   .login-box {
     padding: 20px;
-    border-width: 3px;
+    border-radius: 30px;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.28);
   }
 
   input,
   .login-btn {
     font-size: 14px;
     padding: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   }
 
   .signup-btn,
@@ -150,5 +171,6 @@ input::placeholder {
   .success-box {
     font-size: 14px;
     padding: 10px;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
   }
 }
