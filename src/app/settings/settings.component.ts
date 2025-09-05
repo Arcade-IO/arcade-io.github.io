@@ -35,8 +35,12 @@ export class SettingsComponent implements OnInit {
   selectedFile: File | null = null;
   uploading = false;
   showProfileMenu = false;
+  deleting = false;
 
-  user: any = {}; // Holds current user info including Cloudinary photoURL
+  user: any = {}; // Holds current user info including Cloudinary photoURL + publicId
+
+  // URL til din Firebase Cloud Function der sletter i Cloudinary
+  private readonly DELETE_FN_URL = 'https://<REGION>-<PROJECT_ID>.cloudfunctions.net/deleteCloudinaryImage';
 
   constructor(private firebaseService: FirebaseService, private http: HttpClient) {}
 
@@ -46,10 +50,8 @@ export class SettingsComponent implements OnInit {
       if (!user) return;
       this.user = user;
 
-      // Load username
       this.currentUsername = user.displayName || 'Not set';
 
-      // Load theme from Firebase
       try {
         const userData = await this.firebaseService.getUserbyUID(user.uid);
         const theme = userData?.theme;
@@ -62,15 +64,13 @@ export class SettingsComponent implements OnInit {
           document.querySelector('.sidebar')?.setAttribute('style', `background-color: ${this.navbarColor}`);
         }
 
-        // Load Cloudinary profile picture if exists
-        if (userData?.photoURL) {
-          this.user.photoURL = userData.photoURL;
-        }
+        // Hent foto fra brugerens node
+        if (userData?.photoURL) this.user.photoURL = userData.photoURL;
+        if (userData?.photoPublicId) this.user.photoPublicId = userData.photoPublicId;
       } catch (err) {
         console.error('Error loading user data:', err);
       }
 
-      // Default section
       this.optionChangeTheme();
     });
   }
@@ -118,7 +118,6 @@ export class SettingsComponent implements OnInit {
       console.log('Passwords do not match');
       return;
     }
-
     const user = this.firebaseService.getCurrentUser();
     if (user) {
       this.firebaseService.updateUserPassword(user.uid, this.newPassword)
@@ -142,7 +141,6 @@ export class SettingsComponent implements OnInit {
         alert('Username is already taken.');
         return;
       }
-
       const user = this.firebaseService.getCurrentUser();
       if (user) {
         this.firebaseService.updateUsername(user.uid, this.newUsername)
@@ -170,12 +168,10 @@ export class SettingsComponent implements OnInit {
   saveThemeSettings() {
     const user = this.firebaseService.getCurrentUser();
     if (!user) return;
-
     const themeSettings = {
       backgroundColor: this.backgroundColor,
       navbarColor: this.navbarColor
     };
-
     this.firebaseService.saveThemeSettings(user.uid, themeSettings)
       .then(() => {
         localStorage.setItem('themeSettings', JSON.stringify(themeSettings));
@@ -196,33 +192,54 @@ export class SettingsComponent implements OnInit {
     this.selectedFile = event.target.files[0] || null;
   }
 
+  private async deleteFromCloudinary(publicId: string): Promise<void> {
+    try {
+      await this.http.post<any>(this.DELETE_FN_URL, {
+        publicId: publicId,
+        resourceType: 'image',
+        invalidate: true
+      }).toPromise();
+    } catch (err) {
+      console.error('Cloudinary delete error:', err);
+    }
+  }
+
   uploadProfilePicture() {
     if (!this.selectedFile) return;
     this.uploading = true;
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-    formData.append('upload_preset', 'ImageUploader'); // ← your Cloudinary unsigned preset
+    formData.append('upload_preset', 'ImageUploader');
 
     this.http.post<any>(
       'https://api.cloudinary.com/v1_1/dshaoiftz/image/upload',
       formData
     ).subscribe({
       next: async (res) => {
-        const imageUrl = res.secure_url;
+        const imageUrl: string = res.secure_url;
+        const newPublicId: string = res.public_id;
         const user = this.firebaseService.getCurrentUser();
-        if (!user) return;
+        if (!user) {
+          this.uploading = false;
+          return;
+        }
 
-        // Save Cloudinary URL in Firebase
         const db = this.firebaseService.getDatabase();
         const userRef = ref(db, `users/${user.uid}`);
-        update(userRef, { photoURL: imageUrl })
-          .then(() => {
-            this.user.photoURL = imageUrl; // update preview
+        const oldPublicId: string | null = this.user?.photoPublicId || null;
+
+        // Overskriv billedet direkte under brugeren
+        update(userRef, { photoURL: imageUrl, photoPublicId: newPublicId })
+          .then(async () => {
+            this.user.photoURL = imageUrl;
+            this.user.photoPublicId = newPublicId;
+            const hadOld = !!oldPublicId && oldPublicId !== newPublicId;
             this.selectedFile = null;
             this.uploading = false;
             this.showProfileMenu = false;
             alert('Profile picture updated successfully!');
+            if (hadOld) await this.deleteFromCloudinary(oldPublicId as string);
           })
           .catch(err => {
             console.error('Error saving profile picture:', err);
@@ -233,12 +250,10 @@ export class SettingsComponent implements OnInit {
         console.error('Cloudinary upload error:', err);
         this.uploading = false;
       }
-
-      
     });
   }
 
-  deleteProfilePicture() {
+  async deleteProfilePicture() {
     if (!confirm('Are you sure you want to delete your profile picture?')) return;
 
     const user = this.firebaseService.getCurrentUser();
@@ -246,15 +261,21 @@ export class SettingsComponent implements OnInit {
 
     const db = this.firebaseService.getDatabase();
     const userRef = ref(db, `users/${user.uid}`);
+    const publicId: string | null = this.user?.photoPublicId || null;
+    this.deleting = true;
 
-    update(userRef, { photoURL: null })
-      .then(() => {
-        this.user.photoURL = null; // show default avatar
-        this.showProfileMenu = false;
-        alert('Profile picture deleted!');
-      })
-      .catch(err => console.error('Error deleting profile picture from Firebase:', err));
+    try {
+      if (publicId) await this.deleteFromCloudinary(publicId);
+      await update(userRef, { photoURL: null, photoPublicId: null });
+      this.user.photoURL = null;
+      this.user.photoPublicId = null;
+      this.showProfileMenu = false;
+      alert('Profile picture deleted!');
+    } catch (err) {
+      console.error('Error deleting profile picture:', err);
+    } finally {
+      this.deleting = false;
+    }
   }
 
-  
 }
