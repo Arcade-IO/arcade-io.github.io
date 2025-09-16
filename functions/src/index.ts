@@ -1,42 +1,57 @@
-import * as functions from "firebase-functions";
-import {v2 as cloudinary} from "cloudinary";
+import { onRequest, Request } from "firebase-functions/v2/https";
+import { v2 as cloudinary } from "cloudinary";
 
-// VIGTIGT: Brug CommonJS require til cors for at undgå "no call signatures" i TS
-const cors = require("cors")({origin: true});
+const cors = require("cors")({ origin: true });
 
-// Læs Cloudinary credentials fra env-config (sat via CLI: firebase functions:config:set ...)
 cloudinary.config({
-  cloud_name: functions.config().cloudinary.cloud_name,
-  api_key: functions.config().cloudinary.api_key,
-  api_secret: functions.config().cloudinary.api_secret
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// HTTPS endpoint til at slette et Cloudinary-billede.
-// Kald det fra Angular med body: { publicId: "..." }
-export const deleteCloudinaryImage = functions.https.onRequest((req, res) => {
-  cors(req, res, async () => {
-    if (req.method !== "POST") {
-      res.status(405).json({error: "Only POST allowed"});
-      return;
-    }
-
-    try {
-      const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
-      const publicId = body?.publicId;
-
-      if (!publicId || typeof publicId !== "string") {
-        res.status(400).json({error: "publicId is required"});
+export const getCloudinarySignature = onRequest(
+  { region: "europe-west1" },
+  async (req: Request, res: any): Promise<void> => {
+    cors(req, res, async () => {
+      if (req.method !== "POST") {
+        res.status(405).json({ error: "Only POST allowed" });
         return;
       }
 
-      const result = await cloudinary.uploader.destroy(publicId, {
-        resource_type: "image",
-        invalidate: true
-      });
+      try {
+        const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+        const uid = body?.public_id;
+        if (!uid || typeof uid !== "string") {
+          res.status(400).json({ error: "public_id (uid) is required" });
+          return;
+        }
 
-      res.status(200).json(result);
-    } catch (err: any) {
-      res.status(500).json({error: err?.message || "Unknown error"});
-    }
-  });
-});
+        const public_id = `imageuploader/${uid}`;
+        const timestamp = Math.floor(Date.now() / 1000);
+
+        const paramsToSign = {
+          public_id,
+          timestamp,
+          overwrite: true,
+          invalidate: true
+        };
+
+        const signature = cloudinary.utils.api_sign_request(
+          paramsToSign,
+          (cloudinary.config() as any).api_secret
+        );
+
+        res.status(200).json({
+          public_id,
+          timestamp,
+          signature,
+          api_key: (cloudinary.config() as any).api_key,
+          cloud_name: (cloudinary.config() as any).cloud_name
+        });
+      } catch (err: any) {
+        console.error("Signature error:", err?.message || err);
+        res.status(500).json({ error: err?.message || "Unknown error" });
+      }
+    });
+  }
+);
