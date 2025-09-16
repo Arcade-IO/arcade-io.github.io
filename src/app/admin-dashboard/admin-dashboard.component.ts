@@ -19,23 +19,24 @@ interface User {
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent {
-  users: User[] = [];
-  admins: User[] = [];
-  regularUsers: User[] = [];
-  searchQuery: string = '';
-  isLoading = true;
+  users: User[] = []; // all users from database
+  admins: User[] = [];  // filtered list of admins
+  regularUsers: User[] = [];  // filtered list of non-admins
+  searchQuery: string = ''; // search text input
+  isLoading = true;   // loading indicator
 
   constructor(private firebaseService: FirebaseService) {}
 
   ngOnInit() {
-    this.fetchUsers();
+    this.fetchUsers();  // load users when component starts
   }
 
-  // Fetch users and split into admins / non-admins
+  // Get all users and split into admins / regular users
   async fetchUsers() {
     this.users = await this.firebaseService.getAllUsers();
 
     let list = [...this.users];
+    // If a search query is entered, filter users by email
     if (this.searchQuery) {
       const queryLower = this.searchQuery.toLowerCase();
       list = list.filter(user =>
@@ -43,32 +44,35 @@ export class AdminDashboardComponent {
       );
     }
 
+    // Separate users into admins and non-admins
     this.admins = list.filter(u => u.isAdmin);
     this.regularUsers = list.filter(u => !u.isAdmin);
 
     this.isLoading = false;
   }
 
-  // Search input handler
+  // Called when typing in the search box
   onSearchInput(event: Event) {
     const input = event.target as HTMLInputElement;
     this.searchQuery = input.value;
-    this.fetchUsers();
+    this.fetchUsers(); 
   }
 
+  // Give or remove admin rights for a user
   async toggleAdminRights(user: User) {
     if (user.isAdmin) {
       await this.firebaseService.revokeAdminRights(user.uid);
     } else {
       await this.firebaseService.createAdminRights(user.uid);
     }
-    this.fetchUsers();
+    this.fetchUsers();  // refresh list
   }
 
+  // Permanently delete a user
   async deleteUser(userId: string) {
     if (confirm('Are you sure you want to delete this user?')) {
       await this.firebaseService.deleteUser(userId);
-      this.fetchUsers();
+      this.fetchUsers();  // refresh list
     }
   }
 }

@@ -20,37 +20,27 @@
  })
  export class LoginComponent implements OnInit {
  
-   /* ------------------------------------------------------------------ */
-   /*  Felt-bindings                                                     */
-   /* ------------------------------------------------------------------ */
+   // form fields
    email: string = '';
    password: string = '';
    errorMessage: string = '';
  
-   /* ------------------------------------------------------------------ */
-   /*  Konstruktor                                                       */
-   /* ------------------------------------------------------------------ */
+
    constructor(
      private router: Router,
      private firebaseService: FirebaseService
    ) {}
  
-   /* ------------------------------------------------------------------ */
-   /*  Lifecycle                                                         */
-   /* ------------------------------------------------------------------ */
+  // runs when component loads
    ngOnInit(): void {
      console.log('LoginComponent indlæst');
    }
  
-   /* ------------------------------------------------------------------ */
-   /*  Template-events                                                   */
-   /* ------------------------------------------------------------------ */
+  // update email and password when typing
    sendEmail(event: any): void   { this.email    = event.target.value; }
    sendPassword(event: any): void{ this.password = event.target.value; }
  
-   /* ------------------------------------------------------------------ */
-   /*  Login-logik                                                       */
-   /* ------------------------------------------------------------------ */
+  // login with Firebase
    login(event?: Event): void {
      event?.preventDefault();
  
@@ -62,17 +52,16 @@
      const auth = getAuth();
  
      signInWithEmailAndPassword(auth, this.email, this.password)
-       .then((cred: UserCredential) => this.afterSuccess(cred))
-       .catch(err => this.afterError(err));
+       .then((cred: UserCredential) => this.afterSuccess(cred)) //success
+       .catch(err => this.afterError(err)); //error
    }
  
-   /* ------------------------------------------------------------------ */
-   /*  SUCCESS-flow                                                      */
-   /* ------------------------------------------------------------------ */
+   // what happens on success
    private afterSuccess(cred: UserCredential): void {
      console.log('✅ Login successful:', cred.user);
      this.errorMessage = '';
- 
+
+     // get user info from Firebase
      this.firebaseService.getUserbyUID(cred.user.uid)
        .then(userData => {
          const name = userData.displayName || 'Bruger';
@@ -84,26 +73,21 @@
          localStorage.setItem('playerName', cred.user.displayName || 'Bruger');
        })
        .finally(() => {
-         /* --------------------------------------------------------------
-          *  Navigér til /dashboard og REFRESH siden én gang
-          * -------------------------------------------------------------- */
+          
+        // go to dashboard and force refresh
          this.router.navigate(['/dashboard']).then(() => {
-           location.reload();                        // 👈 tvungen refresh
+           location.reload();                        // 👈force refresh
          });
        });
    }
  
-   /* ------------------------------------------------------------------ */
-   /*  ERROR-flow                                                        */
-   /* ------------------------------------------------------------------ */
+  // what happens on error
    private afterError(error: any): void {
      console.error('❌ Error during login:', error.code, error.message);
      this.errorMessage = 'Login failed: ' + error.message;
    }
  
-   /* ------------------------------------------------------------------ */
-   /*  Links fra skærmen                                                 */
-   /* ------------------------------------------------------------------ */
+  // navigate to other pages
    goToSignup(): void       { this.router.navigate(['/signup']); }
    forgotPassword(): void   { this.router.navigate(['/forgot-password']); }
  }

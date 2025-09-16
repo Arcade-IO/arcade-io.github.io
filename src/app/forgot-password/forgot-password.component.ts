@@ -13,24 +13,28 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule]
 })
 export class ForgotPasswordComponent {
-  email: string = '';
-  errorMessage: string = '';
+  email: string = '';  // email input
+  errorMessage: string = ''; // holds error messages
   isError: boolean = false;
 
   constructor(private router: Router, private firebaseService: FirebaseService) {}
 
+    // update email as user types
   sendEmail(event: Event) {
     this.email = (event.target as HTMLInputElement).value;
   }
 
+  // send password reset email
   resetPassword() {
     if (!this.email) {
       this.errorMessage = 'Please enter your email';
       return;
     }
 
+   // call Firebase service to send password reset email
     this.firebaseService.resetPassword(this.email)
       .then(() => {
+        
         alert('Password reset email sent!');
         this.router.navigate(['/login']);
       })
@@ -39,6 +43,7 @@ export class ForgotPasswordComponent {
       });
   }
 
+    // navigate manually back to login
   goToLogin() {
     this.router.navigate(['/login']);
   }
