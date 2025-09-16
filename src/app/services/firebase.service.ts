@@ -66,17 +66,24 @@ export class FirebaseService {
   }
 
   // ------------------------------
-  // User Management Functions
+  // User Management Functions / SELIN 16.09
   // ------------------------------
-
+// Create a new user in Firebase Auth + Database
   registerUser(email: string, password: string, displayName: string): Promise<any> {
     return createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
+      // Save displayName to Auth profile
         return updateProfile(user, { displayName }).then(() => {
+
+      // Send verification email
           return sendEmailVerification(user).then(() => {
             console.log('Verification email sent.');
+
+      // Check if email belongs to hardcoded admin list
             const isAdmin = FirebaseService.isHardcodedAdmin(email);
+      
+      // Save user in Realtime Database
             return this.createUser(user.uid, displayName, email, isAdmin)
               .then(() => ({ uid: user.uid, isAdmin }));
           });
@@ -84,6 +91,7 @@ export class FirebaseService {
       });
   }
 
+  // Write new user data to Realtime Database
   createUser(uid: string, displayName: string, email: string, isAdmin: boolean): Promise<void> {
     return set(ref(database, `users/${uid}`), {
       displayName,
@@ -93,7 +101,7 @@ export class FirebaseService {
     });
   }
 
-  //Reset Password 
+// Send password reset email
   resetPassword(email: string): Promise<void> {
     return sendPasswordResetEmail(auth, email)
       .then(() => {
@@ -104,7 +112,8 @@ export class FirebaseService {
         throw error;
       });
   }
-  
+
+  // Check if a user is admin
   checkIfAdmin(uid: string): Promise<boolean> {
     const userRef = ref(database, `users/${uid}`);
     return get(userRef).then((snapshot) => {
@@ -119,31 +128,38 @@ export class FirebaseService {
     });
   }
 
+  // Give admin rights to a user
   createAdminRights(uid: string): Promise<void> {
     return update(ref(database, `users/${uid}`), { isAdmin: true });
   }
 
+// Remove admin rights from a user
   revokeAdminRights(uid: string): Promise<void> {
     return update(ref(database, `users/${uid}`), { isAdmin: false });
   }
 
+// Delete a user completely from DB
   deleteUser(uid: string): Promise<void> {
     return set(ref(database, `users/${uid}`), null);
   }
 
+  // Update a user’s info (name, email, or admin rights)
   sendUser(uid: string, updates: { displayName?: string; email?: string; isAdmin?: boolean }): Promise<void> {
     return update(ref(database, `users/${uid}`), updates);
   }
 
+  // Login with email + password
   loginUser(email: string, password: string): Promise<any> {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
+  // Logout current user
   logout(): Promise<void> {
     this.clearDisplayName();
     return signOut(auth);
   }
 
+  // Get all users from database (admins + regular)
   getAllUsers(): Promise<any[]> {
     const usersRef = ref(database, 'users/');
     return get(usersRef).then((snapshot) => {
@@ -154,6 +170,8 @@ export class FirebaseService {
       return [];
     });
   }
+// SELIN 16.09
+
 
   // ------------------------------
   // Game, Forum, and Settings Management
@@ -249,6 +267,8 @@ export class FirebaseService {
     });
   }
 
+  //SELIN 16.09
+// Create a new settings entry for a user
   createSettings(
     settingsId: string,
     userId: string,
@@ -264,18 +284,26 @@ export class FirebaseService {
     });
   }
 
+// Save theme colors directly under the user’s node
   saveThemeSettings(uid: string, settings: { backgroundColor: string; navbarColor: string }) {
+    
+    // Apply theme immediately on the page
     document.body.style.backgroundColor = settings.backgroundColor;
     document.querySelector('.navbar')?.setAttribute('style', `background-color: ${settings.navbarColor}`);
+
+    // Save to Firebase under users/uid/theme
     return set(ref(database, `users/${uid}/theme`), settings);
   }
 
+// Update an existing settings entry
   updateSettings(
     settingsId: string,
     updates: { navbarColor?: string; navbarFontColor?: string; backgroundColor?: string }
   ): Promise<void> {
     return update(ref(database, `settings/${settingsId}`), updates);
   }
+//SELIN 16.09
+
 
   // ------------------------------
   // Auth State & Utility Functions
@@ -338,27 +366,32 @@ export class FirebaseService {
     });
   }
 
+  // Update the current user's password
   updateUserPassword(uid: string, newPassword: string): Promise<void> {
     const authInstance = this.getAuth();
     const user = authInstance.currentUser;
-    
+     
+    // Only allow if the logged-in user matches the given uid
     if (user && user.uid === uid) {
-      return updatePassword(user, newPassword);
+      return updatePassword(user, newPassword); // Firebase Auth update
     } else {
-      return Promise.reject('User not authenticated');
+      return Promise.reject('User not authenticated'); // reject if no match
     }
   }
 
+  // Update the current user's username (displayName)
   updateUsername(uid: string, newUsername: string): Promise<void> {
     const authInstance = this.getAuth();
     const user = authInstance.currentUser;
-  
+
+  // Only allow if the logged-in user matches the given uid
     if (user && user.uid === uid) {
-      return updateProfile(user, { displayName: newUsername })
+      // also update in Realtime Database
+      return updateProfile(user, { displayName: newUsername })  // update in Firebase Auth
         .then(() => {
           return update(ref(database, `users/${uid}`), { name: newUsername });
         })
-        .then(() => user.reload())
+        .then(() => user.reload()) // reload user to apply changes
         .then(() => {
           console.log('Updated username:', newUsername);
         })
@@ -367,7 +400,7 @@ export class FirebaseService {
       return Promise.reject('User not authenticated');
     }
   }
-
+//SELIN 16.09
   // ------------------------------
   // NY Highscore Metode
   // ------------------------------
