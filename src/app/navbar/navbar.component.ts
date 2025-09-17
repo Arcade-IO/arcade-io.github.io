@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.checkScreenWidth();
 
-    this.firebaseService.getAuthStateListener(user => {
+    this.firebaseService.getAuthStateListener(async user => {
       this.isLoggedIn = !!user;
 
       if (user) {
@@ -40,6 +40,28 @@ export class NavbarComponent implements OnInit {
         this.firebaseService.checkIfAdmin(user.uid)
           .then(adminStatus => this.isAdmin = adminStatus)
           .catch(() => this.isAdmin = false);
+
+        // 🟢 Hent og anvend brugerens theme direkte her
+        try {
+          const userData = await this.firebaseService.getUserbyUID(user.uid);
+          if (userData?.theme) {
+            const bg = userData.theme.backgroundColor;
+            const nav = userData.theme.navbarColor;
+
+            if (bg) {
+              document.body.style.backgroundColor = bg;
+            }
+            if (nav) {
+              const navEl = document.querySelector('.Navbar') as HTMLElement | null;
+              if (navEl) {
+                navEl.style.backgroundColor = nav;
+              }
+            }
+          }
+        } catch (err) {
+          console.error("Error applying theme:", err);
+        }
+
       } else {
         this.isAdmin = false;
         this.displayName = '';

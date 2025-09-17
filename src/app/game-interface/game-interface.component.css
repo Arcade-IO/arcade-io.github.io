@@ -130,7 +130,6 @@ iframe {
 .fullscreen-btn,
 .show-hideChat {
   background: transparent;
-  color: white;
   border: 1px solid white;
   border-radius: 6px;
   padding: 0.5em 1em;
@@ -142,7 +141,6 @@ iframe {
 .fullscreen-btn:hover,
 .show-hideChat:hover {
   background: white;
-  color: black;
 }
 
 /* -------------------------------------------------
@@ -165,7 +163,6 @@ iframe {
    ------------------------------------------------- */
 .error-message {
   text-align: center;
-  color: red;
   font-weight: bold;
   font-size: 1rem;
 }

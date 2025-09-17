@@ -1,7 +1,20 @@
-/*Martin 25-03-2025*/
+/* behold dit reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-/* Button container */
-.home-image{
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+/* Home image – samme placering som før */
+.home-image {
   position: absolute;
   top: 40%;
   left: 50%;
@@ -14,8 +27,9 @@
   align-items: center;
   padding: 1rem;
   box-sizing: border-box;
-  
 }
+
+/* Button container – samme placering som før */
 .button-container {
   position: absolute;
   top: 60%;
@@ -31,11 +45,10 @@
   box-sizing: border-box;
 }
 
-/* Buttons */
+/* Buttons – transparent med fontfarve + skygge */
 .button {
-  background: none;
-  color: inherit;
-  border: 2px solid currentColor;
+  background: transparent;                     /* behold baggrund som global */
+  color: var(--app-fg);                        /* 👈 tekst skifter lys/mørk */
   padding: 16px 32px;
   font-size: 2.5rem;
   cursor: pointer;
@@ -44,19 +57,23 @@
   text-align: center;
   width: 100%;
   max-width: 300px;
+  border: none;                                /* fjern outline */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);  /* skygge i stedet */
 }
 
 .button:hover {
-  background: currentColor;
-  color: #000; /* eller hvid afhængigt af dit tema */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
 }
 
-/* ========== Media Queries ========== */
+.button:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
 
-/* Tablets og mindre skærme */
+/* Tablets */
 @media (max-width: 1024px) {
   .button-container {
-    flex-direction: column;
     gap: 2em;
   }
 
@@ -77,6 +94,7 @@
     font-size: 1.5rem;
     padding: 12px 24px;
     max-width: 220px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -88,5 +106,3 @@
     max-width: 180px;
   }
 }
-
-/*Martin 25-03-2025*/

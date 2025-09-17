@@ -215,6 +215,8 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+ 
+
   uploadProfilePicture() {
     if (!this.selectedFile) return;
     this.uploading = true;

@@ -124,7 +124,6 @@ input:checked + .slider:before {
 /* Delete Button */
 .delete-button {
   background-color: #f44336;
-  color: white;
   border: none;
   padding: 6px 12px;
   font-size: 14px;
