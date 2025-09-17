@@ -1,7 +1,8 @@
-import { onRequest, Request } from "firebase-functions/v2/https";
-import { v2 as cloudinary } from "cloudinary";
+import * as dotenv from "dotenv";
+dotenv.config(); // <- VIGTIGT: Loader .env før alt andet
 
-const cors = require("cors")({ origin: true });
+import { onRequest } from "firebase-functions/v2/https";
+import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,47 +12,56 @@ cloudinary.config({
 
 export const getCloudinarySignature = onRequest(
   { region: "europe-west1" },
-  async (req: Request, res: any): Promise<void> => {
-    cors(req, res, async () => {
-      if (req.method !== "POST") {
-        res.status(405).json({ error: "Only POST allowed" });
+  async (req, res) => {
+    // Manuel CORS
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+
+    if (req.method === "OPTIONS") {
+      res.status(204).send("");
+      return;
+    }
+
+    if (req.method !== "POST") {
+      res.status(405).json({ error: "Only POST allowed" });
+      return;
+    }
+
+    try {
+      const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+      const uid = body?.public_id;
+
+      if (!uid || typeof uid !== "string") {
+        res.status(400).json({ error: "public_id (uid) is required" });
         return;
       }
 
-      try {
-        const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
-        const uid = body?.public_id;
-        if (!uid || typeof uid !== "string") {
-          res.status(400).json({ error: "public_id (uid) is required" });
-          return;
-        }
+      const public_id = `imageuploader/${uid}`;
+      const timestamp = Math.floor(Date.now() / 1000);
 
-        const public_id = `imageuploader/${uid}`;
-        const timestamp = Math.floor(Date.now() / 1000);
+      const paramsToSign = {
+        public_id,
+        timestamp,
+        overwrite: true,
+        invalidate: true
+      };
 
-        const paramsToSign = {
-          public_id,
-          timestamp,
-          overwrite: true,
-          invalidate: true
-        };
+      const signature = cloudinary.utils.api_sign_request(
+        paramsToSign,
+        process.env.CLOUDINARY_API_SECRET as string
+      );
 
-        const signature = cloudinary.utils.api_sign_request(
-          paramsToSign,
-          (cloudinary.config() as any).api_secret
-        );
-
-        res.status(200).json({
-          public_id,
-          timestamp,
-          signature,
-          api_key: (cloudinary.config() as any).api_key,
-          cloud_name: (cloudinary.config() as any).cloud_name
-        });
-      } catch (err: any) {
-        console.error("Signature error:", err?.message || err);
-        res.status(500).json({ error: err?.message || "Unknown error" });
-      }
-    });
+      res.status(200).json({
+        public_id,
+        timestamp,
+        signature,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME
+      });
+    } catch (err: any) {
+      console.error("Signature error:", err?.message || err);
+      res.status(500).json({ error: err?.message || "Unknown error" });
+    }
   }
 );
