@@ -357,7 +357,28 @@ private loadCurrentUser(): void {
   // DisplayName Management
   // ------------------------------
 
-  updateDisplayName(uid: string): Promise<void> {
+  // Kullanıcının displayName'ini güncelle (Auth + DB)
+  updateDisplayName(uid: string, newDisplayName: string): Promise<void> {
+    const authInstance = this.getAuth();
+    const user = authInstance.currentUser;
+
+    if (user && user.uid === uid) {
+      return updateProfile(user, { displayName: newDisplayName })
+        .then(() => {
+          return update(ref(this.getDatabase(), `users/${uid}`), { displayName: newDisplayName });
+        })
+        .then(() => user.reload())
+        .then(() => {
+          console.log('Updated displayName:', newDisplayName);
+        })
+        .catch(error => Promise.reject(error));
+    } else {
+      return Promise.reject('User not authenticated');
+    }
+  }
+
+  // DB’den displayName’i oku ve currentDisplayName’e set et
+  refreshDisplayName(uid: string): Promise<void> {
     return this.getUserbyUID(uid)
       .then((userData) => {
         if (userData && userData.displayName) {
@@ -367,7 +388,7 @@ private loadCurrentUser(): void {
         }
       })
       .catch((error) => {
-        console.error('Error updating displayName:', error);
+        console.error('Error refreshing displayName:', error);
         this.currentDisplayName = '';
       });
   }
@@ -404,27 +425,6 @@ private loadCurrentUser(): void {
     }
   }
 
-  // Update the current user's username (displayName)
-  updateUsername(uid: string, newUsername: string): Promise<void> {
-    const authInstance = this.getAuth();
-    const user = authInstance.currentUser;
-
-  // Only allow if the logged-in user matches the given uid
-    if (user && user.uid === uid) {
-      // also update in Realtime Database
-      return updateProfile(user, { displayName: newUsername })  // update in Firebase Auth
-        .then(() => {
-          return update(ref(database, `users/${uid}`), { name: newUsername });
-        })
-        .then(() => user.reload()) // reload user to apply changes
-        .then(() => {
-          console.log('Updated username:', newUsername);
-        })
-        .catch(error => Promise.reject(error));
-    } else {
-      return Promise.reject('User not authenticated');
-    }
-  }
 //SELIN 16.09
   // ------------------------------
   // NY Highscore Metode
@@ -514,7 +514,7 @@ private loadCurrentUser(): void {
 
     return push(chatref, {
       text: message.text,
-      userName: message.userName,
+      displayName: message.displayName,
       timeStamp: message.timeStamp.toISOString(),
       gameId: message.gameId,
     }).then(() => {});

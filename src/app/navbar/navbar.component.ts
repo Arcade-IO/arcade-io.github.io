@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
       this.isLoggedIn = !!user;
 
       if (user) {
-        this.firebaseService.updateDisplayName(user.uid)
+        this.firebaseService.refreshDisplayName(user.uid)
           .then(() => this.displayName = this.firebaseService.currentDisplayName)
           .catch(() => this.displayName = 'Bruger');
 

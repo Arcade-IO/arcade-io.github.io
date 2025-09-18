@@ -1,13 +1,13 @@
 // Alexander 01-04-2025
 export class Message {
     text: string;
-    userName: string;
+    displayName: string;
     timeStamp: Date;
     gameId: string;
   
-    constructor(message: string, userName: string, gameId: string) {
+    constructor(message: string, displayName: string, gameId: string) {
       this.text = message;
-      this.userName = userName;
+      this.displayName = displayName;
       this.gameId = gameId;
       this.timeStamp = new Date();
     }
