@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -20,6 +21,8 @@ export class NavbarComponent implements OnInit {
   isMobileOpen = false;    // mobil: burger toggle
   isMobile = false;        // opdateres i checkScreenWidth()
 
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private firebaseService: FirebaseService,
     private router: Router,
@@ -29,13 +32,18 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.checkScreenWidth();
 
+    // 🔥 Subscribe to reactive displayName stream
+    const sub = this.firebaseService.currentDisplayName$.subscribe(name => {
+      this.displayName = name;
+    });
+    this.subscriptions.push(sub);
+
     this.firebaseService.getAuthStateListener(async user => {
       this.isLoggedIn = !!user;
 
       if (user) {
-        this.firebaseService.refreshDisplayName(user.uid)
-          .then(() => this.displayName = this.firebaseService.currentDisplayName)
-          .catch(() => this.displayName = 'Bruger');
+        // 🔥 Trigger refresh so the BehaviorSubject updates
+        await this.firebaseService.refreshDisplayName(user.uid);
 
         this.firebaseService.checkIfAdmin(user.uid)
           .then(adminStatus => this.isAdmin = adminStatus)
@@ -80,6 +88,11 @@ export class NavbarComponent implements OnInit {
     window.addEventListener('resize', () => {
       this.checkScreenWidth();
     });
+  }
+
+  ngOnDestroy(): void {
+    // clean up subscriptions
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   checkScreenWidth(): void {

@@ -17,15 +17,15 @@ import { environment } from '../../environments/environment';
 export class SettingsComponent implements OnInit {
 
   isChangePassword = false;
-  isChangeUsername = false;
+  isChangeDisplayName = false;
   isChangeTheme = false;
   isChangeProfilePic = false;
 
   newPassword = '';
   confirmPassword = '';
 
-  newUsername = '';
-  currentUsername: string | null = '';
+  newDisplayName = '';
+  currentDisplayName: string | null = '';
 
   backgroundColor = '';
   navbarColor = '';
@@ -48,7 +48,7 @@ export class SettingsComponent implements OnInit {
       if (!user) return;
       this.user = user;
 
-      this.currentUsername = user.displayName || 'Not set';
+      this.currentDisplayName = user.displayName || 'Not set';
 
       try {
         // get user data from Firebase
@@ -76,13 +76,13 @@ export class SettingsComponent implements OnInit {
 
   optionChangePassword() {
     this.isChangePassword = true;
-    this.isChangeUsername = false;
+    this.isChangeDisplayName = false;
     this.isChangeTheme = false;
     this.isChangeProfilePic = false;
   }
 
-  optionChangeUsername() {
-    this.isChangeUsername = true;
+  optionChangeDisplayName() {
+    this.isChangeDisplayName = true;
     this.isChangePassword = false;
     this.isChangeTheme = false;
     this.isChangeProfilePic = false;
@@ -91,14 +91,14 @@ export class SettingsComponent implements OnInit {
   optionChangeTheme() {
     this.isChangeTheme = true;
     this.isChangePassword = false;
-    this.isChangeUsername = false;
+    this.isChangeDisplayName = false;
     this.isChangeProfilePic = false;
   }
 
   optionChangeProfilePic() {
     this.isChangeProfilePic = true;
     this.isChangePassword = false;
-    this.isChangeUsername = false;
+    this.isChangeDisplayName = false;
     this.isChangeTheme = false;
   }
 
@@ -125,35 +125,34 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  updateUsername(event: any) {
-    this.newUsername = event.target.value;
+  updateDisplayName(event: any) {
+    this.newDisplayName = event.target.value;
   }
 
-  submitNewUsername() {
-    const db = this.firebaseService.getDatabase();
-    const usersRef = ref(db, 'users');
-    const usernameQuery = query(usersRef, orderByChild('name'), equalTo(this.newUsername));
+  submitNewDisplayName() {
+  const db = this.firebaseService.getDatabase();
+  const usersRef = ref(db, 'users');
+  const displayNameQuery = query(usersRef, orderByChild('displayName'), equalTo(this.newDisplayName));
 
-    
-    // check if username is already taken
-    get(usernameQuery).then(snapshot => {
-      if (snapshot.exists()) {
-        alert('Username is already taken.');
-        return;
-      }
-      const user = this.firebaseService.getCurrentUser();
-      if (user) {
-         // update username in Firebase + auth profile
-        this.firebaseService.updateUsername(user.uid, this.newUsername)
-          .then(() => updateProfile(user, { displayName: this.newUsername }))
-          .then(() => {
-            alert('Username updated successfully!');
-            this.currentUsername = this.newUsername;
-          })
-          .catch(error => console.error('Error updating username:', error));
-      }
-    }).catch(error => console.error('Error checking username:', error));
-  }
+  // check if username is already taken
+  get(displayNameQuery).then(snapshot => {
+    if (snapshot.exists()) {
+      alert('Username is already taken.');
+      return;
+    }
+
+    const user = this.firebaseService.getCurrentUser();
+    if (user) {
+      // ✅ updateDisplayName handles both Auth + DB update
+      this.firebaseService.updateDisplayName(user.uid, this.newDisplayName)
+        .then(() => {
+          alert('Username updated successfully!');
+          this.currentDisplayName = this.newDisplayName;
+        })
+        .catch(error => console.error('Error updating username:', error));
+    }
+  }).catch(error => console.error('Error checking username:', error));
+}
 
   updateBackgroundColor(event: any) {
     this.backgroundColor = event.target.value;

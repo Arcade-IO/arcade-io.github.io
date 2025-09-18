@@ -2,7 +2,7 @@
   <div class="Navbar">
     <ul>
       <li><a href="javascript:void(0)" (click)="optionChangePassword()">Change Password</a></li>
-      <li><a href="javascript:void(0)" (click)="optionChangeUsername()">Change Username</a></li>
+      <li><a href="javascript:void(0)" (click)="optionChangeDisplayName()">Change Username</a></li>
       <li><a href="javascript:void(0)" (click)="optionChangeTheme()">Change Theme</a></li>
       <li><a href="javascript:void(0)" (click)="optionChangeProfilePic()">Change Profile Picture</a></li>
     </ul>
@@ -23,13 +23,13 @@
     </div>
 
     <!-- Change Username Section -->
-    <div *ngIf="isChangeUsername">
+    <div *ngIf="isChangeDisplayName">
       <h2>Change Username</h2>
-      <p>Current Username: {{ currentUsername || 'Not set' }}</p><br/>
+      <p>Current Username: {{ currentDisplayName || 'Not set' }}</p><br/>
       <div class="input-group">
-        <input type="text" [value]="newUsername" (input)="updateUsername($event)" placeholder="New Username"/>
+        <input type="text" [value]="newDisplayName" (input)="updateDisplayName($event)" placeholder="New Username"/>
       </div>
-      <button (click)="submitNewUsername()">Submit</button>
+      <button (click)="submitNewDisplayName()">Submit</button>
     </div>
 
     <!-- Change Theme Section -->

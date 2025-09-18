@@ -17,6 +17,8 @@ import { initializeApp } from 'firebase/app';
 import { Message } from '../chat/Message';
 import { share } from 'rxjs';
 import { sendPasswordResetEmail } from 'firebase/auth';
+import { BehaviorSubject } from 'rxjs';
+
 
 
 // Initialize Firebase
@@ -37,6 +39,10 @@ setPersistence(auth, browserLocalPersistence)
   providedIn: 'root'
 })
 export class FirebaseService {
+  
+  private displayNameSubject = new BehaviorSubject<string>('');
+  public currentDisplayName$ = this.displayNameSubject.asObservable();
+
   currentUser: any = null;
   public currentDisplayName: string = '';
 
@@ -370,6 +376,7 @@ private loadCurrentUser(): void {
         .then(() => user.reload())
         .then(() => {
           console.log('Updated displayName:', newDisplayName);
+          this.displayNameSubject.next(newDisplayName);
         })
         .catch(error => Promise.reject(error));
     } else {
@@ -383,8 +390,10 @@ private loadCurrentUser(): void {
       .then((userData) => {
         if (userData && userData.displayName) {
           this.currentDisplayName = userData.displayName;
+          this.displayNameSubject.next(userData.displayName);
         } else {
           this.currentDisplayName = '';
+          this.displayNameSubject.next('');
         }
       })
       .catch((error) => {
@@ -395,6 +404,7 @@ private loadCurrentUser(): void {
 
   clearDisplayName(): void {
     this.currentDisplayName = '';
+    this.displayNameSubject.next('');    
   }
 
   // Henter brugerdata baseret på uid
