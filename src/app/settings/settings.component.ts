@@ -197,49 +197,40 @@ async uploadProfilePicture() {
   this.uploading = true;
 
   const user = this.firebaseService.getCurrentUser();
-  if (!user) {
-    this.uploading = false;
-    return;
-  }
+  if (!user) return;
 
-  try {
-    // FÅ SIGNATUR FRA CLOUD FUNCTION
-    const sig = await this.http.post<any>(this.SIGN_FN_URL, {
-      public_id: "imageuploader/" + user.uid
-    }).toPromise();
+  const sig = await this.http.post<any>(this.SIGN_FN_URL, {
+    public_id: user.uid
+  }).toPromise();
 
-    // UPLOAD TIL CLOUDINARY MED PRÆCIS SAMME PARAMETRE
-    const form = new FormData();
-    form.append('file', this.selectedFile);
-    form.append('public_id', sig.public_id);
-    form.append('timestamp', String(sig.timestamp));
-    form.append('api_key', sig.api_key);
-    form.append('signature', sig.signature);
-    form.append('overwrite', 'true');
-    form.append('invalidate', 'true');
+  const form = new FormData();
+  form.append('file', this.selectedFile);
+  form.append('public_id', sig.public_id);
+  form.append('timestamp', String(sig.timestamp));
+  form.append('api_key', sig.api_key);
+  form.append('signature', sig.signature);
+  form.append('overwrite', 'true');
+  form.append('invalidate', 'true');
 
-    const uploadRes = await this.http.post<any>(
-      `https://api.cloudinary.com/v1_1/${sig.cloud_name}/image/upload`,
-      form
-    ).toPromise();
+  const uploadRes = await this.http.post<any>(
+    `https://api.cloudinary.com/v1_1/${sig.cloud_name}/image/upload`,
+    form
+  ).toPromise();
 
-    const imageUrl: string = uploadRes.secure_url;
-    const newPublicId: string = uploadRes.public_id;
+  const imageUrl = uploadRes.secure_url;
+  const newPublicId = uploadRes.public_id;
 
-    const db = this.firebaseService.getDatabase();
-    const userRef = ref(db, `users/${user.uid}`);
-    await update(userRef, { photoURL: imageUrl, photoPublicId: newPublicId });
+  const db = this.firebaseService.getDatabase();
+  const userRef = ref(db, `users/${user.uid}`);
+  await update(userRef, { photoURL: imageUrl, photoPublicId: newPublicId });
 
-    this.user.photoURL = imageUrl;
-    this.user.photoPublicId = newPublicId;
-    this.selectedFile = null;
-    this.uploading = false;
-    this.showProfileMenu = false;
-    alert('Profile picture updated successfully!');
-  } catch (err) {
-    console.error('Cloudinary signed upload error:', err);
-    this.uploading = false;
-  }
+  this.user.photoURL = imageUrl;
+  this.user.photoPublicId = newPublicId;
+  this.selectedFile = null;
+  this.uploading = false;
+  this.showProfileMenu = false;
+  alert('Profile picture updated successfully!');
 }
+
 
 }
