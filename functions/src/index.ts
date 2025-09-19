@@ -15,7 +15,7 @@ export const getCloudinarySignature = onRequest(
   async (req, res) => {
     const allowedOrigins = [
       "http://localhost:4200",
-      "https://arcade-io.github.io"
+      "https://arcade-io.github.io/#/settings"
     ];
 
     const origin = req.get("origin");
