@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-dotenv.config(); // <- VIGTIGT: Loader .env før alt andet
+dotenv.config();
 
 import { onRequest } from "firebase-functions/v2/https";
 import { v2 as cloudinary } from "cloudinary";
@@ -13,8 +13,16 @@ cloudinary.config({
 export const getCloudinarySignature = onRequest(
   { region: "europe-west1" },
   async (req, res) => {
-    // Manuel CORS
-    res.set("Access-Control-Allow-Origin", "*");
+    // Dynamisk CORS baseret på requestens origin
+    const allowedOrigins = [
+      "http://localhost:4200",
+      "https://arcade-io.github.io"
+    ];
+    const origin = req.get("origin");
+    if (origin && allowedOrigins.includes(origin)) {
+      res.set("Access-Control-Allow-Origin", origin);
+    }
+
     res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.set("Access-Control-Allow-Headers", "Content-Type");
 
