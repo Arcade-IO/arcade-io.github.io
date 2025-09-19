@@ -17,15 +17,19 @@ export const getCloudinarySignature = onRequest(
       "http://localhost:4200",
       "https://arcade-io.github.io"
     ];
+
     const origin = req.get("origin");
     if (origin && allowedOrigins.includes(origin)) {
       res.set("Access-Control-Allow-Origin", origin);
+    } else {
+      // fallback: returner alligevel for at undgå blokering
+      res.set("Access-Control-Allow-Origin", "*");
     }
 
     res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.set("Access-Control-Allow-Headers", "Content-Type");
 
-    // <- VIGTIGT: svar med headers på preflight
+    // === VIGTIGT ===
     if (req.method === "OPTIONS") {
       res.status(204).end();
       return;
