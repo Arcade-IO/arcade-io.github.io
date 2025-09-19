@@ -13,7 +13,7 @@ cloudinary.config({
 export const getCloudinarySignature = onRequest(
   { region: "europe-west1" },
   async (req, res) => {
-    // Dynamisk CORS baseret på requestens origin
+    // Dynamisk CORS
     const allowedOrigins = [
       "http://localhost:4200",
       "https://arcade-io.github.io"
