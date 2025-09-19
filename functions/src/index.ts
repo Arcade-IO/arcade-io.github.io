@@ -10,26 +10,23 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+const allowedOrigins = [
+  "http://localhost:4200",
+  "https://arcade-io.github.io"
+];
+
 export const getCloudinarySignature = onRequest(
   { region: "europe-west1" },
   async (req, res) => {
-    const allowedOrigins = [
-      "http://localhost:4200",
-      "https://arcade-io.github.io/#/settings"
-    ];
+    const origin = req.get("origin") || "";
+    const safeOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
 
-    const origin = req.get("origin");
-    if (origin && allowedOrigins.includes(origin)) {
-      res.set("Access-Control-Allow-Origin", origin);
-    } else {
-      // fallback: returner alligevel for at undgå blokering
-      res.set("Access-Control-Allow-Origin", "*");
-    }
-
+    // Sæt CORS headers
+    res.set("Access-Control-Allow-Origin", safeOrigin);
+    res.set("Vary", "Origin");
     res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.set("Access-Control-Allow-Headers", "Content-Type");
 
-    // === VIGTIGT ===
     if (req.method === "OPTIONS") {
       res.status(204).end();
       return;
