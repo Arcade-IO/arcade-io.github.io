@@ -2,8 +2,8 @@ export const environment = {
   production: true,
 
   firebaseConfig: {
-    apiKey: "DIN_FIREBASE_API_KEY",
-    authDomain: "DIN_FIREBASE_AUTH_DOMAIN",
+    apiKey: "AIzaSyAQXh6D3CSZJYDVM57ZeHfJZShIQQX4LG0",
+    authDomain: "my-game-portal-10af3.firebaseapp.com",
     databaseURL: "https://my-game-portal-10af3-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "my-game-portal-10af3",
     storageBucket: "my-game-portal-10af3.appspot.com",
